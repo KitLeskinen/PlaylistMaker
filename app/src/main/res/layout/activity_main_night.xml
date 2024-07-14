@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/black"
     android:orientation="vertical"
     android:padding="16dp"
 
@@ -44,13 +44,10 @@
             app:iconGravity="textStart"
             app:iconPadding="8dp"
             app:iconSize="24dp"
-            app:iconTint="@color/black"
-            android:foreground="?attr/selectableItemBackground"
-            />
+            app:iconTint="@color/black" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/medialibrary"
-
             android:layout_width="match_parent"
 
             android:layout_height="0dp"
