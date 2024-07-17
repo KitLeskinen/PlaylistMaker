@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="mainMenuButtonStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/mainMenuButtonTextSize</item>
+        <item name="cornerRadius">@dimen/mainMenuCornerRadius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/iconPadding</item>
+        <item name="iconSize">@dimen/iconSize</item>
+        <item name="iconTint">@color/black</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="settingsItem">
+        <item name="android:paddingVertical">20dp</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textSize">@dimen/settingsTextSize</item>
+        <item name="android:text">@string/dark_mode</item>
+        <item name="android:paddingHorizontal">16dp</item>
+    </style>
+
+
+</resources>

@@ -5,124 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:orientation="horizontal">
+        app:navigationIcon="@drawable/back_icon"
+        app:title="@string/Settings" />
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/back_icon" />
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher1"
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingStart="16dp"
+        style="@style/settingsItem"
 
-            android:text="@string/Settings"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="21dp"
-        android:paddingBottom="21dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/dark_mode"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+        android:gravity="center_vertical"
+        android:text="@string/dark_mode"
+        android:thumbTintMode="screen" />
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/settingsItem"
 
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="21dp"
-        android:paddingBottom="21dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/share_app"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+        android:drawableEnd="@drawable/share_icon"
+        android:text="@string/share_app" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/share_icon" />
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/settingsItem"
 
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="21dp"
-        android:paddingBottom="21dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/write_to_support"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/support_icon" />
+        android:drawableEnd="@drawable/support_icon"
+        android:text="@string/write_to_support" />
 
-    </LinearLayout>
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/settingsItem"
 
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="21dp"
-        android:paddingBottom="21dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/user_agreement"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+        android:drawableEnd="@drawable/arrow_forward_icon"
+        android:text="@string/user_agreement" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/arrow_forward_icon" />
 
-    </LinearLayout>
 </LinearLayout>

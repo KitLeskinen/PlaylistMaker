@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mainMenuCornerRadius">16dp</dimen>
+    <dimen name="mainMenuButtonTextSize">26sp</dimen>
+    <dimen name="settingsTextSize">16sp</dimen>
+    <dimen name="iconSize">24dp</dimen>
+    <dimen name="iconPadding">8dp</dimen>
+</resources>

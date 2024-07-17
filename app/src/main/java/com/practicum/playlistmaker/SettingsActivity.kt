@@ -2,7 +2,8 @@ package com.practicum.playlistmaker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
+
+import com.google.android.material.appbar.MaterialToolbar
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -10,9 +11,9 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val backImageView = findViewById<ImageView>(R.id.back)
+        val backImageView = findViewById<MaterialToolbar>(R.id.back)
 
-        backImageView.setOnClickListener{
+        backImageView.setNavigationOnClickListener{
             finish()
         }
 
