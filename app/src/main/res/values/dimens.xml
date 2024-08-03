@@ -5,4 +5,5 @@
     <dimen name="settingsTextSize">16sp</dimen>
     <dimen name="iconSize">24dp</dimen>
     <dimen name="iconPadding">8dp</dimen>
+    <dimen name="horizontal_padding">16dp</dimen>
 </resources>

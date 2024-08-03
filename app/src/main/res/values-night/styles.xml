@@ -5,7 +5,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/mainMenuButtonTextSize</item>
         <item name="cornerRadius">@dimen/mainMenuCornerRadius</item>
         <item name="iconGravity">textStart</item>
@@ -18,9 +18,8 @@
 
     <style name="settingsItem">
         <item name="android:paddingVertical">20dp</item>
-        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/settingsTextSize</item>
-        <item name="android:text">@string/dark_mode</item>
         <item name="android:paddingHorizontal">16dp</item>
         <item name="fontFamily">@font/ys_display_regular</item>
     </style>
