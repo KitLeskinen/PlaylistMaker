@@ -1,9 +1,13 @@
 package com.practicum.playlistmaker
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.textview.MaterialTextView
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -12,10 +16,46 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val backImageView = findViewById<MaterialToolbar>(R.id.back)
+        val shareAppView = findViewById<MaterialTextView>(R.id.shareApp)
+        val mailToSupport = findViewById<MaterialTextView>(R.id.mailToSupport)
+        val userAgreement = findViewById<MaterialTextView>(R.id.userAgreement)
 
         backImageView.setNavigationOnClickListener{
             finish()
         }
+
+        shareAppView.setOnClickListener {
+            val link = "https://practicum.yandex.ru/android-developer/"
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.putExtra(Intent.EXTRA_TEXT, link)
+            intent.setType("text/plain")
+            startActivity(intent)
+        }
+
+        mailToSupport.setOnClickListener {
+            val mailRecipient  = getString(R.string.mailRecipient)
+            val mailSubject = getString(R.string.mailSubject)
+            val mailContent = getString(R.string.mailContent)
+            val mailIntent = Intent(Intent.ACTION_SENDTO)
+            mailIntent.data = Uri.parse("mailto:")
+            mailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailRecipient))
+            mailIntent.putExtra(Intent.EXTRA_SUBJECT, mailSubject)
+            mailIntent.putExtra(Intent.EXTRA_TEXT, mailContent)
+
+            if(mailIntent.resolveActivity(packageManager) != null){
+                startActivity(Intent.createChooser(mailIntent, getString(R.string.chooseEmailClient)))
+            } else{
+                Toast.makeText(this, getString(R.string.askForEmailClientInstall), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        userAgreement.setOnClickListener(){
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse(getString(R.string.practicumOffer)))
+            startActivity(intent)
+        }
+
+
 
 
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
 
         app:navigationIcon="@drawable/back_icon"
-
+        app:navigationIconTint="@color/white"
         app:title="@string/search" />
 
     <LinearLayout
@@ -35,9 +35,8 @@
             android:background="@null"
             android:drawableStart="@drawable/search_light_mode"
 
-
             android:drawablePadding="8dp"
-            android:drawableTint="#AEAFB4"
+            android:drawableTint="@color/black"
             android:hint="@string/search"
             android:inputType="text"
 
@@ -46,14 +45,15 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:textColor="@color/black"
-            android:textColorHint="#AEAFB4"
-            android:textSize="16sp" />
+            android:textColorHint="@color/black"
+            android:textSize="16sp"
+            android:tooltipText="enter text please" />
 
         <ImageView
             android:id="@+id/clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Clear button"
+
             android:layout_gravity="center"
             android:padding="16dp"
 
