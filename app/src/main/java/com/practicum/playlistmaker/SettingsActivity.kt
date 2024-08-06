@@ -25,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         shareAppView.setOnClickListener {
-            val link = "https://practicum.yandex.ru/android-developer/"
+            val link = getString(R.string.yandex_practicum_android_developer_url)
             val intent = Intent(Intent.ACTION_SEND)
             intent.putExtra(Intent.EXTRA_TEXT, link)
             intent.setType("text/plain")
@@ -54,9 +54,6 @@ class SettingsActivity : AppCompatActivity() {
             intent.setData(Uri.parse(getString(R.string.practicumOffer)))
             startActivity(intent)
         }
-
-
-
 
     }
 }

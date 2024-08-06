@@ -14,4 +14,6 @@
     <string name="mailRecipient">kawaiicreature@gmail.com</string>
     <string name="chooseEmailClient">Выберите E-mail клиент</string>
     <string name="practicumOffer">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="yandex_practicum_android_developer_url">https://practicum.yandex.ru/android-developer/</string>
+    <string name="clear_button">Clear button</string>
 </resources>

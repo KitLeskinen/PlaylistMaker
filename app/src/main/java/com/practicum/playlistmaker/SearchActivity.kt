@@ -1,14 +1,17 @@
 package com.practicum.playlistmaker
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import com.google.android.material.appbar.MaterialToolbar
+
 
 class SearchActivity : AppCompatActivity() {
 
@@ -47,8 +50,10 @@ class SearchActivity : AppCompatActivity() {
         Log.d("Search", "onCreate searchQuery: $searchQuery")
         val clearImageView = findViewById<ImageView>(R.id.clear)
 
-        clearImageView.setOnClickListener {
+        clearImageView.setOnClickListener() { view ->
             searchEditText.setText("")
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
         backImageView.setNavigationOnClickListener {
