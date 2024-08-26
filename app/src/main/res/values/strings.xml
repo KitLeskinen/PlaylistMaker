@@ -5,7 +5,15 @@
     <string name="preferences">Настройки</string>
     <string name="dark_mode">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
-    <string name="write_to_support">Написать в техподдержку</string>
+    <string name="write_to_support">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="Settings">Настройки</string>
+    <string name="askForEmailClientInstall">Для отправки письма установите почтовое приложение</string>
+    <string name="mailSubject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="mailContent">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="mailRecipient">kawaiicreature@gmail.com</string>
+    <string name="chooseEmailClient">Выберите E-mail клиент</string>
+    <string name="practicumOffer">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="yandex_practicum_android_developer_url">https://practicum.yandex.ru/android-developer/</string>
+    <string name="clear_button">Clear button</string>
 </resources>

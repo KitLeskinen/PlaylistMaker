@@ -4,7 +4,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         app:navigationIcon="@drawable/back_icon"
-        app:navigationIconTint="@color/black"
+        app:navigationIconTint="@color/white"
         app:title="@string/Settings" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
