@@ -3,10 +3,6 @@
 
     <style name="mainMenuButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_weight">1</item>
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/mainMenuButtonTextSize</item>
         <item name="cornerRadius">@dimen/mainMenuCornerRadius</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/iconPadding</item>
@@ -14,6 +10,11 @@
         <item name="iconTint">@color/black</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">22sp</item>
+
     </style>
 
     <style name="settingsItem">
@@ -22,6 +23,36 @@
         <item name="android:textSize">@dimen/settingsTextSize</item>
         <item name="android:paddingHorizontal">16dp</item>
         <item name="fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="artistName">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="trackTime">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="trackName">
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="trackForwardArrow">
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="divider">
+        <item name="tint">#FFFFFF</item>
     </style>
 
 

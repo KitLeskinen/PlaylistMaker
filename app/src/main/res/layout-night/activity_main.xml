@@ -5,18 +5,16 @@
     android:layout_height="match_parent"
     android:background="@color/background_night"
     android:orientation="vertical"
-    android:padding="16dp"
-
-    >
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
         android:text="@string/app_name"
         android:textColor="@color/white"
-
         android:textFontWeight="500"
-        android:textSize="26sp" />
+        android:textSize="@dimen/mainMenuButtonTextSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,26 +22,20 @@
         android:layout_marginTop="24dp"
         android:orientation="vertical">
 
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/search"
+            style="@style/mainMenuButtonStyle"
             android:layout_width="match_parent"
 
             android:layout_height="0dp"
 
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+
+            android:shadowColor="#FFFFFF"
             android:text="@string/search"
-
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/search_light_mode"
-
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconSize="24dp"
-            app:iconTint="@color/black" />
+            app:icon="@drawable/search_light_mode" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/medialibrary"
@@ -68,24 +60,15 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settings"
+            style="@style/mainMenuButtonStyle"
             android:layout_width="match_parent"
-
             android:layout_height="0dp"
-
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="@string/preferences"
 
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            app:cornerRadius="16dp"
+            android:text="@string/preferences"
             app:icon="@drawable/settings_light_mode"
 
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconSize="24dp"
-            app:iconTint="@color/black" />
+            />
 
 
     </LinearLayout>
