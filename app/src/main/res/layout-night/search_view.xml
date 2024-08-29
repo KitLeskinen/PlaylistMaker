@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,12 +7,12 @@
 
     <ImageView
         android:id="@+id/trackCover"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/trackCoverSideSize_48dp"
+        android:layout_height="@dimen/trackCoverSideSize_48dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginVertical="8dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginVertical="@dimen/trackCoverMargin_8dp"
+        android:layout_marginStart="@dimen/trackCoverMarginStart_12dp"
+        android:layout_marginEnd="@dimen/trackCoverMargin_8dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
@@ -28,7 +27,6 @@
             style="@style/trackName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             tools:text="Here Comes The Sun (Remastered..." />
 
         <LinearLayout
@@ -43,16 +41,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="The Beatles" />
-
             <ImageView
                 style="@style/divider"
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginHorizontal="@dimen/dividerMarginHorizontal_4dp"
                 android:src="@drawable/ellipse_divider" />
-
             <TextView
                 android:id="@+id/trackTime"
                 style="@style/trackTime"
@@ -68,8 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginStart="@dimen/trackForwardArrowMarginStart_8dp"
+        android:layout_marginEnd="@dimen/trackForwardArrowMarginEnd_28dp"
         android:src="@drawable/arrow_forward_icon" />
 
 </LinearLayout>
