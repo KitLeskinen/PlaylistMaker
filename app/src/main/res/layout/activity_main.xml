@@ -25,11 +25,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/search"
-            android:elevation="0dp"
             style="@style/mainMenuButtonStyle"
-
             android:layout_width="match_parent"
+
             android:layout_height="0dp"
+            android:elevation="0dp"
+
 
             android:text="@string/search"
             app:icon="@drawable/search_light_mode" />
@@ -47,12 +48,9 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settings"
-
             style="@style/mainMenuButtonStyle"
-
             android:layout_width="match_parent"
             android:layout_height="0dp"
-
             android:text="@string/preferences"
             app:icon="@drawable/settings_light_mode" />
 
