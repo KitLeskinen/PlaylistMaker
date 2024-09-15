@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker
 
+import android.icu.text.SimpleDateFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import java.util.Locale
 
 class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -19,6 +21,6 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(itemView).load(model.artworkUrl100).placeholder(R.drawable.placeholder).transform(RoundedCorners(Tools.dpToPx(2f, itemView.context))).into(trackCover)
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text = model.trackTime
+        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
     }
 }
