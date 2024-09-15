@@ -41,7 +41,9 @@
             android:textColor="@color/black"
             android:textColorHint="@color/textEdit_tint"
             android:textCursorDrawable="@drawable/text_cursor"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:imeOptions="actionDone"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/clear"
@@ -56,6 +58,39 @@
 
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/errorIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="102dp"
+        android:src="@drawable/no_internet"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/errorMessage"
+        style="@style/searchErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingHorizontal="8dp"
+        android:text="Error"
+        android:visibility="gone"
+        tools:text="Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/black"
+        android:paddingVertical="@dimen/button_margin_8dp"
+        android:text="@string/Update"
+        android:visibility="gone"
+        app:cornerRadius="54dp"
+        tools:visibility="visible" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecyclerView"
         android:layout_width="match_parent"
