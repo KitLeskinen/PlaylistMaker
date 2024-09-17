@@ -33,17 +33,17 @@
             android:drawablePadding="8dp"
             android:drawableTint="@color/textEdit_tint"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
             android:maxLines="1"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/textEdit_tint"
             android:textCursorDrawable="@drawable/text_cursor"
-            android:textSize="16sp"
-            android:imeOptions="actionDone"
-            android:singleLine="true" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/clear"
@@ -74,23 +74,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:paddingHorizontal="8dp"
-        android:text="Error"
+        android:paddingHorizontal="@dimen/horizontal_padding_small"
+        android:paddingTop="@dimen/vertical_padding_medium"
+        android:textColor="@color/black"
         android:visibility="gone"
         tools:text="Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
         tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updateButton"
+        style="@style/updateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/black"
+        android:layout_marginVertical="@dimen/vertical_padding_large"
         android:paddingVertical="@dimen/button_margin_8dp"
         android:text="@string/Update"
         android:visibility="gone"
-        app:cornerRadius="54dp"
         tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecyclerView"
         android:layout_width="match_parent"

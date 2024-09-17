@@ -57,14 +57,19 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val backImageView = findViewById<MaterialToolbar>(R.id.back)
-        searchEditText = findViewById(R.id.searchEditText)
+        val searchEditText = findViewById<TextView>(R.id.searchEditText)
         val clearImageView = findViewById<ImageView>(R.id.clear)
-        val searchRecyclerView = findViewById<RecyclerView>(R.id.searchRecyclerView)
+
         val errorIcon = findViewById<ImageView>(R.id.errorIcon)
         val errorMessage = findViewById<TextView>(R.id.errorMessage)
 
         val updateButton = findViewById<MaterialButton>(R.id.updateButton)
         val iTunesApi = retrofit.create<ITunesApi>()
+        val tracksList  = mutableListOf<Track>()
+        val searchAdapter = SearchAdapter(tracksList)
+
+        val searchRecyclerView = findViewById<RecyclerView>(R.id.searchRecyclerView)
+        searchRecyclerView.adapter = searchAdapter
 
 
         // set blank or restored text in search field
@@ -74,6 +79,8 @@ class SearchActivity : AppCompatActivity() {
         // clear search field
         clearImageView.setOnClickListener() { view ->
             searchEditText.setText("")
+            tracksList.clear()
+            searchAdapter.notifyDataSetChanged()
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
@@ -119,8 +126,6 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         searchRecyclerView.visibility = View.VISIBLE
-                        errorIcon.visibility = View.GONE
-                        errorMessage.visibility = View.GONE
 
                         val response = response.body()?.string()
                         val gson = Gson()
@@ -136,8 +141,10 @@ class SearchActivity : AppCompatActivity() {
                             errorIcon.visibility = View.GONE
                             errorMessage.visibility = View.GONE
                         }
-                        val searchAdapter = SearchAdapter(searchResult.tracks)
-                        searchRecyclerView.adapter = searchAdapter
+                        tracksList.clear()
+                        tracksList.addAll(searchResult.tracks)
+                        Log.d("TRACKS", searchResult.tracks.toString())
+                        searchAdapter.notifyDataSetChanged()
 
                     }
                 }
@@ -159,7 +166,10 @@ class SearchActivity : AppCompatActivity() {
 
         updateButton.setOnClickListener(){ view ->
             makeResponse(lastSearch)
+            searchEditText.text = lastSearch
             updateButton.visibility = View.GONE
+            errorIcon.visibility = View.GONE
+            errorMessage.visibility = View.GONE
         }
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
