@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -57,7 +58,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val backImageView = findViewById<MaterialToolbar>(R.id.back)
-        val searchEditText = findViewById<TextView>(R.id.searchEditText)
+        searchEditText = findViewById(R.id.searchEditText)
         val clearImageView = findViewById<ImageView>(R.id.clear)
 
         val errorIcon = findViewById<ImageView>(R.id.errorIcon)
@@ -99,9 +100,9 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.isNullOrEmpty()) {
-                    clearImageView.visibility = View.INVISIBLE
+                    clearImageView.isVisible = false
                 } else {
-                    clearImageView.visibility = View.VISIBLE
+                    clearImageView.isVisible = true
                 }
                 searchQuery = searchEditText.text.toString()
             }
@@ -116,8 +117,6 @@ class SearchActivity : AppCompatActivity() {
 
         var lastSearch = ""
 
-
-
         fun makeResponse(text: String){
             iTunesApi.search(text).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
@@ -125,18 +124,17 @@ class SearchActivity : AppCompatActivity() {
                     response: Response<ResponseBody>
                 ) {
                     if (response.isSuccessful) {
-                        searchRecyclerView.visibility = View.VISIBLE
+                        searchRecyclerView.isVisible = true
 
-                        val response = response.body()?.string()
+                        val responseBody = response.body()?.string()
                         val gson = Gson()
-                        val searchResult = gson.fromJson(response, SearchResult::class.java)
-                        Log.d("RESPONSE", response.toString())
-                        Log.d("RESPONSE", searchResult.toString())
+                        val searchResult = gson.fromJson(responseBody, SearchResult::class.java)
+                        Log.d("RESPONSE", responseBody.toString())
                         if(searchResult.resultCount == 0){
                             errorIcon.setImageResource(R.drawable.no_search_results)
                             errorMessage.text = getString(R.string.no_results)
-                            errorIcon.visibility = View.VISIBLE
-                            errorMessage.visibility = View.VISIBLE
+                            errorIcon.isVisible = true
+                            errorMessage.isVisible = true
                         } else {
                             errorIcon.visibility = View.GONE
                             errorMessage.visibility = View.GONE
@@ -153,10 +151,10 @@ class SearchActivity : AppCompatActivity() {
                     Log.d("RESPONSE", t.toString())
                     searchRecyclerView.visibility = View.GONE
                     errorIcon.setImageResource(R.drawable.no_internet)
-                    errorIcon.visibility = View.VISIBLE
+                    errorIcon.isVisible = true
                     errorMessage.text = getString(R.string.no_internet_check_connection)
-                    errorMessage.visibility = View.VISIBLE
-                    updateButton.visibility = View.VISIBLE
+                    errorMessage.isVisible = true
+                    updateButton.isVisible = true
                     lastSearch = searchEditText.text.toString()
 
                 }
@@ -166,7 +164,7 @@ class SearchActivity : AppCompatActivity() {
 
         updateButton.setOnClickListener(){ view ->
             makeResponse(lastSearch)
-            searchEditText.text = lastSearch
+            searchEditText.setText(lastSearch)
             updateButton.visibility = View.GONE
             errorIcon.visibility = View.GONE
             errorMessage.visibility = View.GONE
