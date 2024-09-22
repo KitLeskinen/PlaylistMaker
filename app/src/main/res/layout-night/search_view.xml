@@ -40,18 +40,24 @@
                 style="@style/artistName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 tools:text="The Beatles" />
+
             <ImageView
                 style="@style/divider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/dividerMarginHorizontal_4dp"
+                android:layout_weight="0"
                 android:src="@drawable/ellipse_divider" />
+
             <TextView
                 android:id="@+id/trackTime"
                 style="@style/trackTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textAlignment="textStart"
                 tools:text="2:55" />
         </LinearLayout>
     </LinearLayout>
