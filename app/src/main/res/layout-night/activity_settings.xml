@@ -17,7 +17,7 @@
         app:title="@string/Settings" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/themeSwitcher1"
+        android:id="@+id/themeSwitcher"
 
         style="@style/settingsItem"
 

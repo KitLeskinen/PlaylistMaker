@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.widget.Toast
 
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
+
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -19,11 +21,20 @@ class SettingsActivity : AppCompatActivity() {
         val shareAppView = findViewById<MaterialTextView>(R.id.shareApp)
         val mailToSupport = findViewById<MaterialTextView>(R.id.mailToSupport)
         val userAgreement = findViewById<MaterialTextView>(R.id.userAgreement)
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        themeSwitcher.isChecked = getSharedPreferences(DARK_THEME_ENABLED, MODE_PRIVATE).getBoolean(
+            DARK_THEME_ENABLED, false)
 
         backImageView.setNavigationOnClickListener{
             finish()
         }
 
+        themeSwitcher.setOnCheckedChangeListener(){ _, checked ->
+            val sharedPreferences = getSharedPreferences(DARK_THEME_ENABLED, MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean(DARK_THEME_ENABLED, checked).apply()
+            (applicationContext as App).switchTheme(checked)
+        }
         shareAppView.setOnClickListener {
             val link = getString(R.string.yandex_practicum_android_developer_url)
             val intent = Intent(Intent.ACTION_SEND)
