@@ -160,7 +160,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 // button is invisible if search text field empty
                 if (!p0.isNullOrEmpty()) {
-                    clearImageView.isVisible
+                    clearImageView.isVisible = true
                     headerHistory.isVisible = false
                     clearHistoryButton.isVisible = false
                 }
