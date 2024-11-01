@@ -54,6 +54,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -70,30 +71,47 @@ class SearchActivity : AppCompatActivity() {
         val clearHistoryButton = findViewById<MaterialButton>(R.id.clearHistoryButton)
         val headerHistory = findViewById<TextView>(R.id.headerHistory)
         //endregion
-        val searchHistory = SearchHistory(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
-        var history = searchHistory.getTracksHistory()
+        val searchHistorySharedPreferences = SearchHistory(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
+        var history = searchHistorySharedPreferences.getTracksHistory().reversed().toMutableList()
 
         val searchRecyclerView = findViewById<RecyclerView>(R.id.searchRecyclerView)
+
+
+        val historySearchAdapter = SearchAdapter(history, {})
+
+        fun setErrorVisibility(isVisible: Boolean) {
+            if (isVisible) {
+                errorIcon.isVisible = true
+                errorMessage.isVisible = true
+            } else {
+                errorIcon.visibility = View.GONE
+                errorMessage.visibility = View.GONE
+            }
+
+        }
 
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && history.isNotEmpty()) {
                 headerHistory.isVisible = true
                 clearHistoryButton.isVisible = true
-                searchRecyclerView.adapter = SearchAdapter(history.reversed(), {})
+                searchRecyclerView.adapter = historySearchAdapter
+            } else {
+                clearHistoryButton.isVisible = false
             }
         }
 
         //region History
         fun addTrackToHistory(track: Track) {
-            history = searchHistory.getTracksHistory()
+            history = searchHistorySharedPreferences.getTracksHistory()
             val trackIndex = history.indexOf(track)
             if (trackIndex != -1) history.removeAt(trackIndex)
 
             history.add(track)
 
             if (history.size > 10) history.removeAt(0)
-
+            historySearchAdapter.updateList(history)
+            historySearchAdapter.notifyDataSetChanged()
             Log.d("addTrackToHistory", "History List")
             history.forEachIndexed { index, trackItem ->
                 Log.d(
@@ -105,11 +123,14 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // implement add to history in adapter
-        val addTrackToHistory = SearchAdapter.AddToHistory { track ->
+        //endregion
+
+
+        val searchAdapter = SearchAdapter(tracksList) { track ->
             addTrackToHistory(track)
             // add file to shared preferences
-            searchHistory.saveTracksHistory(history)
-            Log.d("HISTORY", "onCreate: ${searchHistory.getTracksHistory()}")
+            searchHistorySharedPreferences.saveTracksHistory(history)
+            Log.d("HISTORY", "onCreate: ${searchHistorySharedPreferences.getTracksHistory()}")
             Log.d("HISTORY", "Track added to history: ${track.trackName}")
             Toast.makeText(
                 this,
@@ -117,18 +138,17 @@ class SearchActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-        //endregion
 
-        // Add to recyclerview search results
-        val searchAdapter = SearchAdapter(tracksList, addTrackToHistory)
 
 
         clearHistoryButton.setOnClickListener() { _ ->
             history.clear()
-            searchHistory.clearHistory()
-            searchRecyclerView.adapter?.notifyDataSetChanged()
+            searchHistorySharedPreferences.clearHistory()
+            historySearchAdapter.updateList(history)
+            historySearchAdapter.notifyDataSetChanged()
             headerHistory.isVisible = false
             clearHistoryButton.isVisible = false
+            // searchRecyclerView.adapter = historySearchAdapter
         }
 
         // set blank or restored text in search field
@@ -138,8 +158,13 @@ class SearchActivity : AppCompatActivity() {
         // clear search field
         clearImageView.setOnClickListener() { view ->
             searchEditText.setText("")
-            headerHistory.isVisible = false
             tracksList.clear()
+            setErrorVisibility(false)
+            if(history.isEmpty()){
+               searchRecyclerView.visibility = View.GONE
+            } else {
+                searchRecyclerView.isVisible = true
+            }
             searchAdapter.notifyDataSetChanged()
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -159,10 +184,22 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 // button is invisible if search text field empty
-                if (!p0.isNullOrEmpty()) {
+                if (p0.isNullOrEmpty()) {
+                    clearImageView.isVisible = false
+                    updateButton.isVisible = false
+                    if (history.isNotEmpty()) {
+                        clearHistoryButton.isVisible = true
+                        searchRecyclerView.isVisible = true
+                        headerHistory.isVisible = true
+                        setErrorVisibility(false)
+                        searchRecyclerView.adapter = historySearchAdapter
+                    }
+                } else {
                     clearImageView.isVisible = true
+                    searchRecyclerView.visibility = View.GONE
                     headerHistory.isVisible = false
                     clearHistoryButton.isVisible = false
+
                 }
                 searchQuery = searchEditText.text.toString()
             }
@@ -185,8 +222,6 @@ class SearchActivity : AppCompatActivity() {
                     response: Response<ResponseBody>
                 ) {
                     if (response.isSuccessful) {
-                        searchRecyclerView.isVisible = true
-
                         val responseBody = response.body()?.string()
                         val gson = Gson()
                         val searchResult = gson.fromJson(responseBody, SearchResult::class.java)
@@ -194,30 +229,28 @@ class SearchActivity : AppCompatActivity() {
                         if (searchResult.resultCount == 0) {
                             extracted()
                         } else {
-                            errorIcon.visibility = View.GONE
-                            errorMessage.visibility = View.GONE
+                            setErrorVisibility(false)
                         }
                         tracksList.clear()
                         tracksList.addAll(searchResult.tracks)
                         Log.d("TRACKS", searchResult.tracks.toString())
                         searchAdapter.notifyDataSetChanged()
+                        searchRecyclerView.isVisible = true
                     }
                 }
 
                 private fun extracted() {
                     errorIcon.setImageResource(R.drawable.no_search_results)
                     errorMessage.text = getString(R.string.no_results)
-                    errorIcon.isVisible = true
-                    errorMessage.isVisible = true
+                    setErrorVisibility(true)
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.d("RESPONSE", t.toString())
                     searchRecyclerView.visibility = View.GONE
                     errorIcon.setImageResource(R.drawable.no_internet)
-                    errorIcon.isVisible = true
                     errorMessage.text = getString(R.string.no_internet_check_connection)
-                    errorMessage.isVisible = true
+                    setErrorVisibility(true)
                     updateButton.isVisible = true
                     lastSearch = searchEditText.text.toString()
                 }
@@ -229,8 +262,7 @@ class SearchActivity : AppCompatActivity() {
             makeResponse(lastSearch)
             searchEditText.setText(lastSearch)
             updateButton.visibility = View.GONE
-            errorIcon.visibility = View.GONE
-            errorMessage.visibility = View.GONE
+            setErrorVisibility(false)
         }
 
         // Search if virtual keyboard Enter pressed

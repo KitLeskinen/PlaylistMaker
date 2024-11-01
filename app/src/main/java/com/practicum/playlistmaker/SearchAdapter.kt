@@ -5,10 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchAdapter(
-    private val tracks: List<Track>,
+    private var tracks: List<Track>,
     private val addToHistory: SearchAdapter.AddToHistory
 ) : RecyclerView.Adapter<SearchViewHolder>() {
 
+    fun updateList(list: List<Track>){
+        tracks = list.reversed()
+    }
 
     fun interface AddToHistory {
         fun invoke(track: Track)
