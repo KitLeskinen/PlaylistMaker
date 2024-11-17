@@ -58,12 +58,26 @@
 
     </FrameLayout>
 
+ <TextView
+        android:id="@+id/headerHistory"
+        style="@style/searchErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingHorizontal="@dimen/horizontal_padding_small"
+        android:paddingTop="@dimen/vertical_padding_medium"
+        android:text="@string/you_searched"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        tools:text="@string/you_searched"
+        tools:visibility="visible" />
     <ImageView
         android:id="@+id/errorIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="102dp"
+ 		android:src="@drawable/no_internet"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -82,7 +96,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updateButton"
-        style="@style/updateButton"
+        style="@style/containedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -93,10 +107,31 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchRecyclerView"
+   
+	<LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clearHistoryButton"
+            style="@style/containedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="@dimen/vertical_padding_large"
+            android:layout_weight="0"
+            android:paddingVertical="@dimen/button_margin_8dp"
+            android:text="@string/ClearHistory"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>	
 
 </LinearLayout>
