@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -12,7 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+
 
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.create
+
 
 
 class SearchActivity : AppCompatActivity() {
@@ -71,13 +73,16 @@ class SearchActivity : AppCompatActivity() {
         val clearHistoryButton = findViewById<MaterialButton>(R.id.clearHistoryButton)
         val headerHistory = findViewById<TextView>(R.id.headerHistory)
         //endregion
-        val searchHistorySharedPreferences = SearchHistory(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
+        val searchHistorySharedPreferences =
+            SearchHistory(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
         var history = searchHistorySharedPreferences.getTracksHistory().reversed().toMutableList()
 
         val searchRecyclerView = findViewById<RecyclerView>(R.id.searchRecyclerView)
 
 
-        val historySearchAdapter = SearchAdapter(history, {})
+        val historySearchAdapter = SearchAdapter(history) { track ->
+            showAudioPlayerActivity(track)
+        }
 
         fun setErrorVisibility(isVisible: Boolean) {
             if (isVisible) {
@@ -127,16 +132,19 @@ class SearchActivity : AppCompatActivity() {
 
 
         val searchAdapter = SearchAdapter(tracksList) { track ->
-            addTrackToHistory(track)
-            // add file to shared preferences
-            searchHistorySharedPreferences.saveTracksHistory(history)
-            Log.d("HISTORY", "onCreate: ${searchHistorySharedPreferences.getTracksHistory()}")
-            Log.d("HISTORY", "Track added to history: ${track.trackName}")
-            Toast.makeText(
-                this,
-                "${track.trackName} - ${track.artistName} добавлен",
-                Toast.LENGTH_SHORT
-            ).show()
+            showAudioPlayerActivity(track)
+
+
+//            addTrackToHistory(track)
+//            // add file to shared preferences
+//            searchHistorySharedPreferences.saveTracksHistory(history)
+//            Log.d("HISTORY", "onCreate: ${searchHistorySharedPreferences.getTracksHistory()}")
+//            Log.d("HISTORY", "Track added to history: ${track.trackName}")
+//            Toast.makeText(
+//                this,
+//                "${track.trackName} - ${track.artistName} добавлен",
+//                Toast.LENGTH_SHORT
+//            ).show()
         }
 
 
@@ -160,8 +168,8 @@ class SearchActivity : AppCompatActivity() {
             searchEditText.setText("")
             tracksList.clear()
             setErrorVisibility(false)
-            if(history.isEmpty()){
-               searchRecyclerView.visibility = View.GONE
+            if (history.isEmpty()) {
+                searchRecyclerView.visibility = View.GONE
             } else {
                 searchRecyclerView.isVisible = true
             }
@@ -274,6 +282,20 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+    }
+
+    private fun showAudioPlayerActivity(track: Track) {
+        val intent = Intent(this, AudioPlayerActivity::class.java)
+        intent.putExtra("trackId", track.trackId)
+        intent.putExtra("trackName", track.trackName)
+        intent.putExtra("artistName", track.artistName)
+        intent.putExtra("collectionName", track.collectionName)
+        intent.putExtra("releaseDate", track.releaseDate)
+        intent.putExtra("primaryGenreName", track.primaryGenreName)
+        intent.putExtra("country", track.country)
+        intent.putExtra("trackTimeMills", track.trackTime)
+        intent.putExtra("albumCover", track.artworkUrl100)
+        startActivity(intent)
     }
 
 

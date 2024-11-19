@@ -28,6 +28,9 @@
             android:name=".MediaLibrary"
             android:exported="false" />
         <activity
+            android:name=".AudioPlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
