@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 
 
 import androidx.core.view.isVisible
@@ -29,6 +30,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.create
 
+const val EXTRA_SELECTED_TRACK = "EXTRA_SELECTED_TRACK"
 
 
 class SearchActivity : AppCompatActivity() {
@@ -127,7 +129,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        // implement add to history in adapter
         //endregion
 
 
@@ -135,16 +136,16 @@ class SearchActivity : AppCompatActivity() {
             showAudioPlayerActivity(track)
 
 
-//            addTrackToHistory(track)
-//            // add file to shared preferences
-//            searchHistorySharedPreferences.saveTracksHistory(history)
-//            Log.d("HISTORY", "onCreate: ${searchHistorySharedPreferences.getTracksHistory()}")
-//            Log.d("HISTORY", "Track added to history: ${track.trackName}")
-//            Toast.makeText(
-//                this,
-//                "${track.trackName} - ${track.artistName} добавлен",
-//                Toast.LENGTH_SHORT
-//            ).show()
+            addTrackToHistory(track)
+            // add file to shared preferences
+            searchHistorySharedPreferences.saveTracksHistory(history)
+            Log.d("HISTORY", "onCreate: ${searchHistorySharedPreferences.getTracksHistory()}")
+            Log.d("HISTORY", "Track added to history: ${track.trackName}")
+            Toast.makeText(
+                this,
+                "${track.trackName} - ${track.artistName} добавлен",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
 
@@ -156,7 +157,7 @@ class SearchActivity : AppCompatActivity() {
             historySearchAdapter.notifyDataSetChanged()
             headerHistory.isVisible = false
             clearHistoryButton.isVisible = false
-            // searchRecyclerView.adapter = historySearchAdapter
+
         }
 
         // set blank or restored text in search field
@@ -286,15 +287,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showAudioPlayerActivity(track: Track) {
         val intent = Intent(this, AudioPlayerActivity::class.java)
-        intent.putExtra("trackId", track.trackId)
-        intent.putExtra("trackName", track.trackName)
-        intent.putExtra("artistName", track.artistName)
-        intent.putExtra("collectionName", track.collectionName)
-        intent.putExtra("releaseDate", track.releaseDate)
-        intent.putExtra("primaryGenreName", track.primaryGenreName)
-        intent.putExtra("country", track.country)
-        intent.putExtra("trackTimeMills", track.trackTime)
-        intent.putExtra("albumCover", track.artworkUrl100)
+        intent.putExtra(EXTRA_SELECTED_TRACK, track)
         startActivity(intent)
     }
 

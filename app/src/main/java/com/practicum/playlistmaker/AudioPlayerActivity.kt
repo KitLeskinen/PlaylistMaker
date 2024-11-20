@@ -3,7 +3,6 @@ package com.practicum.playlistmaker
 import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -20,15 +19,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         val intent = getIntent()
 
-        val trackId = intent.getLongExtra("trackId", 0)
-        val trackName = intent.getStringExtra("trackName")
-        val artistName = intent.getStringExtra("artistName")
-        val collectionName = intent.getStringExtra("collectionName")
-        val releaseDate = intent.getStringExtra("releaseDate")
-        val primaryGenreName = intent.getStringExtra("primaryGenreName")
-        val country = intent.getStringExtra("country")
-        val trackTimeMills = intent.getLongExtra("trackTimeMills", 0)
-        val albumCover = intent.getStringExtra("albumCover")
+        val selectedTrack = intent.getSerializableExtra(EXTRA_SELECTED_TRACK) as Track
 
 
         val coverImage = findViewById<ImageView>(R.id.coverImage)
@@ -41,48 +32,29 @@ class AudioPlayerActivity : AppCompatActivity() {
         val countryTextView = findViewById<TextView>(R.id.countryTextView)
 
 
-        Glide.with(coverImage).load(albumCover?.replaceAfterLast('/', "512x512bb.jpg"))
+        Glide.with(coverImage).load(selectedTrack.getCoverArtwork())
             .placeholder(R.drawable.placeholder).transform(
                 RoundedCorners(Tools.dpToPx(8f, coverImage.context))
             ).into(coverImage)
 
 
-        trackNameTextView.setText(trackName)
+        trackNameTextView.text = selectedTrack.trackName
 
-        artistNameTextView.setText(artistName)
+        artistNameTextView.text = selectedTrack.artistName
 
-        durationTextView.setText(
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(
-                trackTimeMills
-            )
+        durationTextView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(
+            selectedTrack.trackTime
         )
 
-        albumNameTextView.setText(collectionName)
-
+        albumNameTextView.setText(selectedTrack.collectionName)
 
         val formatFateFromJSON = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val yearFormat = SimpleDateFormat("yyyy")
-        val date = formatFateFromJSON.parse(releaseDate)
+        val date = formatFateFromJSON.parse(selectedTrack.releaseDate)
 
-        albumYearTextView.setText(yearFormat.format(date))
-
-        songGenreTextView.setText(primaryGenreName)
-
-        countryTextView.setText(country)
-
-
-
-        Log.d(
-            "INTENT", """onCreate: 
-            | trackId $trackId
-            | trackName: $trackName 
-            | artistName: $artistName
-            | collectionName: $collectionName
-            | releaseDate: $releaseDate 
-            | primaryGenreName: $primaryGenreName
-            | country: $country
-            | trackTimeMills:$trackTimeMills""".trimMargin()
-        )
+        albumYearTextView.text = yearFormat.format(date)
+        songGenreTextView.text = selectedTrack.primaryGenreName
+        countryTextView.text = selectedTrack.country
 
         backImageView.setNavigationOnClickListener {
             finish()
