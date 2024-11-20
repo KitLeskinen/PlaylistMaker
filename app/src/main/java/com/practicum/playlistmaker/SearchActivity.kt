@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 
 
+
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
@@ -169,11 +170,7 @@ class SearchActivity : AppCompatActivity() {
             searchEditText.setText("")
             tracksList.clear()
             setErrorVisibility(false)
-            if (history.isEmpty()) {
-                searchRecyclerView.visibility = View.GONE
-            } else {
-                searchRecyclerView.isVisible = true
-            }
+            searchRecyclerView.isVisible = history.isNotEmpty()
             searchAdapter.notifyDataSetChanged()
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
