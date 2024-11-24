@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +14,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+
+
 
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +30,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.create
+
+const val EXTRA_SELECTED_TRACK = "EXTRA_SELECTED_TRACK"
 
 
 class SearchActivity : AppCompatActivity() {
@@ -71,13 +76,16 @@ class SearchActivity : AppCompatActivity() {
         val clearHistoryButton = findViewById<MaterialButton>(R.id.clearHistoryButton)
         val headerHistory = findViewById<TextView>(R.id.headerHistory)
         //endregion
-        val searchHistorySharedPreferences = SearchHistory(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
+        val searchHistorySharedPreferences =
+            SearchHistory(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
         var history = searchHistorySharedPreferences.getTracksHistory().reversed().toMutableList()
 
         val searchRecyclerView = findViewById<RecyclerView>(R.id.searchRecyclerView)
 
 
-        val historySearchAdapter = SearchAdapter(history, {})
+        val historySearchAdapter = SearchAdapter(history) { track ->
+            showAudioPlayerActivity(track)
+        }
 
         fun setErrorVisibility(isVisible: Boolean) {
             if (isVisible) {
@@ -122,11 +130,13 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        // implement add to history in adapter
         //endregion
 
 
         val searchAdapter = SearchAdapter(tracksList) { track ->
+            showAudioPlayerActivity(track)
+
+
             addTrackToHistory(track)
             // add file to shared preferences
             searchHistorySharedPreferences.saveTracksHistory(history)
@@ -148,7 +158,7 @@ class SearchActivity : AppCompatActivity() {
             historySearchAdapter.notifyDataSetChanged()
             headerHistory.isVisible = false
             clearHistoryButton.isVisible = false
-            // searchRecyclerView.adapter = historySearchAdapter
+
         }
 
         // set blank or restored text in search field
@@ -160,11 +170,7 @@ class SearchActivity : AppCompatActivity() {
             searchEditText.setText("")
             tracksList.clear()
             setErrorVisibility(false)
-            if(history.isEmpty()){
-               searchRecyclerView.visibility = View.GONE
-            } else {
-                searchRecyclerView.isVisible = true
-            }
+            searchRecyclerView.isVisible = history.isNotEmpty()
             searchAdapter.notifyDataSetChanged()
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -274,6 +280,12 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+    }
+
+    private fun showAudioPlayerActivity(track: Track) {
+        val intent = Intent(this, AudioPlayerActivity::class.java)
+        intent.putExtra(EXTRA_SELECTED_TRACK, track)
+        startActivity(intent)
     }
 
 

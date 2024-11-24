@@ -9,7 +9,7 @@ class SearchAdapter(
     private val addToHistory: SearchAdapter.AddToHistory
 ) : RecyclerView.Adapter<SearchViewHolder>() {
 
-    fun updateList(list: List<Track>){
+    fun updateList(list: List<Track>) {
         tracks = list.reversed()
     }
 
@@ -29,7 +29,7 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener() {
-          addToHistory.invoke(tracks[position])
+            addToHistory.invoke(tracks[position])
         }
     }
 
