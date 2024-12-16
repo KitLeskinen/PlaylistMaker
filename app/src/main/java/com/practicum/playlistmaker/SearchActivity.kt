@@ -13,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -69,6 +70,7 @@ class SearchActivity : AppCompatActivity() {
         val backImageView = findViewById<MaterialToolbar>(R.id.back)
         searchEditText = findViewById(R.id.searchEditText)
         val clearImageView = findViewById<ImageView>(R.id.clear)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val errorIcon = findViewById<ImageView>(R.id.errorIcon)
         val errorMessage = findViewById<TextView>(R.id.errorMessage)
         val updateButton = findViewById<MaterialButton>(R.id.updateButton)
@@ -186,12 +188,16 @@ class SearchActivity : AppCompatActivity() {
         }
 
         fun makeResponse(text: String) {
+            progressBar.isVisible = true
             iTunesApi.search(text).enqueue(object : Callback<ResponseBody> {
+
                 override fun onResponse(
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
+
                     if (response.isSuccessful) {
+                        progressBar.visibility = View.GONE
                         val responseBody = response.body()?.string()
                         val gson = Gson()
                         val searchResult = gson.fromJson(responseBody, SearchResult::class.java)
@@ -206,6 +212,7 @@ class SearchActivity : AppCompatActivity() {
                         Log.d("TRACKS", searchResult.tracks.toString())
                         searchAdapter.notifyDataSetChanged()
                         searchRecyclerView.isVisible = true
+
                     }
                 }
 
@@ -216,6 +223,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     Log.d("RESPONSE", t.toString())
                     searchRecyclerView.visibility = View.GONE
                     errorIcon.setImageResource(R.drawable.no_internet)
@@ -226,6 +234,7 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
             )
+
         }
 
         val searchRunnable = Runnable {
@@ -248,8 +257,8 @@ class SearchActivity : AppCompatActivity() {
                 // button is invisible if search text field empty
 
 
-
                 if (p0.isNullOrEmpty()) {
+
                     clearImageView.isVisible = false
                     updateButton.isVisible = false
                     if (history.isNotEmpty()) {
