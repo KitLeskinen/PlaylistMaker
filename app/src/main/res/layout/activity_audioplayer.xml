@@ -101,7 +101,8 @@
         android:src="@drawable/play_button"
         app:layout_constraintBottom_toTopOf="@+id/currentPlayTimeTextView"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
-        app:layout_constraintStart_toEndOf="@id/startGuideline" />
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
+        />
 
     <ImageButton
         android:id="@+id/favoritesButton"
@@ -114,17 +115,18 @@
         app:layout_constraintStart_toEndOf="@+id/mediaButton"
         app:layout_constraintTop_toTopOf="@+id/mediaButton" />
 
+
     <TextView
         android:id="@+id/currentPlayTimeTextView"
         style="@style/audioplayer_current_play_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:paddingBottom="32dp"
-        android:text="0:45"
+        android:text="00:00"
         app:layout_constraintBottom_toTopOf="@+id/durationTextView"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
         app:layout_constraintStart_toEndOf="@id/startGuideline" />
-
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/verticalBarrier"
