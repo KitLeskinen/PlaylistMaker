@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation.model.ui.audio_player
 
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
@@ -12,6 +12,10 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.appbar.MaterialToolbar
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.Tools
+import com.practicum.playlistmaker.domain.entity.Track
+import com.practicum.playlistmaker.presentation.model.ui.search.EXTRA_SELECTED_TRACK
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {

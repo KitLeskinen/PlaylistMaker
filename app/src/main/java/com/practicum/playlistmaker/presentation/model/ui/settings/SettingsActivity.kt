@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation.model.ui.settings
 
 import android.content.Intent
 import android.net.Uri
@@ -9,7 +9,9 @@ import android.widget.Toast
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
-
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.DARK_THEME_ENABLED
+import com.practicum.playlistmaker.R
 
 
 class SettingsActivity : AppCompatActivity() {
