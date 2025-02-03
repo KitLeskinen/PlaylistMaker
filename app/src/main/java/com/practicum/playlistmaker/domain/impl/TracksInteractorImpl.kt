@@ -23,7 +23,6 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
             } else {
                 consumer.consume(ConsumerData.Error(trackResponse.errorMessage))
             }
-
         }
 
     }

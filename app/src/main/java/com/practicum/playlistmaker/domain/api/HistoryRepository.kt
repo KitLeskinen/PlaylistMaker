@@ -4,7 +4,7 @@ import com.practicum.playlistmaker.domain.entity.Track
 
 interface HistoryRepository {
 
-    fun getTracksHistory() : MutableList<Track>
+    fun getTracksHistory(): MutableList<Track>
 
     fun saveTracksHistory(mutableList: MutableList<Track>)
 

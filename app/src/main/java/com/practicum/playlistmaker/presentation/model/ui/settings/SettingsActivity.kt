@@ -5,16 +5,19 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import com.practicum.playlistmaker.App
-import com.practicum.playlistmaker.DARK_THEME_ENABLED
+import com.practicum.playlistmaker.Creator
+
 import com.practicum.playlistmaker.R
 
 
 class SettingsActivity : AppCompatActivity() {
+
+    private val preferencesInteractor = Creator.providePreferencesInteractor(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -25,16 +28,18 @@ class SettingsActivity : AppCompatActivity() {
         val userAgreement = findViewById<MaterialTextView>(R.id.userAgreement)
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
-        themeSwitcher.isChecked = getSharedPreferences(DARK_THEME_ENABLED, MODE_PRIVATE).getBoolean(
-            DARK_THEME_ENABLED, false)
 
-        backImageView.setNavigationOnClickListener{
+
+        themeSwitcher.isChecked = preferencesInteractor.getThemePreferences()
+
+        backImageView.setNavigationOnClickListener {
             finish()
         }
 
-        themeSwitcher.setOnCheckedChangeListener(){ _, checked ->
-            val sharedPreferences = getSharedPreferences(DARK_THEME_ENABLED, MODE_PRIVATE)
-            sharedPreferences.edit().putBoolean(DARK_THEME_ENABLED, checked).apply()
+        themeSwitcher.setOnCheckedChangeListener() { _, checked ->
+
+            preferencesInteractor.saveThemePreferences(checked)
+
             (applicationContext as App).switchTheme(checked)
         }
         shareAppView.setOnClickListener {
@@ -46,7 +51,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         mailToSupport.setOnClickListener {
-            val mailRecipient  = getString(R.string.mailRecipient)
+            val mailRecipient = getString(R.string.mailRecipient)
             val mailSubject = getString(R.string.mailSubject)
             val mailContent = getString(R.string.mailContent)
             val mailIntent = Intent(Intent.ACTION_SENDTO)
@@ -55,14 +60,23 @@ class SettingsActivity : AppCompatActivity() {
             mailIntent.putExtra(Intent.EXTRA_SUBJECT, mailSubject)
             mailIntent.putExtra(Intent.EXTRA_TEXT, mailContent)
 
-            if(mailIntent.resolveActivity(packageManager) != null){
-                startActivity(Intent.createChooser(mailIntent, getString(R.string.chooseEmailClient)))
-            } else{
-                Toast.makeText(this, getString(R.string.askForEmailClientInstall), Toast.LENGTH_SHORT).show()
+            if (mailIntent.resolveActivity(packageManager) != null) {
+                startActivity(
+                    Intent.createChooser(
+                        mailIntent,
+                        getString(R.string.chooseEmailClient)
+                    )
+                )
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.askForEmailClientInstall),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
-        userAgreement.setOnClickListener(){
+        userAgreement.setOnClickListener() {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setData(Uri.parse(getString(R.string.practicumOffer)))
             startActivity(intent)

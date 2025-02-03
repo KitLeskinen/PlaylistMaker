@@ -1,20 +1,32 @@
 package com.practicum.playlistmaker.data
 
 
-import android.content.SharedPreferences
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.domain.api.HistoryRepository
 import com.practicum.playlistmaker.domain.entity.Track
 
 
-const val APP_PREFERENCES = "app_preferences"
-const val SEARCH_HISTORY_KEY = "search_history_key"
+
 
 class HistoryRepositoryImpl (
-    private val sharedPreferences: SharedPreferences
+    private val context: Context
+
 ) : HistoryRepository{
-    private val gson = Gson()
+
+    companion object{
+
+        const val SEARCH_HISTORY_KEY = "search_history_key"
+        const val APP_PREFERENCES = "app_preferences"
+    }
+
+    private val sharedPreferences = context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+    private val gson = Creator.provideGson()
+
+
 
     // About generic type and gson: https://github.com/google/gson/blob/main/UserGuide.md#serializing-and-deserializing-generic-types
 

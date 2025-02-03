@@ -15,8 +15,10 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.Tools
 import com.practicum.playlistmaker.domain.entity.Track
-import com.practicum.playlistmaker.presentation.model.ui.search.EXTRA_SELECTED_TRACK
+
 import java.util.Locale
+
+const val EXTRA_SELECTED_TRACK = "EXTRA_SELECTED_TRACK"
 
 class AudioPlayerActivity : AppCompatActivity() {
 

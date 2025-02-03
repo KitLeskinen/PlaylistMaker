@@ -19,10 +19,11 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
-import com.practicum.playlistmaker.data.APP_PREFERENCES
+
 import com.practicum.playlistmaker.Creator
 
 import com.practicum.playlistmaker.R
+
 
 import com.practicum.playlistmaker.domain.api.Consumer
 import com.practicum.playlistmaker.domain.api.ConsumerData
@@ -34,7 +35,6 @@ import com.practicum.playlistmaker.domain.entity.TrackResponse
 import com.practicum.playlistmaker.presentation.model.ui.audio_player.AudioPlayerActivity
 
 const val EXTRA_SELECTED_TRACK = "EXTRA_SELECTED_TRACK"
-
 
 class SearchActivity : AppCompatActivity() {
 
@@ -49,6 +49,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_QUERY = "SEARCH_QUERY"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+
     }
 
     private val handler = Handler(Looper.getMainLooper())
@@ -72,7 +73,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        historyInteractor = Creator.provideHistoryInteractor(getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
+        historyInteractor = Creator.provideHistoryInteractor(this)
 
         //region initialize Views
         val backImageView = findViewById<MaterialToolbar>(R.id.back)
@@ -217,11 +218,7 @@ class SearchActivity : AppCompatActivity() {
                     val newDetailsRunnable = Runnable {
                         when (data) {
                             is ConsumerData.Data -> {
-
-
                                 progressBar.visibility = View.GONE
-
-
                                 if (data.value.trackList.isEmpty()) {
                                     extracted()
                                 } else {
@@ -251,8 +248,6 @@ class SearchActivity : AppCompatActivity() {
                     handler.post(newDetailsRunnable)
                 }
             })
-
-
         }
 
         val searchRunnable = Runnable {
