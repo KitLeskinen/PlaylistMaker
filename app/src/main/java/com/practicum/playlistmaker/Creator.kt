@@ -2,17 +2,22 @@ package com.practicum.playlistmaker
 
 import android.content.Context
 import com.google.gson.Gson
+import com.practicum.playlistmaker.data.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.data.HistoryRepositoryImpl
 import com.practicum.playlistmaker.data.PreferencesRepositoryImpl
 import com.practicum.playlistmaker.data.TracksRepositoryImpl
 import com.practicum.playlistmaker.data.network.ITunesApi
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
+import com.practicum.playlistmaker.domain.api.AudioPlayerInteractor
+import com.practicum.playlistmaker.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.domain.api.HistoryInteractor
 import com.practicum.playlistmaker.domain.api.HistoryRepository
 import com.practicum.playlistmaker.domain.api.PreferencesInteractor
 import com.practicum.playlistmaker.domain.api.PreferencesRepository
 import com.practicum.playlistmaker.domain.api.TracksInteractor
 import com.practicum.playlistmaker.domain.api.TracksRepository
+import com.practicum.playlistmaker.domain.entity.Track
+import com.practicum.playlistmaker.domain.impl.AudioPlayerIneractorImpl
 import com.practicum.playlistmaker.domain.impl.HistoryInteractorImpl
 import com.practicum.playlistmaker.domain.impl.PreferencesInteractorImpl
 import com.practicum.playlistmaker.domain.impl.TracksInteractorImpl
@@ -21,6 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 object Creator {
+
+
     private fun getTrackRepository(): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient())
     }
@@ -59,6 +66,13 @@ object Creator {
         return PreferencesInteractorImpl(getPreferencesRepository(context))
     }
 
+    private fun getAudioPlayerRepository(track: Track) : AudioPlayerRepository{
+        return AudioPlayerRepositoryImpl(track)
+    }
+
+    fun provideAudioPlayerInteractor(track: Track): AudioPlayerInteractor{
+        return AudioPlayerIneractorImpl(getAudioPlayerRepository(track))
+    }
 
 
 }

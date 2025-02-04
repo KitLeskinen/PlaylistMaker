@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import com.practicum.playlistmaker.domain.api.PreferencesRepository
 
-class PreferencesRepositoryImpl(val context: Context): PreferencesRepository {
+class PreferencesRepositoryImpl(private val context: Context): PreferencesRepository {
 
     companion object{
         const val DARK_THEME_ENABLED = "darkThemeEnabled"
