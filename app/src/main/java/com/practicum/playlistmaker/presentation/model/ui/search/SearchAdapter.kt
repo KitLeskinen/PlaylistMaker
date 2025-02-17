@@ -1,14 +1,17 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation.model.ui.search
 
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.domain.entity.Track
+
 
 class SearchAdapter(
     private var tracks: List<Track>,
-    private val addToHistory: SearchAdapter.AddToHistory
+    private val addToHistory: AddToHistory
 ) : RecyclerView.Adapter<SearchViewHolder>() {
 
     companion object {

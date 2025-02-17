@@ -1,13 +1,16 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation.model.ui.search
 
 import android.icu.text.SimpleDateFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.Tools
+import com.practicum.playlistmaker.domain.entity.Track
+
 import java.util.Locale
 
 class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -18,7 +21,9 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
 
     fun bind(model: Track){
-        Glide.with(itemView).load(model.artworkUrl100).placeholder(R.drawable.placeholder).transform(RoundedCorners(Tools.dpToPx(2f, itemView.context))).into(trackCover)
+        Glide.with(itemView).load(model.artworkUrl100).placeholder(R.drawable.placeholder).transform(RoundedCorners(
+            Tools.dpToPx(2f, itemView.context)
+        )).into(trackCover)
         trackName.text = model.trackName
         artistName.text = model.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
