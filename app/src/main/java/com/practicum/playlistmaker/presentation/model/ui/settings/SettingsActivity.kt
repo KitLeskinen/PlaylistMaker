@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
@@ -12,37 +14,44 @@ import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.Creator
 
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: SettingsViewModel
+
+    private lateinit var binding:ActivitySettingsBinding
 
     private val preferencesInteractor = Creator.providePreferencesInteractor(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
 
-        val backImageView = findViewById<MaterialToolbar>(R.id.back)
-        val shareAppView = findViewById<MaterialTextView>(R.id.shareApp)
-        val mailToSupport = findViewById<MaterialTextView>(R.id.mailToSupport)
-        val userAgreement = findViewById<MaterialTextView>(R.id.userAgreement)
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
 
+        setContentView(binding.root)
+//        val back = findViewById<MaterialToolbar>(R.id.back)
+//        val shareApp = findViewById<MaterialTextView>(R.id.shareApp)
+//        val mailToSupport = findViewById<MaterialTextView>(R.id.mailToSupport)
+//        val userAgreement = findViewById<MaterialTextView>(R.id.userAgreement)
+//        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
-        themeSwitcher.isChecked = preferencesInteractor.getThemePreferences()
+        binding.themeSwitcher.isChecked = preferencesInteractor.getThemePreferences()
 
-        backImageView.setNavigationOnClickListener {
+        binding.backImageView.setNavigationOnClickListener {
             finish()
         }
 
-        themeSwitcher.setOnCheckedChangeListener() { _, checked ->
+        binding.themeSwitcher.setOnCheckedChangeListener() { _, checked ->
 
             preferencesInteractor.saveThemePreferences(checked)
 
             (applicationContext as App).switchTheme(checked)
         }
-        shareAppView.setOnClickListener {
+        binding.shareApp.setOnClickListener {
             val link = getString(R.string.yandex_practicum_android_developer_url)
             val intent = Intent(Intent.ACTION_SEND)
             intent.putExtra(Intent.EXTRA_TEXT, link)
@@ -50,7 +59,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        mailToSupport.setOnClickListener {
+        binding.mailToSupport.setOnClickListener {
             val mailRecipient = getString(R.string.mailRecipient)
             val mailSubject = getString(R.string.mailSubject)
             val mailContent = getString(R.string.mailContent)
@@ -76,7 +85,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        userAgreement.setOnClickListener() {
+        binding.userAgreement.setOnClickListener() {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setData(Uri.parse(getString(R.string.practicumOffer)))
             startActivity(intent)

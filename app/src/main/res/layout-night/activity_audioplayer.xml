@@ -7,7 +7,7 @@
     android:background="#1A1B22">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/back"
+        android:id="@+id/backImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -42,7 +42,7 @@
         app:layout_constraintDimensionRatio="w, 1:1"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
         app:layout_constraintStart_toEndOf="@id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/back" />
+        app:layout_constraintTop_toBottomOf="@id/backImageView" />
 
     <TextView
         android:id="@+id/trackNameTextView"

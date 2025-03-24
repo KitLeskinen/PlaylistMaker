@@ -12,17 +12,15 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
 
 import com.practicum.playlistmaker.Creator
 
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 
 
 import com.practicum.playlistmaker.domain.api.Consumer
@@ -37,6 +35,12 @@ import com.practicum.playlistmaker.presentation.model.ui.audio_player.AudioPlaye
 const val EXTRA_SELECTED_TRACK = "EXTRA_SELECTED_TRACK"
 
 class SearchActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivitySearchBinding
+
+    private val viewModel: SearchViewModel by viewModels {
+        SearchViewModel.factory(application)
+    }
 
     private val trackInteractor = Creator.provideTrackInteractor()
 
@@ -72,21 +76,23 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         historyInteractor = Creator.provideHistoryInteractor(this)
 
-        //region initialize Views
-        val backImageView = findViewById<MaterialToolbar>(R.id.back)
-        searchEditText = findViewById(R.id.searchEditText)
-        val clearImageView = findViewById<ImageView>(R.id.clear)
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val errorIcon = findViewById<ImageView>(R.id.errorIcon)
-        val errorMessage = findViewById<TextView>(R.id.errorMessage)
-        val updateButton = findViewById<MaterialButton>(R.id.updateButton)
-
         val tracksList = mutableListOf<Track>()
-        val clearHistoryButton = findViewById<MaterialButton>(R.id.clearHistoryButton)
-        val headerHistory = findViewById<TextView>(R.id.headerHistory)
+        //region initialize Views
+//        val backImageView = findViewById<MaterialToolbar>(R.id.back)
+//        searchEditText = findViewById(R.id.searchEditText)
+ //       val clearImageView = findViewById<ImageView>(R.id.clearImageView)
+//        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+//        val errorIcon = findViewById<ImageView>(R.id.errorIcon)
+//        val errorMessage = findViewById<TextView>(R.id.errorMessage)
+//        val updateButton = findViewById<MaterialButton>(R.id.updateButton)
+
+//        val clearHistoryButton = findViewById<MaterialButton>(R.id.clearHistoryButton)
+//        val headerHistory = findViewById<TextView>(R.id.headerHistory)
         //endregion
 //        val searchHistorySharedPreferences =
 
@@ -103,11 +109,11 @@ class SearchActivity : AppCompatActivity() {
 
         fun setErrorVisibility(isVisible: Boolean) {
             if (isVisible) {
-                errorIcon.isVisible = true
-                errorMessage.isVisible = true
+                binding.errorIcon.isVisible = true
+                binding.errorMessage.isVisible = true
             } else {
-                errorIcon.visibility = View.GONE
-                errorMessage.visibility = View.GONE
+                binding.errorIcon.visibility = View.GONE
+                binding.errorMessage.visibility = View.GONE
             }
 
         }
@@ -115,11 +121,11 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && history.isNotEmpty()) {
-                headerHistory.isVisible = true
-                clearHistoryButton.isVisible = true
+                binding.headerHistory.isVisible = true
+                binding.clearHistoryButton.isVisible = true
                 searchRecyclerView.adapter = historySearchAdapter
             } else {
-                clearHistoryButton.isVisible = false
+                binding.clearHistoryButton.isVisible = false
             }
         }
 
@@ -165,13 +171,13 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-        clearHistoryButton.setOnClickListener() { _ ->
+        binding.clearHistoryButton.setOnClickListener() { _ ->
             history.clear()
             historyInteractor.clearHistory()
             historySearchAdapter.updateList(history)
             historySearchAdapter.notifyDataSetChanged()
-            headerHistory.isVisible = false
-            clearHistoryButton.isVisible = false
+            binding.headerHistory.isVisible = false
+            binding.clearHistoryButton.isVisible = false
 
         }
 
@@ -180,7 +186,7 @@ class SearchActivity : AppCompatActivity() {
         Log.d("Search", "onCreate searchQuery: $searchQuery")
 
         // clear search field
-        clearImageView.setOnClickListener() { view ->
+        binding.clearImageView.setOnClickListener() { view ->
             searchEditText.setText("")
             tracksList.clear()
             setErrorVisibility(false)
@@ -192,16 +198,16 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // close SearchActivity
-        backImageView.setNavigationOnClickListener {
+        binding.backImageView.setNavigationOnClickListener {
             finish()
         }
 
         fun makeResponse(text: String) {
-            progressBar.isVisible = true
+            binding.progressBar.isVisible = true
 
             fun extracted() {
-                errorIcon.setImageResource(R.drawable.no_search_results)
-                errorMessage.text = getString(R.string.no_results)
+                binding.errorIcon.setImageResource(R.drawable.no_search_results)
+                binding.errorMessage.text = getString(R.string.no_results)
                 setErrorVisibility(true)
             }
 
@@ -218,7 +224,7 @@ class SearchActivity : AppCompatActivity() {
                     val newDetailsRunnable = Runnable {
                         when (data) {
                             is ConsumerData.Data -> {
-                                progressBar.visibility = View.GONE
+                                binding.progressBar.visibility = View.GONE
                                 if (data.value.trackList.isEmpty()) {
                                     extracted()
                                 } else {
@@ -233,13 +239,13 @@ class SearchActivity : AppCompatActivity() {
 
                             is ConsumerData.Error -> {
                                 Log.d("CONSUME", "consume error: ${data}")
-                                progressBar.visibility = View.GONE
+                                binding.progressBar.visibility = View.GONE
                                 Log.d("RESPONSE", data.message)
                                 searchRecyclerView.visibility = View.GONE
-                                errorIcon.setImageResource(R.drawable.no_internet)
-                                errorMessage.text = getString(R.string.no_internet_check_connection)
+                                binding.errorIcon.setImageResource(R.drawable.no_internet)
+                                binding.errorMessage.text = getString(R.string.no_internet_check_connection)
                                 setErrorVisibility(true)
-                                updateButton.isVisible = true
+                                binding.updateButton.isVisible = true
                                 lastSearch = searchEditText.text.toString()
                             }
                         }
@@ -272,21 +278,21 @@ class SearchActivity : AppCompatActivity() {
 
                 if (p0.isNullOrEmpty()) {
 
-                    clearImageView.isVisible = false
-                    updateButton.isVisible = false
+                    binding.clearImageView.isVisible = false
+                    binding.updateButton.isVisible = false
                     if (history.isNotEmpty()) {
-                        clearHistoryButton.isVisible = true
+                        binding.clearHistoryButton.isVisible = true
                         searchRecyclerView.isVisible = true
-                        headerHistory.isVisible = true
+                        binding.headerHistory.isVisible = true
                         setErrorVisibility(false)
                         searchRecyclerView.adapter = historySearchAdapter
                     }
                 } else {
                     searchDebounce()
-                    clearImageView.isVisible = true
+                    binding.clearImageView.isVisible = true
                     searchRecyclerView.visibility = View.GONE
-                    headerHistory.isVisible = false
-                    clearHistoryButton.isVisible = false
+                    binding.headerHistory.isVisible = false
+                    binding.clearHistoryButton.isVisible = false
 
                 }
                 searchQuery = searchEditText.text.toString()
@@ -305,10 +311,10 @@ class SearchActivity : AppCompatActivity() {
 
 
         // Repeat response if update button pressed
-        updateButton.setOnClickListener() { _ ->
+        binding.updateButton.setOnClickListener() { _ ->
             makeResponse(lastSearch)
             searchEditText.setText(lastSearch)
-            updateButton.visibility = View.GONE
+            binding.updateButton.visibility = View.GONE
             setErrorVisibility(false)
         }
 

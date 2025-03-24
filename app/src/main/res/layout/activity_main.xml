@@ -24,7 +24,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/search"
+            android:id="@+id/searchButton"
             style="@style/mainMenuButtonStyle"
             android:layout_width="match_parent"
 
@@ -36,7 +36,7 @@
             app:icon="@drawable/search_light_mode" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/medialibrary"
+            android:id="@+id/mediaLibraryButton"
 
             style="@style/mainMenuButtonStyle"
 
@@ -47,7 +47,7 @@
             app:icon="@drawable/library_light_mode" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/settings"
+            android:id="@+id/settingsButton"
             style="@style/mainMenuButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
