@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.Creator
 
 import android.content.Context
 import com.google.gson.Gson

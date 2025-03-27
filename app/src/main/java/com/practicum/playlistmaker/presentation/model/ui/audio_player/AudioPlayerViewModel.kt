@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.presentation.model.ui.audio_player
 
-import android.icu.text.SimpleDateFormat
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -10,14 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.Creator
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.domain.api.OnCompletionListener
 import com.practicum.playlistmaker.domain.api.OnPreparedAudioPlayerListener
 import com.practicum.playlistmaker.domain.entity.Track
 import com.practicum.playlistmaker.presentation.state.AudioPlayerState
-import java.util.Locale
 
 class AudioPlayerViewModel(
     private val track: Track,
@@ -26,7 +22,7 @@ class AudioPlayerViewModel(
 
     private var handler: Handler? = Handler(Looper.getMainLooper())
 
-    private lateinit var runnable: Runnable
+    private var runnable: Runnable? = null
 
     fun getTrack(): Track {
         return track
@@ -87,7 +83,7 @@ class AudioPlayerViewModel(
             is AudioPlayerState.Playing -> {
                 audioPlayerInteractor.pause()
                 state.value = AudioPlayerState.Paused
-                handler?.removeCallbacks(runnable)
+                runnable?.let { handler?.removeCallbacks(it) }
             }
 
             is AudioPlayerState.Loading, AudioPlayerState.Preparing, AudioPlayerState.Paused -> {
@@ -122,7 +118,7 @@ class AudioPlayerViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        handler?.removeCallbacks(runnable)
+        runnable?.let { handler?.removeCallbacks(it) }
     }
 
 }

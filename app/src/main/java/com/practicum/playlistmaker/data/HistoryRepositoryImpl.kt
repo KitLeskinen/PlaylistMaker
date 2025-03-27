@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.Creator.Creator
 import com.practicum.playlistmaker.domain.api.HistoryRepository
 import com.practicum.playlistmaker.domain.entity.Track
 

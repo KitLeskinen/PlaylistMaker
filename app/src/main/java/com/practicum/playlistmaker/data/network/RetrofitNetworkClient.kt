@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.data.network
 
 
-import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.Creator.Creator
 import com.practicum.playlistmaker.data.NetworkClient
 import com.practicum.playlistmaker.data.model.NetResponse
 import com.practicum.playlistmaker.data.model.TracksSearchRequest

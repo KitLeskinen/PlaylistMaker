@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.Creator.Creator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.Tools
 import com.practicum.playlistmaker.databinding.ActivityAudioplayerBinding

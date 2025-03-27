@@ -5,7 +5,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.SearchViewBinding
 import com.practicum.playlistmaker.domain.entity.Track
 
@@ -23,6 +22,7 @@ class SearchAdapter(
 
     fun updateList(list: List<Track>) {
         tracks = list.reversed()
+        notifyDataSetChanged()
     }
 
     fun interface AddToHistory {

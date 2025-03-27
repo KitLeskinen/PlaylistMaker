@@ -5,13 +5,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.android.material.textview.MaterialTextView
 import com.practicum.playlistmaker.App
-import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.Creator.Creator
 
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
@@ -33,11 +29,6 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-//        val back = findViewById<MaterialToolbar>(R.id.back)
-//        val shareApp = findViewById<MaterialTextView>(R.id.shareApp)
-//        val mailToSupport = findViewById<MaterialTextView>(R.id.mailToSupport)
-//        val userAgreement = findViewById<MaterialTextView>(R.id.userAgreement)
-//        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
         binding.themeSwitcher.isChecked = preferencesInteractor.getThemePreferences()
 
