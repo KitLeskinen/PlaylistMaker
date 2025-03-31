@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.Creator.Creator
 import com.practicum.playlistmaker.R
@@ -60,7 +61,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
 
-    fun fillInPlayerFields(track: Track) {
+    private fun fillInPlayerFields(track: Track) {
         val formatFateFromJSON = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val yearFormat = SimpleDateFormat("yyyy")
         previewUrl = track.previewUrl
@@ -68,6 +69,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.artistNameTextView.text = track.artistName
         Glide.with(binding.coverImage).load(track.getCoverArtwork())
             .placeholder(R.drawable.placeholder).transform(
+                CenterCrop(),
                 RoundedCorners(Tools.dpToPx(8f, binding.coverImage.context))
             ).into(binding.coverImage)
         binding.durationTextView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(
