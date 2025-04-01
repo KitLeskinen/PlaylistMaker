@@ -37,14 +37,14 @@ object Creator {
     }
 
     private fun getHistoryRepository(context: Context): HistoryRepository {
-        return HistoryRepositoryImpl(context)
+        return HistoryRepositoryImpl(context, provideGson())
     }
 
     fun provideHistoryInteractor(context: Context): HistoryInteractor {
         return HistoryInteractorImpl(getHistoryRepository(context))
     }
 
-    fun provideGson(): Gson {
+    private fun provideGson(): Gson {
         return Gson()
     }
 

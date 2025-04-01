@@ -5,43 +5,55 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.App
+import androidx.activity.viewModels
 import com.practicum.playlistmaker.Creator.Creator
 
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
+import com.practicum.playlistmaker.presentation.state.SettingsState
 
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModels {
+        SettingsViewModel.factory(application, Creator.providePreferencesInteractor(this))
+    }
 
-    private lateinit var binding:ActivitySettingsBinding
+    private lateinit var binding: ActivitySettingsBinding
 
-    private val preferencesInteractor = Creator.providePreferencesInteractor(this)
+    private fun loading(darkThemeEnabled: Boolean) {
+        binding.themeSwitcher.isChecked = darkThemeEnabled
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
         binding = ActivitySettingsBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
-        binding.themeSwitcher.isChecked = preferencesInteractor.getThemePreferences()
+        viewModel.getState().observe(this) { state ->
+            when (state) {
+                is SettingsState.Loading -> loading(state.darkThemeEnabled)
+
+            }
+        }
+
+
+        binding.themeSwitcher.setOnCheckedChangeListener() { switcherView, isChecked ->
+            if (switcherView.isPressed) {
+                viewModel.saveThemePreferences(isChecked)
+                viewModel.applyTheme(isChecked)
+            }
+        }
+
 
         binding.backImageView.setNavigationOnClickListener {
             finish()
         }
 
-        binding.themeSwitcher.setOnCheckedChangeListener() { _, checked ->
 
-            preferencesInteractor.saveThemePreferences(checked)
-
-            (applicationContext as App).switchTheme(checked)
-        }
         binding.shareApp.setOnClickListener {
             val link = getString(R.string.yandex_practicum_android_developer_url)
             val intent = Intent(Intent.ACTION_SEND)

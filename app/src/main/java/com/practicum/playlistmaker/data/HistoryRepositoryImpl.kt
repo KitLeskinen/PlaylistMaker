@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.practicum.playlistmaker.Creator.Creator
+
 import com.practicum.playlistmaker.domain.api.HistoryRepository
 import com.practicum.playlistmaker.domain.entity.Track
 
@@ -13,7 +13,7 @@ import com.practicum.playlistmaker.domain.entity.Track
 
 
 class HistoryRepositoryImpl (
-    private val context: Context
+    context: Context, private val gson: Gson
 
 ) : HistoryRepository{
 
@@ -24,7 +24,7 @@ class HistoryRepositoryImpl (
     }
 
     private val sharedPreferences = context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
-    private val gson = Creator.provideGson()
+
 
 
 
