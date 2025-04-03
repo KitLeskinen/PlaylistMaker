@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.Creator.Creator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.Tools
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.databinding.ActivityAudioplayerBinding
 
 
@@ -24,7 +25,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioplayerBinding
 
     private val viewModel: AudioPlayerViewModel by viewModels {
-        val selectedTrack = intent.getSerializableExtra(EXTRA_SELECTED_TRACK) as com.practicum.playlistmaker.common.data.domain.entity.Track
+        val selectedTrack = intent.getSerializableExtra(EXTRA_SELECTED_TRACK) as Track
         AudioPlayerViewModel.factory(
             selectedTrack,
             Creator.provideAudioPlayerInteractor(selectedTrack)
@@ -59,7 +60,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
 
-    private fun fillInPlayerFields(track: com.practicum.playlistmaker.common.data.domain.entity.Track) {
+    private fun fillInPlayerFields(track: Track) {
         val formatFateFromJSON = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val yearFormat = SimpleDateFormat("yyyy")
         previewUrl = track.previewUrl
@@ -78,6 +79,14 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.songGenreTextView.text = track.primaryGenreName
         binding.countryTextView.text = track.country
         binding.albumYearTextView.text = yearFormat.format(date)
+    }
+
+    fun updateTimePosition(position: Int){
+        binding.currentPlayTimeTextView.text = SimpleDateFormat(
+            "mm:ss",
+            Locale.getDefault()
+        ).format(position)
+        Log.d("POSITION", "onCreate: $position")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,22 +110,19 @@ class AudioPlayerActivity : AppCompatActivity() {
 
                 AudioPlayerState.Paused -> pausePlayer()
 
-                AudioPlayerState.Playing -> startPlayer()
+                AudioPlayerState.StartPlaying -> startPlayer()
 
                 AudioPlayerState.Preparing -> preparePlayer()
 
                 AudioPlayerState.Stopped -> stoppedPlayer()
 
+                is AudioPlayerState.Playback -> updateTimePosition(state.timePositionState)
             }
         }
-        viewModel.getTimePositionState().observe(this) { position ->
-
-            binding.currentPlayTimeTextView.text = SimpleDateFormat(
-                "mm:ss",
-                Locale.getDefault()
-            ).format(position)
-            Log.d("POSITION", "onCreate: $position")
-        }
+//        viewModel.getTimePositionState().observe(this) { position ->
+//
+//
+//        }
 
     }
 

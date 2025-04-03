@@ -30,13 +30,6 @@ class AudioPlayerViewModel(
 //
     private val state = MutableLiveData<AudioPlayerState>(AudioPlayerState.Loading)
 
-    private val timePosition = MutableLiveData<Int>()
-
-    fun getTimePositionState(): MutableLiveData<Int> {
-        return timePosition
-    }
-
-
     init {
         loadData()
     }
@@ -52,6 +45,7 @@ class AudioPlayerViewModel(
             },
             onCompletionListener = object : OnCompletionListener {
                 override fun invoke() {
+                    runnable?.let { handler?.removeCallbacks(it) }
                     state.value = AudioPlayerState.Stopped
                 }
             }
@@ -78,23 +72,33 @@ class AudioPlayerViewModel(
     fun togglePlayer() {
 
         when (state.value) {
-            is AudioPlayerState.Playing -> {
+            is AudioPlayerState.StartPlaying -> {
+                audioPlayerInteractor.pause()
+                runnable?.let { handler?.removeCallbacks(it) }
+                state.value = AudioPlayerState.Paused
+            }
+
+            is AudioPlayerState.Playback -> {
                 audioPlayerInteractor.pause()
                 state.value = AudioPlayerState.Paused
                 runnable?.let { handler?.removeCallbacks(it) }
+
             }
 
             is AudioPlayerState.Loading, AudioPlayerState.Preparing, AudioPlayerState.Paused -> {
                 Log.d("PLAYER", "togglePlayer:  state.value = AudioPlayerState.Playing ")
                 audioPlayerInteractor.play()
-                state.value = AudioPlayerState.Playing
+                state.value = AudioPlayerState.StartPlaying
+
                 runnable = createCurrentPlayTimer()
                 handler?.post(createCurrentPlayTimer())
             }
+
             is AudioPlayerState.Stopped -> {
                 audioPlayerInteractor.play()
-                state.value = AudioPlayerState.Playing
+                state.value = AudioPlayerState.Playback(audioPlayerInteractor.getCurrentPosition())
             }
+
             else -> {
 
             }
@@ -104,12 +108,11 @@ class AudioPlayerViewModel(
     private fun createCurrentPlayTimer(): Runnable {
         return object : Runnable {
             override fun run() {
-                if (state.value == AudioPlayerState.Playing) {
-                    Log.d("RUNNABLE", "run: ${audioPlayerInteractor.getCurrentPosition()}")
-                    timePosition.postValue(audioPlayerInteractor.getCurrentPosition())
-                    handler?.postDelayed(this, DELAY)
-                }
-                //   }
+                Log.d("RUNNABLE", "run: ${audioPlayerInteractor.getCurrentPosition()}")
+                state.value = AudioPlayerState.Playback(audioPlayerInteractor.getCurrentPosition())
+                runnable = this
+                handler?.postDelayed(this, DELAY)
+
             }
         }
     }
