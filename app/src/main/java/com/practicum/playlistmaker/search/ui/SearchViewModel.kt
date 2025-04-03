@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.search.ui
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,51 +12,37 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.Creator.Creator
 import com.practicum.playlistmaker.common.data.domain.api.ConsumerData
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 
 import com.practicum.playlistmaker.common.data.domain.entity.TrackResponse
 
 class SearchViewModel(private val application: Application) : ViewModel() {
 
+    val TAG = "DEBUG"
     private val trackInteractor = Creator.provideTrackInteractor()
 
-    private var historyInteractor  = Creator.provideHistoryInteractor(application)
+    private var historyInteractor = Creator.provideHistoryInteractor(application)
 
     private val handler = Handler(Looper.getMainLooper())
     private var detailsRunnable: Runnable? = null
-
-    private val tracksList = MutableLiveData<List<com.practicum.playlistmaker.common.data.domain.entity.Track>>()
-
-    fun getTracks(): MutableLiveData<List<com.practicum.playlistmaker.common.data.domain.entity.Track>>{
-        return tracksList
-    }
 
     var history = historyInteractor.getTracksHistory().reversed().toMutableList()
 
     private var lastSearch = ""
 
-    private var adapterState = MutableLiveData<AdapterState>()
 
-    private var historyIsEmpty: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
-    fun getHistoryIsEmpty(): MutableLiveData<Boolean>{
-        return historyIsEmpty
-    }
+    private val searchState = MutableLiveData<SearchState>()
 
-    private val historyState = MutableLiveData<HistoryState>()
     init {
-        adapterState.value = AdapterState.Loading(history)
-    }
-    fun getHistoryState(): MutableLiveData<HistoryState>{
-        return historyState
+        searchState.value = SearchState.Loading(history)
     }
 
-    private val searchState= MutableLiveData<SearchState>()
-
-    fun getSearchState() : MutableLiveData<SearchState>{
+    fun getSearchState(): MutableLiveData<SearchState> {
         return searchState
     }
 
-    fun addTrackToHistory(track: com.practicum.playlistmaker.common.data.domain.entity.Track) {
+    fun addTrackToHistory(track: Track) {
         history = historyInteractor.getTracksHistory()
         val trackIndex = history.indexOf(track)
         if (trackIndex != -1) history.removeAt(trackIndex)
@@ -69,43 +56,25 @@ class SearchViewModel(private val application: Application) : ViewModel() {
             Log.d(
                 "HISTORY",
                 "addTrackToHistory: $index: ${trackItem.trackName} - ${trackItem.artistName}"
-
             )
         }
     }
 
 
-
-
-
-    fun saveTracksHistory(){
+    fun saveTracksHistory() {
         historyInteractor.saveTracksHistory(history)
         Log.d("HISTORY", "onCreate: ${historyInteractor.getTracksHistory()}")
 
     }
 
-    fun clear(){
-        history.clear()
-    }
-
-    fun clearHistory(){
+     fun clearHistory() {
         historyInteractor.clearHistory()
-    }
-
-    fun getAdapterState(): MutableLiveData<AdapterState>{
-        return adapterState
-    }
-
-    fun onClickHistoryButton(){
-        adapterState.value = AdapterState.AdapterUpdated(history)
+        searchState.value = SearchState.HistoryCleared()
     }
 
     fun makeResponse(text: String) {
 
-        searchState.value = SearchState.Responsing
-
-
-
+        searchState.value = SearchState.Searching
 
         trackInteractor.getTracks(text, object :
             com.practicum.playlistmaker.common.data.domain.api.Consumer<TrackResponse> {
@@ -120,21 +89,15 @@ class SearchViewModel(private val application: Application) : ViewModel() {
                 val newDetailsRunnable = Runnable {
                     when (data) {
                         is ConsumerData.Data -> {
-                            tracksList.value = data.value.trackList
-                            if (data.value.trackList.isEmpty()) {
-                                searchState.value = SearchState.ResultEmpty
-                            } else {
-                                searchState.value = SearchState.Result
-                            }
-
-
+                            searchState.value = SearchState.Result(data.value.trackList)
                             Log.d("TRACKS", data.value.trackList.toString())
 
                         }
 
                         is ConsumerData.Error -> {
-                            Log.d("CONSUME", "consume error: ${data}")
                             searchState.value = SearchState.Error(data.message)
+                            Log.d("CONSUME", "consume error: ${data}")
+//                            searchState.value = SearchState.Error(data.message)
                             Log.d("RESPONSE", data.message)
 
                         }
@@ -146,22 +109,31 @@ class SearchViewModel(private val application: Application) : ViewModel() {
         })
     }
 
-    fun setLastSearch(text: String){
-        lastSearch = text
-    }
-
     val searchRunnable = Runnable {
-        adapterState.value = AdapterState.AdapterSearch
-
+        Log.d(TAG, "new Runnable: ")
+        searchState.value = SearchState.Searching
+        makeResponse(lastSearch)
     }
 
-    fun searchDebounce() {
+    fun searchDebounce(query: String) {
+        lastSearch = query
+        Log.d(TAG, "searchDebounce: ")
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
-    fun updateButtonClicked(){
-        makeResponse(lastSearch)
+
+    fun searchEditTextClicked(text: Editable) {
+        Log.d(TAG, "searchEditTextClicked: ")
+        if(text.isEmpty()){
+            handler.removeCallbacks(searchRunnable)
+        }
+        searchState.value = SearchState.TextFieldClicked(text.isEmpty(), history.isEmpty(), history)
+    }
+
+    fun clearField() {
+            handler.removeCallbacks(searchRunnable)
+            searchState.value = SearchState.FieldCleared(history)
     }
 
     companion object {

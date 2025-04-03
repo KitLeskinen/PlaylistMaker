@@ -1,9 +1,13 @@
 package com.practicum.playlistmaker.search.ui
 
-sealed interface SearchState {
-    object Responsing: SearchState
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 
-    data class Error(val message: String) : SearchState
-    object ResultEmpty: SearchState
-    object Result: SearchState
+sealed interface SearchState {
+    data class Loading(val history: List<Track>): SearchState
+    data class TextFieldClicked(val fieldIsEmpty: Boolean, val historyIsEmpty: Boolean, val history: List<Track>): SearchState
+    object Searching: SearchState
+    data class Result(val list: List<Track>): SearchState
+    data class Error(val message: String): SearchState
+    class HistoryCleared : SearchState
+    data class FieldCleared(val history: List<Track>): SearchState
 }

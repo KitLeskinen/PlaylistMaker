@@ -21,18 +21,11 @@ class SearchAdapter(
 
     private val handler = Handler(Looper.getMainLooper())
 
-    fun updateList(list: List<Track>) {
-        tracks = list.reversed()
-        notifyDataSetChanged()
-    }
-
     fun interface AddToHistory {
         fun invoke(track: Track)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-//        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_view, parent, false)
-//        return SearchViewHolder(view)
         val layoutInspector = LayoutInflater.from(parent.context)
         return SearchViewHolder(SearchViewBinding.inflate(layoutInspector, parent, false))
     }
@@ -44,7 +37,7 @@ class SearchAdapter(
     private var isClickAllowed: Boolean = true
 
     private fun clickDebounce() : Boolean{
-        var current = isClickAllowed
+        val current = isClickAllowed
         if(isClickAllowed){
             isClickAllowed = false
             handler.postDelayed({isClickAllowed = true}, CLICK_DEBOUNCE_DELAY )
