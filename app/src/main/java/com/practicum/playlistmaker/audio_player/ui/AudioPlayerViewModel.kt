@@ -119,7 +119,9 @@ class AudioPlayerViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        audioPlayerInteractor.pause()
         runnable?.let { handler?.removeCallbacks(it) }
+        Log.d("DEBUG", "onCleared: ")
     }
 
 }

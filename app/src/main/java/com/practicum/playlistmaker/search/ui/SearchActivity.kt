@@ -141,6 +141,7 @@ class SearchActivity : AppCompatActivity() {
 
                 if (p0.isNullOrEmpty()) {
                     binding.clearImageView.isVisible = false
+                    viewModel.deleteResponse()
 
                 } else {
                     binding.clearImageView.isVisible = true

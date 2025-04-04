@@ -30,8 +30,6 @@ class SearchViewModel(private val application: Application) : ViewModel() {
 
     private var lastSearch = ""
 
-
-
     private val searchState = MutableLiveData<SearchState>()
 
     init {
@@ -54,7 +52,7 @@ class SearchViewModel(private val application: Application) : ViewModel() {
         Log.d("addTrackToHistory", "History List")
         history.forEachIndexed { index, trackItem ->
             Log.d(
-                "HISTORY",
+                TAG,
                 "addTrackToHistory: $index: ${trackItem.trackName} - ${trackItem.artistName}"
             )
         }
@@ -63,12 +61,13 @@ class SearchViewModel(private val application: Application) : ViewModel() {
 
     fun saveTracksHistory() {
         historyInteractor.saveTracksHistory(history)
-        Log.d("HISTORY", "onCreate: ${historyInteractor.getTracksHistory()}")
+        Log.d(TAG, "onCreate: ${historyInteractor.getTracksHistory()}")
 
     }
 
-     fun clearHistory() {
+    fun clearHistory() {
         historyInteractor.clearHistory()
+        history.clear()
         searchState.value = SearchState.HistoryCleared()
     }
 
@@ -90,15 +89,15 @@ class SearchViewModel(private val application: Application) : ViewModel() {
                     when (data) {
                         is ConsumerData.Data -> {
                             searchState.value = SearchState.Result(data.value.trackList)
-                            Log.d("TRACKS", data.value.trackList.toString())
+                            Log.d(TAG, data.value.trackList.toString())
 
                         }
 
                         is ConsumerData.Error -> {
                             searchState.value = SearchState.Error(data.message)
-                            Log.d("CONSUME", "consume error: ${data}")
+                            Log.d(TAG, "consume error: ${data}")
 //                            searchState.value = SearchState.Error(data.message)
-                            Log.d("RESPONSE", data.message)
+                            Log.d(TAG, data.message)
 
                         }
                     }
@@ -116,24 +115,35 @@ class SearchViewModel(private val application: Application) : ViewModel() {
     }
 
     fun searchDebounce(query: String) {
-        lastSearch = query
-        Log.d(TAG, "searchDebounce: ")
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        if (query.isEmpty()) {
+            handler.removeCallbacks(searchRunnable)
+            return
+        }
+            lastSearch = query
+            Log.d(TAG, "searchDebounce: ")
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+
     }
 
 
     fun searchEditTextClicked(text: Editable) {
         Log.d(TAG, "searchEditTextClicked: ")
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             handler.removeCallbacks(searchRunnable)
         }
         searchState.value = SearchState.TextFieldClicked(text.isEmpty(), history.isEmpty(), history)
     }
 
     fun clearField() {
-            handler.removeCallbacks(searchRunnable)
-            searchState.value = SearchState.FieldCleared(history)
+        handler.removeCallbacks(searchRunnable)
+        searchState.value = SearchState.FieldCleared(history)
+    }
+
+    fun deleteResponse() {
+        Log.d(TAG, "deleteResponse: ")
+        handler.removeCallbacks(searchRunnable)
+        searchState.value = SearchState.TextFieldClicked(true, history.isEmpty(), history)
     }
 
     companion object {
