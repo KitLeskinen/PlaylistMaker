@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.Creator
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
 import com.practicum.playlistmaker.audio_player.data.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.audio_player.domain.AudioPlayerInteractor
@@ -11,6 +12,7 @@ import com.practicum.playlistmaker.common.data.domain.impl.TracksInteractorImpl
 import com.practicum.playlistmaker.common.data.network.ITunesApi
 import com.practicum.playlistmaker.common.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.search.data.HistoryRepositoryImpl
+import com.practicum.playlistmaker.search.data.HistoryRepositoryImpl.Companion.APP_PREFERENCES
 import com.practicum.playlistmaker.search.data.TracksRepositoryImpl
 import com.practicum.playlistmaker.search.domain.HistoryInteractor
 import com.practicum.playlistmaker.search.domain.HistoryRepository
@@ -39,7 +41,7 @@ object Creator {
     }
 
     private fun getHistoryRepository(context: Context): HistoryRepository {
-        return HistoryRepositoryImpl(context, provideGson())
+        return HistoryRepositoryImpl(context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE), provideGson())
     }
 
     fun provideHistoryInteractor(context: Context): HistoryInteractor {
