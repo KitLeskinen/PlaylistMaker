@@ -12,9 +12,10 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.audio_player.domain.AudioPlayerInteractor
 import com.practicum.playlistmaker.common.data.domain.OnPreparedAudioPlayerListener
 import com.practicum.playlistmaker.common.data.domain.api.OnCompletionListener
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 
 class AudioPlayerViewModel(
-    private val track: com.practicum.playlistmaker.common.data.domain.entity.Track,
+    private val track: Track,
     private val audioPlayerInteractor: AudioPlayerInteractor
 ) : ViewModel() {
 
@@ -22,20 +23,16 @@ class AudioPlayerViewModel(
 
     private var runnable: Runnable? = null
 
-    fun getTrack(): com.practicum.playlistmaker.common.data.domain.entity.Track {
-        return track
-    }
 
-    //    private val audioPlayerInteractor = Creator.provideAudioPlayerInteractor()
-//
-    private val state = MutableLiveData<AudioPlayerState>(AudioPlayerState.Loading)
+
+    private val state = MutableLiveData<AudioPlayerState>()
 
     init {
         loadData()
     }
 
     private fun loadData() {
-        state.value = AudioPlayerState.Loading
+        state.value = AudioPlayerState.Loading(track)
         audioPlayerInteractor.prepare(
             onPreparedAudioPlayerListener = object : OnPreparedAudioPlayerListener {
                 override fun invoke() {

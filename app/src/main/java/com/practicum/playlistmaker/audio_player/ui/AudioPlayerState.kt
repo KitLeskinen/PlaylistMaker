@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.audio_player.ui
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 
 sealed interface AudioPlayerState {
-    object Loading: AudioPlayerState
+    data class Loading(val track: Track): AudioPlayerState
     object Preparing: AudioPlayerState
     object StartPlaying: AudioPlayerState
     class Playback(val timePositionState: Int): AudioPlayerState

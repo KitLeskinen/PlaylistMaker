@@ -104,8 +104,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.getState().observe(this) { state ->
             when (state) {
                 is AudioPlayerState.Content -> TODO()
-                AudioPlayerState.Loading -> {
-                    fillInPlayerFields(viewModel.getTrack())
+                is AudioPlayerState.Loading -> {
+                    fillInPlayerFields(state.track)
                 }
 
                 AudioPlayerState.Paused -> pausePlayer()
