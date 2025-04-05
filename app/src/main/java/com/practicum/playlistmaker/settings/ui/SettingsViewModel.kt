@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.settings.ui
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +19,7 @@ class SettingsViewModel( private val application: Application,
     private val state = MutableLiveData<SettingsState>()
 
 
-    fun getState(): MutableLiveData<SettingsState> {
+    fun getState(): LiveData<SettingsState> {
         return state
     }
 
