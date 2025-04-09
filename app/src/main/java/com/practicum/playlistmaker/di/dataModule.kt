@@ -10,7 +10,7 @@ import retrofit2.create
 
 val dataModule = module {
 
-    single {
+    factory {
         Gson()
     }
 

@@ -10,6 +10,7 @@ import com.practicum.playlistmaker.settings.domain.PreferencesInteractor
 import com.practicum.playlistmaker.settings.impl.PreferencesInteractorImpl
 import org.koin.dsl.module
 
+
 val interactorModule = module {
     single<HistoryInteractor> {
         HistoryInteractorImpl(repository = get())
