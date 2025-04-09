@@ -4,15 +4,15 @@ import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.practicum.playlistmaker.Creator.Creator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.Tools
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.databinding.ActivityAudioplayerBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 
 import java.util.Locale
@@ -23,13 +23,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityAudioplayerBinding
+    private lateinit var selectedTrack: Track
 
-    private val viewModel: AudioPlayerViewModel by viewModels {
-        val selectedTrack = intent.getSerializableExtra(EXTRA_SELECTED_TRACK) as Track
-        AudioPlayerViewModel.factory(
-            selectedTrack,
-            Creator.provideAudioPlayerInteractor(selectedTrack)
-        )
+    private val viewModel: AudioPlayerViewModel by viewModel {
+        parametersOf(selectedTrack)
     }
 
     private var previewUrl: String? = null
@@ -81,7 +78,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.albumYearTextView.text = yearFormat.format(date)
     }
 
-    fun updateTimePosition(position: Int){
+    fun updateTimePosition(position: Int) {
         binding.currentPlayTimeTextView.text = SimpleDateFormat(
             "mm:ss",
             Locale.getDefault()
@@ -93,6 +90,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioplayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        selectedTrack = intent.getSerializableExtra(EXTRA_SELECTED_TRACK) as Track
         binding.backImageView.setNavigationOnClickListener {
             finish()
         }
@@ -119,11 +118,6 @@ class AudioPlayerActivity : AppCompatActivity() {
                 is AudioPlayerState.Playback -> updateTimePosition(state.timePositionState)
             }
         }
-//        viewModel.getTimePositionState().observe(this) { position ->
-//
-//
-//        }
-
     }
 
 

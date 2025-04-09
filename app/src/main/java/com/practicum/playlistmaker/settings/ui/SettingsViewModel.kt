@@ -5,9 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.settings.domain.PreferencesInteractor
 
@@ -38,20 +35,4 @@ class SettingsViewModel( private val application: Application,
         state.value = SettingsState.Loading(preferencesInteractor.getThemePreferences())
     }
 
-
-    companion object {
-        fun factory(
-            application: Application,
-            preferencesInteractor: PreferencesInteractor
-        ): ViewModelProvider.Factory {
-            return viewModelFactory {
-                initializer {
-                    SettingsViewModel(
-                        application,
-                        preferencesInteractor
-                    )
-                }
-            }
-        }
-    }
 }

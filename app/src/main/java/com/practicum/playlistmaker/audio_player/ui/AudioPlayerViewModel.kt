@@ -6,9 +6,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.audio_player.domain.AudioPlayerInteractor
 import com.practicum.playlistmaker.common.data.domain.OnPreparedAudioPlayerListener
 import com.practicum.playlistmaker.common.data.domain.api.OnCompletionListener
@@ -52,17 +49,6 @@ class AudioPlayerViewModel(
     fun getState(): LiveData<AudioPlayerState> = state
 
     companion object {
-        fun factory(
-            track: com.practicum.playlistmaker.common.data.domain.entity.Track,
-            audioPlayerInteractor: AudioPlayerInteractor
-        ): ViewModelProvider.Factory {
-            return viewModelFactory {
-                initializer {
-                    AudioPlayerViewModel(track, audioPlayerInteractor)
-                }
-            }
-        }
-
         private const val DELAY = 500L
     }
 

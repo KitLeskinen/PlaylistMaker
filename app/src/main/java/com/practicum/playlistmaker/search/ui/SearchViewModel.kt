@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
@@ -8,25 +7,20 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.Creator.Creator
+
+
 import com.practicum.playlistmaker.common.data.domain.api.ConsumerData
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 
 import com.practicum.playlistmaker.common.data.domain.entity.TrackResponse
 import com.practicum.playlistmaker.search.domain.HistoryInteractor
-import org.koin.core.context.GlobalContext.get
-import org.koin.java.KoinJavaComponent.inject
+import com.practicum.playlistmaker.search.domain.TracksInteractor
 
 
-class SearchViewModel(private val historyInteractor: HistoryInteractor) : ViewModel() {
+
+class SearchViewModel(private val historyInteractor: HistoryInteractor, private val trackInteractor: TracksInteractor) : ViewModel() {
 
     val TAG = "DEBUG"
-    private val trackInteractor = Creator.provideTrackInteractor()
-
-//    private val historyInteractor: HistoryInteractor by inject()
 
     private val handler = Handler(Looper.getMainLooper())
     private var detailsRunnable: Runnable? = null
@@ -153,15 +147,6 @@ class SearchViewModel(private val historyInteractor: HistoryInteractor) : ViewMo
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-
-//        fun factory(
-//        ): ViewModelProvider.Factory {
-//            return viewModelFactory {
-//                initializer {
-//                    SearchViewModel()
-//                }
-//            }
-//        }
     }
 
 
