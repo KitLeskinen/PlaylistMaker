@@ -16,13 +16,17 @@ import com.practicum.playlistmaker.common.data.domain.api.ConsumerData
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 
 import com.practicum.playlistmaker.common.data.domain.entity.TrackResponse
+import com.practicum.playlistmaker.search.domain.HistoryInteractor
+import org.koin.core.context.GlobalContext.get
+import org.koin.java.KoinJavaComponent.inject
 
-class SearchViewModel(private val application: Application) : ViewModel() {
+
+class SearchViewModel(private val historyInteractor: HistoryInteractor) : ViewModel() {
 
     val TAG = "DEBUG"
     private val trackInteractor = Creator.provideTrackInteractor()
 
-    private var historyInteractor = Creator.provideHistoryInteractor(application)
+//    private val historyInteractor: HistoryInteractor by inject()
 
     private val handler = Handler(Looper.getMainLooper())
     private var detailsRunnable: Runnable? = null
@@ -150,15 +154,14 @@ class SearchViewModel(private val application: Application) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
 
-        fun factory(
-            application: Application
-        ): ViewModelProvider.Factory {
-            return viewModelFactory {
-                initializer {
-                    SearchViewModel(application)
-                }
-            }
-        }
+//        fun factory(
+//        ): ViewModelProvider.Factory {
+//            return viewModelFactory {
+//                initializer {
+//                    SearchViewModel()
+//                }
+//            }
+//        }
     }
 
 

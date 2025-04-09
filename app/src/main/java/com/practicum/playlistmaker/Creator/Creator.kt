@@ -40,15 +40,15 @@ object Creator {
         )
     }
 
-    private fun getHistoryRepository(context: Context): HistoryRepository {
-        return HistoryRepositoryImpl(context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE), provideGson())
-    }
+//    private fun getHistoryRepository(context: Context): HistoryRepository {
+//        return HistoryRepositoryImpl(context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE), provideGson())
+//    }
 
-    fun provideHistoryInteractor(context: Context): HistoryInteractor {
-        return HistoryInteractorImpl(
-            getHistoryRepository(context)
-        )
-    }
+//    fun provideHistoryInteractor(context: Context): HistoryInteractor {
+//        return HistoryInteractorImpl(
+//            getHistoryRepository(context)
+//        )
+//    }
 
     private fun provideGson(): Gson {
         return Gson()

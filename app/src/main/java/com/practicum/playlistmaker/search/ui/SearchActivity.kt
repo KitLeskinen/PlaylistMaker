@@ -19,6 +19,8 @@ import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 
 import com.practicum.playlistmaker.audio_player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.common.data.domain.entity.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.java.KoinJavaComponent.inject
 
 const val EXTRA_SELECTED_TRACK = "EXTRA_SELECTED_TRACK"
 
@@ -34,9 +36,11 @@ class SearchActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySearchBinding
 
-    private val viewModel: SearchViewModel by viewModels {
-        SearchViewModel.factory(application)
-    }
+    private val viewModel by viewModel<SearchViewModel>()
+//
+//    private val viewModel: SearchViewModel by viewModels {
+//        SearchViewModel.factory(application)
+//    }
 
 
     fun showHistory(show: Boolean) {
