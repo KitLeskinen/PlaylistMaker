@@ -16,10 +16,6 @@ class MediaLibraryPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> FragmentFavorites()
-            1 -> FragmentPlaylists()
-//                0 -> NumberFragment.newInstance(position + 1)
-//                1 -> NumberFragment.newInstance(position + 1)
-//                else -> NumberFragment.newInstance(position + 1)
             else -> {
                 FragmentPlaylists()
             }
