@@ -4,24 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".medialibrary.ui.MediaLibraryActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".medialibrary.ui.MediaLibraryActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/backImageView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/medialibrary" />
+
+        app:navigationIcon="@drawable/back_icon"
+        style="@style/tabs_header"
+        app:title="@string/medialibrary" />
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
+        style="@style/tabs_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        style="@style/tabs_header"
-        app:tabTextColor="@color/black"/>
+        app:tabTextAppearance="@style/tabs_header" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

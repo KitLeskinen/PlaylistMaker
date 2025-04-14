@@ -9,6 +9,9 @@ import com.practicum.playlistmaker.databinding.FragmentFavoritesBinding
 
 class FragmentFavorites : Fragment() {
 
+    companion object {
+        fun newInstance() = FragmentFavorites()
+    }
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!

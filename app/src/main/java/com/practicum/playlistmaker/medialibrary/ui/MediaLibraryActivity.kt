@@ -28,6 +28,9 @@ class MediaLibraryActivity : AppCompatActivity() {
         }
         tabMediator.attach()
 
+        binding.backImageView?.setNavigationOnClickListener {
+            finish()
+        }
 
     }
 

@@ -9,6 +9,10 @@ import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 
 class FragmentPlaylists : Fragment() {
 
+    companion object {
+        fun newInstance() = FragmentPlaylists()
+    }
+
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
 
