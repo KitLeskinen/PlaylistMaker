@@ -4,33 +4,54 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 
 
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
+
+import com.practicum.playlistmaker.databinding.FragmentSettingsBinding
+import com.practicum.playlistmaker.medialibrary.ui.MediaLibraryFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = SettingsFragment()
+    }
 
     private val viewModel by viewModel<SettingsViewModel>()
 
-    private lateinit var binding: ActivitySettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding
+        get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private fun loading(darkThemeEnabled: Boolean) {
         binding.themeSwitcher.isChecked = darkThemeEnabled
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-
-        setContentView(binding.root)
-
-        viewModel.getState().observe(this) { state ->
+        viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SettingsState.Loading -> loading(state.darkThemeEnabled)
 
@@ -47,7 +68,7 @@ class SettingsActivity : AppCompatActivity() {
 
 
         binding.backImageView.setNavigationOnClickListener {
-            finish()
+           // finish()
         }
 
 
@@ -69,7 +90,7 @@ class SettingsActivity : AppCompatActivity() {
             mailIntent.putExtra(Intent.EXTRA_SUBJECT, mailSubject)
             mailIntent.putExtra(Intent.EXTRA_TEXT, mailContent)
 
-            if (mailIntent.resolveActivity(packageManager) != null) {
+            if (mailIntent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(
                     Intent.createChooser(
                         mailIntent,
@@ -78,7 +99,7 @@ class SettingsActivity : AppCompatActivity() {
                 )
             } else {
                 Toast.makeText(
-                    this,
+                    requireContext(),
                     getString(R.string.askForEmailClientInstall),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -90,6 +111,11 @@ class SettingsActivity : AppCompatActivity() {
             intent.setData(Uri.parse(getString(R.string.practicumOffer)))
             startActivity(intent)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
 
     }
 }
