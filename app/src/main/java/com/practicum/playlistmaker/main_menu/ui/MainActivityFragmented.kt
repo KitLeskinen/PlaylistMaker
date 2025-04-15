@@ -19,7 +19,7 @@ class MainActivityFragmented : AppCompatActivity(R.layout.activity_main_fragment
 
         if(savedInstanceState == null){
             supportFragmentManager.commit {
-                add(R.id.fragment_container_view, MediaLibraryFragment())
+                add(R.id.fragment_container_view, SearchFragment.newInstance())
             }
 
         }
