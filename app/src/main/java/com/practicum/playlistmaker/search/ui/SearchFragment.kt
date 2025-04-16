@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker.search.ui
 
+
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,13 +16,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.R
-
-import com.practicum.playlistmaker.databinding.FragmentSearchBinding
-
-
 import com.practicum.playlistmaker.audio_player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.common.data.domain.entity.Track
-import com.practicum.playlistmaker.medialibrary.ui.FragmentFavorites
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -35,7 +31,6 @@ class SearchFragment : Fragment() {
     private var searchQuery = ""
 
     companion object {
-        const val SEARCH_QUERY = "SEARCH_QUERY"
         fun newInstance() = SearchFragment()
     }
 
@@ -186,12 +181,6 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-
-    }
 
     private fun fieldCleared(history: List<Track>) {
         showError(false, null)
@@ -257,18 +246,5 @@ class SearchFragment : Fragment() {
         intent.putExtra(EXTRA_SELECTED_TRACK, track)
         startActivity(intent)
     }
-
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        outState.putString(SEARCH_QUERY, searchQuery)
-//        Log.d("Search", "onSaveInstanceState searchQuery: $searchQuery")
-//    }
-//
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//        searchQuery = savedInstanceState.getString(SEARCH_QUERY).toString()
-//        binding.searchEditText.setText(searchQuery)
-//        Log.d("Search", "onRestoreInstanceState searchQuery: $searchQuery")
-//    }
 
 }

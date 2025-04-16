@@ -131,4 +131,10 @@
         <item name="android:background">#1A1B22</item>
     </style>
 
+    <style name="BottomNavigationView">
+        <item name="itemTextColor">@color/bottom_navigation_color</item>
+        <item name="itemIconTint">@color/bottom_navigation_color</item>
+        <item name="android:background">#1A1B22</item>
+    </style>
+
 </resources>

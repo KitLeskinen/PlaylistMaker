@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
 
 import com.practicum.playlistmaker.databinding.FragmentMedialibraryBinding
-import com.practicum.playlistmaker.search.ui.SearchFragment
+
 
 
 class MediaLibraryFragment : Fragment() {
@@ -37,7 +36,7 @@ class MediaLibraryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = MediaLibraryPagerAdapter(parentFragmentManager, lifecycle)
+        binding.viewPager.adapter = MediaLibraryPagerAdapter(childFragmentManager, lifecycle)
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
@@ -47,13 +46,8 @@ class MediaLibraryFragment : Fragment() {
         }
         tabMediator.attach()
 
-        binding.backImageView?.setNavigationOnClickListener {
-//            finish()
+        binding.backImageView.setNavigationOnClickListener {
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onDestroy() {
