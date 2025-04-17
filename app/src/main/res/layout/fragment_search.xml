@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
 
 
-
         app:title="@string/search" />
 
     <FrameLayout
@@ -23,28 +22,18 @@
 
         <EditText
             android:id="@+id/searchEditText"
-            style="@style/Widget.AppCompat.EditText"
+            style="@style/SearchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
-            android:background="@drawable/round_corners"
-            android:backgroundTint="@color/textEdit_background"
             android:defaultFocusHighlightEnabled="false"
             android:drawableStart="@drawable/search_light_mode"
             android:drawablePadding="8dp"
-            android:drawableTint="@color/textEdit_tint"
             android:hint="@string/search"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:lines="1"
-            android:maxLines="1"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textColorHint="@color/textEdit_tint"
-            android:textCursorDrawable="@drawable/text_cursor"
-            android:textSize="16sp" />
+            android:paddingVertical="8dp" />
 
         <ImageView
             android:id="@+id/clearImageView"
@@ -58,15 +47,16 @@
             tools:visibility="visible" />
 
     </FrameLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_gravity="center"
-        android:indeterminateTint="#3772E7"
         android:layout_marginTop="140dp"
-        android:visibility="gone"
-        />
+        android:indeterminateTint="#3772E7"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/headerHistory"
         style="@style/searchErrorMessage"

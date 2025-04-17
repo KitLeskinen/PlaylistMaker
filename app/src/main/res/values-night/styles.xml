@@ -137,4 +137,17 @@
         <item name="android:background">#1A1B22</item>
     </style>
 
+    <style name="SearchEditText_dark" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/round_corners</item>
+        <item name="android:backgroundTint">#E6E8EB</item>
+        <item name="android:drawableTint">#1A1B22</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/background_night</item>
+        <item name="android:textColorHint">#1A1B22</item>
+        <item name="android:textCursorDrawable">@drawable/text_cursor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
