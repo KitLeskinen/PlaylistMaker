@@ -4,7 +4,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_night"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -12,14 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        app:navigationIcon="@drawable/back_icon"
-        app:navigationIconTint="@color/white"
+        app:navigationIconTint="@color/black"
         app:title="@string/Settings" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
-        app:thumbTint="#3772E7"
-        app:trackTint="#5E5E5E"
+
         style="@style/settingsItem"
 
         android:layout_width="match_parent"
