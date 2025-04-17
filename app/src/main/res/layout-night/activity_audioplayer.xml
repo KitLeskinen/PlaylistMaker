@@ -78,7 +78,6 @@
         android:background="@android:color/transparent"
         android:src="@drawable/add_to_playlist"
         app:layout_constraintBottom_toBottomOf="@+id/mediaButton"
-        app:layout_constraintEnd_toStartOf="@+id/mediaButton"
 
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/startGuideline"
@@ -110,7 +109,6 @@
         android:src="@drawable/favorites_button_active"
         app:layout_constraintBottom_toBottomOf="@+id/mediaButton"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
-        app:layout_constraintStart_toEndOf="@+id/mediaButton"
         app:layout_constraintTop_toTopOf="@+id/mediaButton" />
 
     <TextView
