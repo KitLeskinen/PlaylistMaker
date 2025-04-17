@@ -130,10 +130,6 @@ class SearchFragment : Fragment() {
             inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        // close SearchActivity
-        binding.backImageView.setNavigationOnClickListener {
-//            finish()
-        }
 
         // Show or hide clear button for text search
         val textWatcher = object : TextWatcher {
