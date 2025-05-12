@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".medialibrary.ui.MediaLibraryActivity"
-    android:background="#1A1B22"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".medialibrary.ui.MediaLibraryFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/backImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIconTint="@color/white"
-        app:navigationIcon="@drawable/back_icon"
+
         style="@style/toolbar_header"
         app:title="@string/medialibrary" />
 
@@ -23,11 +21,10 @@
         style="@style/tabs_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextAppearance="@style/tabs_header"
-   />
+        app:tabTextAppearance="@style/tabs_header" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>
