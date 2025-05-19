@@ -1,30 +1,29 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-
-
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.data.domain.api.ConsumerData
 import com.practicum.playlistmaker.common.data.domain.entity.Track
-
 import com.practicum.playlistmaker.common.data.domain.entity.TrackResponse
 import com.practicum.playlistmaker.search.domain.HistoryInteractor
 import com.practicum.playlistmaker.search.domain.TracksInteractor
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-
-class SearchViewModel(private val historyInteractor: HistoryInteractor, private val trackInteractor: TracksInteractor) : ViewModel() {
+class SearchViewModel(
+    private val historyInteractor: HistoryInteractor,
+    private val trackInteractor: TracksInteractor
+) : ViewModel() {
 
     val TAG = "DEBUG"
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var detailsRunnable: Runnable? = null
-
+    private var searchJob: Job? = null
     var history = historyInteractor.getTracksHistory().reversed().toMutableList()
 
     private var lastSearch = ""
@@ -73,55 +72,40 @@ class SearchViewModel(private val historyInteractor: HistoryInteractor, private 
     fun makeResponse(text: String) {
 
         searchState.value = SearchState.Searching
-
         trackInteractor.getTracks(text, object :
             com.practicum.playlistmaker.common.data.domain.api.Consumer<TrackResponse> {
             override fun consume(data: ConsumerData<TrackResponse>) {
 
-                val currentRunnable = detailsRunnable
-                if (currentRunnable != null) {
-                    handler.removeCallbacks(currentRunnable)
-                }
-
-
-                val newDetailsRunnable = Runnable {
+                viewModelScope.launch {
                     when (data) {
                         is ConsumerData.Data -> {
                             searchState.value = SearchState.Result(data.value.trackList)
-                            Log.d(TAG, data.value.trackList.toString())
-
                         }
 
                         is ConsumerData.Error -> {
                             searchState.value = SearchState.Error(data.message)
-                            Log.d(TAG, "consume error: ${data}")
-//                            searchState.value = SearchState.Error(data.message)
                             Log.d(TAG, data.message)
 
                         }
                     }
                 }
-                detailsRunnable = newDetailsRunnable
-                handler.post(newDetailsRunnable)
             }
         })
     }
 
-    val searchRunnable = Runnable {
-        Log.d(TAG, "new Runnable: ")
-        searchState.value = SearchState.Searching
-        makeResponse(lastSearch)
-    }
 
     fun searchDebounce(query: String) {
         if (query.isEmpty()) {
-            handler.removeCallbacks(searchRunnable)
+            searchJob?.cancel()
             return
         }
-            lastSearch = query
-            Log.d(TAG, "searchDebounce: ")
-            handler.removeCallbacks(searchRunnable)
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        lastSearch = query
+        Log.d(TAG, "searchDebounce: ")
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            makeResponse(lastSearch)
+        }
 
     }
 
@@ -129,19 +113,20 @@ class SearchViewModel(private val historyInteractor: HistoryInteractor, private 
     fun searchEditTextClicked(text: Editable) {
         Log.d(TAG, "searchEditTextClicked: ")
         if (text.isEmpty()) {
-            handler.removeCallbacks(searchRunnable)
+            searchJob?.cancel()
         }
         searchState.value = SearchState.TextFieldClicked(text.isEmpty(), history.isEmpty(), history)
     }
 
     fun clearField() {
-        handler.removeCallbacks(searchRunnable)
+        searchJob?.cancel()
+
         searchState.value = SearchState.FieldCleared(history)
     }
 
     fun deleteResponse() {
         Log.d(TAG, "deleteResponse: ")
-        handler.removeCallbacks(searchRunnable)
+        searchJob?.cancel()
         searchState.value = SearchState.TextFieldClicked(true, history.isEmpty(), history)
     }
 
