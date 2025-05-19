@@ -29,4 +29,8 @@ class AudioPlayerIneractorImpl(private val repository: AudioPlayerRepository) :
         return repository.getCurrentPosition()
     }
 
+    override fun reset() {
+        repository.reset()
+    }
+
 }

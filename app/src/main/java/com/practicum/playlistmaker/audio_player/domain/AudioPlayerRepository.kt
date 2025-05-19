@@ -15,4 +15,6 @@ interface AudioPlayerRepository {
     fun release()
 
     fun getCurrentPosition() : Int
+
+    fun reset()
 }
