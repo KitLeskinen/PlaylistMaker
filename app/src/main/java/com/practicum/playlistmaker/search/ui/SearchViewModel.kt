@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.common.data.domain.api.ConsumerData
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.common.data.domain.entity.TrackResponse
 import com.practicum.playlistmaker.search.domain.HistoryInteractor
@@ -72,25 +71,21 @@ class SearchViewModel(
     fun makeResponse(text: String) {
 
         searchState.value = SearchState.Searching
-        trackInteractor.getTracks(text, object :
-            com.practicum.playlistmaker.common.data.domain.api.Consumer<TrackResponse> {
-            override fun consume(data: ConsumerData<TrackResponse>) {
-
-                viewModelScope.launch {
-                    when (data) {
-                        is ConsumerData.Data -> {
-                            searchState.value = SearchState.Result(data.value.trackList)
-                        }
-
-                        is ConsumerData.Error -> {
-                            searchState.value = SearchState.Error(data.message)
-                            Log.d(TAG, data.message)
-
-                        }
-                    }
+        viewModelScope.launch {
+            trackInteractor
+                .getTracks(text)
+                .collect { trackResponse ->
+                    processResult(trackResponse)
                 }
-            }
-        })
+        }
+    }
+
+    private fun processResult(trackResponse: TrackResponse) {
+        if(trackResponse.isError){
+            searchState.value = SearchState.Error(trackResponse.errorMessage)
+        } else{
+            searchState.value = SearchState.Result(trackResponse.trackList)
+        }
     }
 
 

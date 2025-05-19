@@ -10,4 +10,9 @@ interface ITunesApi {
     fun search(
         @Query("term") text: String
     ): Call<TracksSearchResponse>
+
+    @GET("/search?entity=song")
+    suspend fun searchSuspend(
+        @Query("term") text: String
+    ): TracksSearchResponse
 }
