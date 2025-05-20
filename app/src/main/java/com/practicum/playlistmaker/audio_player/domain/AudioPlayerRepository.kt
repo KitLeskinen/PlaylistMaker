@@ -6,7 +6,7 @@ import com.practicum.playlistmaker.common.data.domain.api.OnCompletionListener
 
 interface AudioPlayerRepository {
 
-    fun prepare(onPreparedAudioPlayerListener: OnPreparedAudioPlayerListener, onCompletionListener: OnCompletionListener)
+    fun prepare(previewUrl: String, onPreparedAudioPlayerListener: OnPreparedAudioPlayerListener, onCompletionListener: OnCompletionListener)
 
     fun play()
 

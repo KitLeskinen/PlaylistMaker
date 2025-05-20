@@ -29,7 +29,7 @@ class AudioPlayerViewModel(
 
     private fun loadData() {
         state.value = AudioPlayerState.Loading(track)
-        audioPlayerInteractor.prepare(
+        audioPlayerInteractor.prepare(track.previewUrl,
             onPreparedAudioPlayerListener = object : OnPreparedAudioPlayerListener {
                 override fun invoke() {
                     state.value = AudioPlayerState.Preparing
@@ -38,7 +38,6 @@ class AudioPlayerViewModel(
             onCompletionListener = object : OnCompletionListener {
                 override fun invoke() {
                     timerJob?.cancel()
-//                    runnable?.let { handler?.removeCallbacks(it) }
                     state.value = AudioPlayerState.Stopped
                 }
             }
@@ -71,6 +70,7 @@ class AudioPlayerViewModel(
             is AudioPlayerState.Loading, AudioPlayerState.Preparing, AudioPlayerState.Paused -> {
                 audioPlayerInteractor.play()
                 state.value = AudioPlayerState.StartPlaying
+                timerJob?.cancel()
                 timerJob = viewModelScope.launch {
                     updateCurrentTimePosition()
                 }

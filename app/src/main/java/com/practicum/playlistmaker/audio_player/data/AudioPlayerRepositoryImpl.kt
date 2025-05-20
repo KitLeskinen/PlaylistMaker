@@ -14,9 +14,11 @@ class AudioPlayerRepositoryImpl(private val track: Track) : AudioPlayerRepositor
     var mediaPlayer =  MediaPlayer()
 
 
-    override fun prepare(onPreparedAudioPlayerListener: OnPreparedAudioPlayerListener, onCompletionListener: OnCompletionListener){
+    override fun prepare(previewUrl: String, onPreparedAudioPlayerListener: OnPreparedAudioPlayerListener, onCompletionListener: OnCompletionListener){
         Log.d("AUDIO", "Track previewUrl: '${track.previewUrl}'")
-        mediaPlayer.setDataSource(track.previewUrl)
+        mediaPlayer.reset()
+        mediaPlayer.setDataSource(previewUrl)
+
         mediaPlayer.prepareAsync()
 
         mediaPlayer.setOnPreparedListener {
