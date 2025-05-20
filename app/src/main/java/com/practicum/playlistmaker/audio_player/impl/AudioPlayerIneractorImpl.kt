@@ -9,8 +9,8 @@ import com.practicum.playlistmaker.common.data.domain.api.OnCompletionListener
 class AudioPlayerIneractorImpl(private val repository: AudioPlayerRepository) :
     AudioPlayerInteractor {
 
-    override fun prepare(onPreparedAudioPlayerListener: OnPreparedAudioPlayerListener, onCompletionListener: OnCompletionListener) {
-        repository.prepare(onPreparedAudioPlayerListener, onCompletionListener)
+    override fun prepare(previewUrl: String, onPreparedAudioPlayerListener: OnPreparedAudioPlayerListener, onCompletionListener: OnCompletionListener) {
+        repository.prepare(previewUrl, onPreparedAudioPlayerListener, onCompletionListener)
     }
 
     override fun play() {
@@ -27,6 +27,10 @@ class AudioPlayerIneractorImpl(private val repository: AudioPlayerRepository) :
 
     override fun getCurrentPosition(): Int {
         return repository.getCurrentPosition()
+    }
+
+    override fun reset() {
+        repository.reset()
     }
 
 }

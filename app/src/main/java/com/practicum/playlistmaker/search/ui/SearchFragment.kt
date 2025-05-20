@@ -81,7 +81,6 @@ class SearchFragment : Fragment() {
             }
         }
 
-
         viewModel.getSearchState().observe(viewLifecycleOwner) { searchState ->
             when (searchState) {
                 is SearchState.TextFieldClicked -> {
