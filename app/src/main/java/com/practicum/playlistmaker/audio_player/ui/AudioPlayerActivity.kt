@@ -1,9 +1,10 @@
 package com.practicum.playlistmaker.audio_player.ui
 
+
 import android.icu.text.SimpleDateFormat
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -13,8 +14,6 @@ import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.databinding.ActivityAudioplayerBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-
-
 import java.util.Locale
 
 const val EXTRA_SELECTED_TRACK = "EXTRA_SELECTED_TRACK"
@@ -85,6 +84,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         ).format(position)
         Log.d("POSITION", "onCreate: $position")
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
