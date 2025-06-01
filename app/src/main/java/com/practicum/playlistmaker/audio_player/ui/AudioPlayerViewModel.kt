@@ -8,19 +8,23 @@ import com.practicum.playlistmaker.audio_player.domain.AudioPlayerInteractor
 import com.practicum.playlistmaker.common.data.domain.OnPreparedAudioPlayerListener
 import com.practicum.playlistmaker.common.data.domain.api.OnCompletionListener
 import com.practicum.playlistmaker.common.data.domain.entity.Track
+import com.practicum.playlistmaker.medialibrary.domain.FavoritesInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
     private val track: Track,
-    private val audioPlayerInteractor: AudioPlayerInteractor
+    private val audioPlayerInteractor: AudioPlayerInteractor,
+    private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
 
 
     private var timerJob: Job? = null
 
     private val state = MutableLiveData<AudioPlayerState>()
+
+    private val favoritesState = MutableLiveData<FavoritesState>()
 
     init {
         loadData()
@@ -29,6 +33,7 @@ class AudioPlayerViewModel(
 
     private fun loadData() {
         state.value = AudioPlayerState.Loading(track)
+
         audioPlayerInteractor.prepare(track.previewUrl,
             onPreparedAudioPlayerListener = object : OnPreparedAudioPlayerListener {
                 override fun invoke() {
@@ -42,9 +47,14 @@ class AudioPlayerViewModel(
                 }
             }
         )
+        viewModelScope.launch {
+            favoritesState.value = FavoritesState.FavoritesChanged(favoritesInteractor.isFavoriteTrack(track))
+        }
     }
 
     fun getState(): LiveData<AudioPlayerState> = state
+
+    fun getFavoritesState(): LiveData<FavoritesState> = favoritesState
 
     companion object {
         private const val DELAY = 500L
@@ -101,6 +111,20 @@ class AudioPlayerViewModel(
         audioPlayerInteractor.pause()
         timerJob?.cancel()
         audioPlayerInteractor.reset()
+    }
+
+    fun switchFavorites() {
+        viewModelScope.launch {
+
+            if (!favoritesInteractor.isFavoriteTrack(track)) {
+                favoritesInteractor.addTrackToFavorites(listOf(track))
+                favoritesState.value = FavoritesState.FavoritesChanged(true)
+            } else {
+                favoritesInteractor.deleteFavoriteTrack(track)
+                favoritesState.value = FavoritesState.FavoritesChanged(false)
+            }
+
+        }
     }
 
 }

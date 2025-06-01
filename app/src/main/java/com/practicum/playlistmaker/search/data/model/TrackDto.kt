@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.search.data.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class TrackDto (
+class TrackDto(
 
     @SerializedName("trackId") val trackId: Long,
     @SerializedName("trackName") val trackName: String,
@@ -14,5 +14,8 @@ class TrackDto (
     @SerializedName("primaryGenreName") val primaryGenreName: String,
     @SerializedName("releaseDate") val releaseDate: String,
     @SerializedName("collectionName") val collectionName: String,
-    @SerializedName("previewUrl") val previewUrl: String
-    ) : Serializable
+    @SerializedName("previewUrl") val previewUrl: String,
+    @SerializedName("isFavorite") val isFavorite: Boolean
+) : Serializable {
+
+}

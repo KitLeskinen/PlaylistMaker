@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.search.data
 
 import android.util.Log
 import com.practicum.playlistmaker.common.data.NetworkClient
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.common.data.domain.entity.TrackResponse
 import com.practicum.playlistmaker.data.model.TracksSearchRequest
 import com.practicum.playlistmaker.search.data.model.TracksSearchResponse
@@ -20,7 +21,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) :
         if (response.resultCode == 200) {
             val mappedTracks = (response as TracksSearchResponse).results.map {
 
-                com.practicum.playlistmaker.common.data.domain.entity.Track(
+                Track(
                     trackId = it.trackId,
                     trackName = it.trackName,
                     artistName = it.artistName,
@@ -31,6 +32,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) :
                     releaseDate = it.releaseDate,
                     collectionName = it.collectionName,
                     previewUrl = it.previewUrl,
+                    isFavorite = false,
                 )
             }
             Log.d("NETWORK RESPONSE", "searchTracks: ${response.resultCode}")
