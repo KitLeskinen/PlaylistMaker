@@ -1,30 +1,41 @@
 package com.practicum.playlistmaker.medialibrary.ui
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker.common.data.domain.entity.Track
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.medialibrary.domain.FavoritesInteractor
+import kotlinx.coroutines.launch
 
 class FavoritesViewModel(private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
+    private val state = MutableLiveData<FavoritesListState>()
+
+    fun getState(): LiveData<FavoritesListState> {
+        return state
+    }
 
 
-    init {
-        val track  = Track(
-            trackId = 12,
-            trackName = "test",
-            artistName = "test",
-            trackTime = 12,
-            artworkUrl100 = "test",
-            country = "test",
-            primaryGenreName = "test",
-            releaseDate = "test",
-            collectionName = "test",
-            previewUrl = "test",
-            isFavorite = false
-        )
-        val tracks: List<Track> = mutableListOf(track)
+     fun loadFavoriteTracks() {
+        viewModelScope.launch {
+            state.value = FavoritesListState.Loading
+            try {
+                favoritesInteractor.getFavoriteTracks()
+                    .collect { tracks ->
+                        if (tracks.isEmpty()) {
+                            state.value = FavoritesListState.Empty
+                        } else {
+                            state.value = FavoritesListState.Content(tracks)
+                        }
+
+                    }
+
+            } catch (e: Exception) {
+                state.value = FavoritesListState.Error("Ошибка")
+            }
 
 
+        }
     }
 
 }
