@@ -13,7 +13,6 @@ import com.practicum.playlistmaker.databinding.FragmentMedialibraryBinding
 class MediaLibraryFragment : Fragment() {
 
 
-
     companion object {
         fun newInstance() = MediaLibraryFragment()
     }
@@ -52,7 +51,9 @@ class MediaLibraryFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        tabMediator.detach()
+        if (this::tabMediator.isInitialized) {
+            tabMediator.detach()
+        }
     }
 
     override fun onDestroyView() {
