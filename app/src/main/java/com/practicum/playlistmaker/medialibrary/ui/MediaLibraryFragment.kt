@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
-
 import com.practicum.playlistmaker.databinding.FragmentMedialibraryBinding
 
 
-
 class MediaLibraryFragment : Fragment() {
+
 
     companion object {
         fun newInstance() = MediaLibraryFragment()
@@ -52,7 +51,9 @@ class MediaLibraryFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        tabMediator.detach()
+        if (this::tabMediator.isInitialized) {
+            tabMediator.detach()
+        }
     }
 
     override fun onDestroyView() {

@@ -86,7 +86,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioplayerBinding.inflate(layoutInflater)
@@ -117,7 +116,24 @@ class AudioPlayerActivity : AppCompatActivity() {
                 AudioPlayerState.Stopped -> stoppedPlayer()
 
                 is AudioPlayerState.Playback -> updateTimePosition(state.timePositionState)
+
+
             }
+        }
+        viewModel.getFavoritesState().observe(this) { state ->
+            when (state) {
+                is FavoritesState.FavoritesChanged -> {
+                    if (state.isFavorite) {
+                        binding.favoritesButton.setImageResource(R.drawable.favorites_button_active)
+                    } else {
+                        binding.favoritesButton.setImageResource(R.drawable.favorites_button_not_active)
+                    }
+                }
+            }
+        }
+
+        binding.favoritesButton.setOnClickListener {
+            viewModel.switchFavorites()
         }
     }
 

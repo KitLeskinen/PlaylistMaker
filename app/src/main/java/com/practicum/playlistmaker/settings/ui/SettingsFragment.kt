@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.settings.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,15 +50,16 @@ class SettingsFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SettingsState.Loading -> loading(state.darkThemeEnabled)
-
+                is SettingsState.Switching -> {
+                    switchTheme()
+                }
             }
         }
 
 
         binding.themeSwitcher.setOnCheckedChangeListener() { switcherView, isChecked ->
             if (switcherView.isPressed) {
-                viewModel.saveThemePreferences(isChecked)
-                viewModel.applyTheme(isChecked)
+               viewModel.switchTheme()
             }
         }
 
@@ -100,6 +102,10 @@ class SettingsFragment : Fragment() {
             intent.setData(Uri.parse(getString(R.string.practicumOffer)))
             startActivity(intent)
         }
+    }
+
+    private fun switchTheme() {
+        Log.d("SWITCH", "switchTheme")
     }
 
 }

@@ -5,6 +5,9 @@ import android.content.Context.MODE_PRIVATE
 import com.practicum.playlistmaker.audio_player.data.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.audio_player.domain.AudioPlayerRepository
 import com.practicum.playlistmaker.common.data.network.RetrofitNetworkClient
+import com.practicum.playlistmaker.medialibrary.data.FavoritesRepositoryImpl
+import com.practicum.playlistmaker.medialibrary.data.converters.TrackDbConvertor
+import com.practicum.playlistmaker.medialibrary.domain.FavoritesRepository
 import com.practicum.playlistmaker.search.data.HistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.HistoryRepositoryImpl.Companion.APP_PREFERENCES
 import com.practicum.playlistmaker.search.data.TracksRepositoryImpl
@@ -39,6 +42,12 @@ val repositoryModule = module {
                 iTunesApi = get()
             )
         )
+    }
+
+    factory { TrackDbConvertor() }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
     }
 
 }

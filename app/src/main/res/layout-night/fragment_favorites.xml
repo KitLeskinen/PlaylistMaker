@@ -7,6 +7,12 @@
     android:background="@color/background_night"
     android:orientation="vertical">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoritesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ImageView
         android:id="@+id/errorIcon"
@@ -15,7 +21,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="106dp"
         android:src="@drawable/no_search_results"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible" />
 
     <TextView
@@ -28,7 +34,7 @@
         android:paddingHorizontal="@dimen/horizontal_padding_small"
         android:paddingTop="@dimen/vertical_padding_medium"
         android:textColor="@color/white"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible" />
 
 
