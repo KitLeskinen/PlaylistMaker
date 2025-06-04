@@ -17,5 +17,5 @@ data class TrackEntity(
     val releaseDate: String,
     val collectionName: String,
     val previewUrl: String,
-    val isFavorite: Boolean
+    val favoritedAt: Long
 )

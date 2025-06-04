@@ -32,7 +32,6 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) :
                     releaseDate = it.releaseDate,
                     collectionName = it.collectionName,
                     previewUrl = it.previewUrl,
-                    isFavorite = false,
                 )
             }
             Log.d("NETWORK RESPONSE", "searchTracks: ${response.resultCode}")

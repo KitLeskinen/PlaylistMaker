@@ -25,7 +25,7 @@ class FavoritesViewModel(private val favoritesInteractor: FavoritesInteractor) :
                         if (tracks.isEmpty()) {
                             state.value = FavoritesListState.Empty
                         } else {
-                            state.value = FavoritesListState.Content(tracks)
+                            state.value = FavoritesListState.Content(tracks.reversed())
                         }
 
                     }

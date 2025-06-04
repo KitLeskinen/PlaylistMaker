@@ -15,7 +15,6 @@ class TrackDto(
     @SerializedName("releaseDate") val releaseDate: String,
     @SerializedName("collectionName") val collectionName: String,
     @SerializedName("previewUrl") val previewUrl: String,
-    @SerializedName("isFavorite") val isFavorite: Boolean
 ) : Serializable {
 
 }

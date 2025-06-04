@@ -14,7 +14,6 @@ data class Track(
     @SerializedName("releaseDate") val releaseDate: String,
     @SerializedName("collectionName") val collectionName: String,
     @SerializedName("TrackInteractor.kt") val previewUrl: String,
-    var isFavorite: Boolean
 ) : Serializable{
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
 }
