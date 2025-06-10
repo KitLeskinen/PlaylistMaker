@@ -65,7 +65,7 @@ class SearchViewModel(
     fun clearHistory() {
         historyInteractor.clearHistory()
         history.clear()
-        searchState.value = SearchState.HistoryCleared()
+        searchState.value = SearchState.HistoryCleared
     }
 
     fun makeResponse(text: String) {

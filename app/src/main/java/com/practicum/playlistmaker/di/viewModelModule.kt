@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.di
 
 import com.practicum.playlistmaker.audio_player.ui.AudioPlayerViewModel
 import com.practicum.playlistmaker.common.data.domain.entity.Track
+import com.practicum.playlistmaker.medialibrary.ui.FavoritesViewModel
 import com.practicum.playlistmaker.search.ui.SearchViewModel
 import com.practicum.playlistmaker.settings.ui.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -23,7 +24,12 @@ val viewModelModule = module {
     viewModel { (track: Track) ->
         AudioPlayerViewModel(
             track,
-            audioPlayerInteractor = get()
+            audioPlayerInteractor = get(),
+            favoritesInteractor = get()
         )
+    }
+
+    viewModel{
+        FavoritesViewModel(favoritesInteractor = get())
     }
 }

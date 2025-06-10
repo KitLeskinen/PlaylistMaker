@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -39,7 +41,6 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
@@ -58,4 +59,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.6.1")
     implementation("io.insert-koin:koin-android:3.3.0")
     implementation("com.google.android.material:material:1.8.0")
+    val room_version = "2.7.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 }
