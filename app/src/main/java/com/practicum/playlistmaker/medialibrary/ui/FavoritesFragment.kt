@@ -28,9 +28,8 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getState().observe(viewLifecycleOwner) {
-            state ->
-            when(state){
+        viewModel.getState().observe(viewLifecycleOwner) { state ->
+            when (state) {
                 is FavoritesListState.Content -> showContent(state.favoritesTrackList)
                 FavoritesListState.Empty -> showEmpty()
                 is FavoritesListState.Error -> showError()
@@ -57,7 +56,7 @@ class FavoritesFragment : Fragment() {
 
     private fun showContent(favoritesTrackList: List<Track>) {
         binding.favoritesRecyclerView.isVisible = true
-        binding.favoritesRecyclerView.adapter = FavoritesAdapter(favoritesTrackList){ track ->
+        binding.favoritesRecyclerView.adapter = FavoritesAdapter(favoritesTrackList) { track ->
             showAudioPlayerActivity(track)
         }
     }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_night"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="8dp">
 
 
     <com.google.android.material.button.MaterialButton
@@ -15,10 +16,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/vertical_padding_large"
-        android:textAllCaps="false"
+        android:layout_marginBottom="16dp"
         android:text="@string/new_playlist"
+        android:textAllCaps="false"
         android:visibility="visible"
         tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/errorIcon"
@@ -31,7 +38,6 @@
         tools:visibility="visible" />
 
     <TextView
-        android:text="@string/no_playlists"
         android:id="@+id/errorMessage"
         style="@style/searchErrorMessage"
         android:layout_width="wrap_content"
@@ -39,6 +45,7 @@
         android:layout_gravity="center_horizontal"
         android:paddingHorizontal="@dimen/horizontal_padding_small"
         android:paddingTop="@dimen/vertical_padding_medium"
+        android:text="@string/no_playlists"
         android:textColor="@color/white"
         android:visibility="visible"
         tools:visibility="visible" />

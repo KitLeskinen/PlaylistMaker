@@ -1,6 +1,9 @@
 package com.practicum.playlistmaker.medialibrary.data.converters
 
+import android.net.Uri
+import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.common.data.domain.entity.Track
+import com.practicum.playlistmaker.medialibrary.data.db.dao.PlaylistWithTracks
 import com.practicum.playlistmaker.medialibrary.data.db.entity.TrackEntity
 import com.practicum.playlistmaker.search.data.model.TrackDto
 
@@ -50,6 +53,16 @@ class TrackDbConvertor {
             track.collectionName,
             track.previewUrl,
             System.currentTimeMillis()
+        )
+    }
+
+    fun map(playlistWithTracks: PlaylistWithTracks): Playlist{
+
+        return Playlist(
+            name = playlistWithTracks.playlist.name,
+            description = playlistWithTracks.playlist.description,
+            coverUri = Uri.parse(playlistWithTracks.playlist.url),
+            trackList = playlistWithTracks.tracks.map { trackEntity ->  TrackDbConvertor().map(trackEntity)}.toMutableList()
         )
     }
 
