@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/audioplayer_nav_graph"
+    app:startDestination="@id/fragmentBottomSheetNewPlaylist">
+    <fragment
+        android:id="@+id/fragmentBottomSheetNewPlaylist"
+        android:name="com.practicum.playlistmaker.audio_player.ui.BottomSheetPlaylistsFragment"
+        android:label="fragment_new_playlist"
+        tools:layout="@layout/audioplayer_fragment_playlists" />
+    <fragment
+        android:id="@+id/audioplayerBottomSheetFragmentPlaylists"
+        android:name="com.practicum.playlistmaker.medialibrary.ui.NewPlaylistFragment"
+        android:label="bottomSheetPlaylistsFragment"
+        tools:layout="@layout/fragment_new_playlist" />
+</navigation>

@@ -4,10 +4,15 @@ package com.practicum.playlistmaker.audio_player.ui
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+
+import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.Tools
 import com.practicum.playlistmaker.common.data.domain.entity.Track
@@ -30,14 +35,12 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private var previewUrl: String? = null
 
-
     private fun preparePlayer() {
         binding.mediaButton.isEnabled = true
     }
 
     private fun startPlayer() {
         binding.mediaButton.setImageResource(R.drawable.pause_button)
-
     }
 
     private fun pausePlayer() {
@@ -54,7 +57,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onPause()
         pausePlayer()
     }
-
 
     private fun fillInPlayerFields(track: Track) {
         val formatFateFromJSON = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -91,9 +93,37 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioplayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentBottomSheet) as NavHostFragment
+        val navController = navHostFragment.navController
+
         selectedTrack = intent.getSerializableExtra(EXTRA_SELECTED_TRACK) as Track
         binding.backImageView.setNavigationOnClickListener {
             finish()
+        }
+
+      //  navController.navigate(R.id.fragmentBottomSheetNewPlaylist)
+
+        onBackPressedDispatcher.addCallback(this) {
+
+            val currentDestinationId = navController.currentDestination?.id
+            val dest = navController.currentDestination
+            Log.d(
+                "NAV",
+                "Current dest: ${dest?.id}, name: ${dest?.navigatorName}, label: ${dest?.label}"
+            )
+
+            if (currentDestinationId == R.id.audioplayerBottomSheetFragmentPlaylists) {
+                Log.d("BACK", "Находимся в NewPlaylistFragment")
+                navController.popBackStack()
+                binding.fragmentBottomSheet.visibility = View.GONE
+                binding.newPlaylistButton.visibility = View.VISIBLE
+
+                BottomSheetBehavior.from(binding.bottomSheet).state =
+                    BottomSheetBehavior.STATE_COLLAPSED
+            } else {
+                finish()
+            }
         }
 
         binding.mediaButton.setOnClickListener {
@@ -134,6 +164,19 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         binding.favoritesButton.setOnClickListener {
             viewModel.switchFavorites()
+        }
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+
+        binding.newPlaylistButton.setOnClickListener() {
+            Log.d("TAG", "onCreate:   binding.addToPlaylistButton.setOnClickListener")
+
+//            navController.navigate(R.id.fragmentBottomSheetNewPlaylist)
+            navController.navigate(R.id.audioplayerBottomSheetFragmentPlaylists)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            binding.newPlaylistButton.visibility = View.GONE
+            binding.fragmentBottomSheet.visibility = View.VISIBLE
+
         }
     }
 

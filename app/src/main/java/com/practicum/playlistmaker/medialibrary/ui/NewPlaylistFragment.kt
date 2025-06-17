@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
@@ -98,18 +97,19 @@ class NewPlaylistFragment : Fragment() {
                     || binding.playlistDescriptionEditText.text.isNotEmpty()
         }
 
-        binding.backImageView.setOnClickListener {
+        binding.backImageView.setNavigationOnClickListener() {
+            Log.d("BACK_CLICK", "Нажатие на navigationIcon")
             if (checkIsCoverOrContentFilled()) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Завершить создание плейлиста?")
                     .setMessage("Все несохраненные данные будут потеряны")
                     .setPositiveButton("Завершить") { _, _ ->
-                        findNavController().navigateUp()
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
                     .setNegativeButton("Отмена") { _, _ ->
                     }.show()
             } else {
-                findNavController().navigateUp()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
         
@@ -123,7 +123,7 @@ class NewPlaylistFragment : Fragment() {
 
             viewModel.savePlaylist(playlist)
             Toast.makeText(requireContext(), "Плейлист ${binding.playlistNameEditText.text} создан", Toast.LENGTH_LONG).show()
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
     }
