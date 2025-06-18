@@ -102,25 +102,31 @@ class AudioPlayerActivity : AppCompatActivity() {
             finish()
         }
 
-      //  navController.navigate(R.id.fragmentBottomSheetNewPlaylist)
+
+        val bundle = Bundle().apply {
+            putSerializable(BottomSheetPlaylistsFragment.SELCTED_TRACK_ID_KEY, selectedTrack)
+        }
+
+        navController.setGraph(R.navigation.audioplayer_nav_graph, bundle)
+
+
+
 
         onBackPressedDispatcher.addCallback(this) {
 
             val currentDestinationId = navController.currentDestination?.id
-            val dest = navController.currentDestination
-            Log.d(
-                "NAV",
-                "Current dest: ${dest?.id}, name: ${dest?.navigatorName}, label: ${dest?.label}"
-            )
 
             if (currentDestinationId == R.id.audioplayerBottomSheetFragmentPlaylists) {
                 Log.d("BACK", "Находимся в NewPlaylistFragment")
                 navController.popBackStack()
-                binding.fragmentBottomSheet.visibility = View.GONE
+//                binding.fragmentBottomSheet.visibility = View.GONE
                 binding.newPlaylistButton.visibility = View.VISIBLE
-
+                binding.addToPlaylistHeader.visibility = View.VISIBLE
                 BottomSheetBehavior.from(binding.bottomSheet).state =
                     BottomSheetBehavior.STATE_COLLAPSED
+
+
+
             } else {
                 finish()
             }
@@ -171,11 +177,13 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.newPlaylistButton.setOnClickListener() {
             Log.d("TAG", "onCreate:   binding.addToPlaylistButton.setOnClickListener")
 
-//            navController.navigate(R.id.fragmentBottomSheetNewPlaylist)
-            navController.navigate(R.id.audioplayerBottomSheetFragmentPlaylists)
+
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             binding.newPlaylistButton.visibility = View.GONE
             binding.fragmentBottomSheet.visibility = View.VISIBLE
+            binding.addToPlaylistHeader.visibility = View.GONE
+            navController.navigate(R.id.audioplayerBottomSheetFragmentPlaylists)
+
 
         }
     }
