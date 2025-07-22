@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.audio_player.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,9 +22,11 @@ class BottomSheetPlaylistViewModel(private val playlistsInteractor: PlaylistsInt
         loadPlaylistItems()
     }
 
-    fun addTrackToPlayList(selectedTrack: Track, playlist: Playlist){
-
-    }
+   fun addTrackToPlayList(selectedTrack: Track, playlist: Playlist){
+    viewModelScope.launch {
+        Log.d("TAG", "addTrackToPlayList: ${selectedTrack.trackName} ${playlist.name}")
+        playlistsInteractor.addTrack(selectedTrack, playlist)
+    }}
 
     init {
         loadPlaylistItems()

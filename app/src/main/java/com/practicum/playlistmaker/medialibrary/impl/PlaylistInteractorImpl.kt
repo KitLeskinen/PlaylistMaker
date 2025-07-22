@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.medialibrary.impl
 
 import android.net.Uri
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.medialibrary.domain.PlaylistRepository
 import com.practicum.playlistmaker.medialibrary.domain.PlaylistsInteractor
 
@@ -21,5 +22,9 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
 
     override suspend fun getAllPlaylistWithTracks(): List<Playlist> {
         return playlistRepository.getAllPlaylistsWithTracks()
+    }
+
+    override suspend fun addTrack(track: Track, playlist: Playlist) {
+        return playlistRepository.addTrack(track, playlist)
     }
 }

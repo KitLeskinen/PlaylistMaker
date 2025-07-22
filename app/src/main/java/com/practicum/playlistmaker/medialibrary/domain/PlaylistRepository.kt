@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.medialibrary.domain
 
 import android.net.Uri
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 
 interface PlaylistRepository {
 
@@ -14,5 +15,7 @@ interface PlaylistRepository {
     suspend fun getPlaylistWithTracks(playlistId: Long) : Playlist
 
     suspend fun getAllPlaylistsWithTracks() : List<Playlist>
+
+    suspend fun addTrack(track: Track, playlist: Playlist)
 
 }

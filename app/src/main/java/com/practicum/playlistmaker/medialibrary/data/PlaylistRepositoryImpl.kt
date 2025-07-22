@@ -8,9 +8,11 @@ import android.net.Uri
 import android.os.Environment
 import androidx.core.net.toUri
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
+import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.medialibrary.data.converters.PlaylistDbConvertor
 import com.practicum.playlistmaker.medialibrary.data.converters.TrackDbConvertor
 import com.practicum.playlistmaker.medialibrary.data.db.AppDataBase
+import com.practicum.playlistmaker.medialibrary.data.db.entity.PlaylistTrackCrossRef
 import com.practicum.playlistmaker.medialibrary.domain.PlaylistRepository
 import java.io.File
 import java.io.FileOutputStream
@@ -42,6 +44,8 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
         }
     }
 
+
+
     override suspend fun savePlaylist(playlist: Playlist) {
         appDataBase.playlistDao().savePlaylist(PlaylistDbConvertor().map(playlist))
     }
@@ -69,6 +73,12 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
 
         return file.toUri()
+    }
+
+    override suspend fun addTrack(track: Track, playlist: Playlist) {
+        appDataBase.playlistDao().addTrack(
+            crossRef = PlaylistTrackCrossRef(TrackDbConvertor().map(track).trackId, TrackDbConvertor().map(playlist).id)
+        )
     }
 
 }

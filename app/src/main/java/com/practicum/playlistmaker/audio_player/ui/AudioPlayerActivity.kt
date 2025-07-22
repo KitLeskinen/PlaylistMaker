@@ -104,7 +104,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
 
         val bundle = Bundle().apply {
-            putSerializable(BottomSheetPlaylistsFragment.SELCTED_TRACK_ID_KEY, selectedTrack)
+            putSerializable(BottomSheetPlaylistsFragment.SELECTED_TRACK_ID_KEY, selectedTrack)
         }
 
         navController.setGraph(R.navigation.audioplayer_nav_graph, bundle)
@@ -119,7 +119,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             if (currentDestinationId == R.id.audioplayerBottomSheetFragmentPlaylists) {
                 Log.d("BACK", "Находимся в NewPlaylistFragment")
                 navController.popBackStack()
-//                binding.fragmentBottomSheet.visibility = View.GONE
                 binding.newPlaylistButton.visibility = View.VISIBLE
                 binding.addToPlaylistHeader.visibility = View.VISIBLE
                 BottomSheetBehavior.from(binding.bottomSheet).state =
@@ -182,7 +181,11 @@ class AudioPlayerActivity : AppCompatActivity() {
             binding.newPlaylistButton.visibility = View.GONE
             binding.fragmentBottomSheet.visibility = View.VISIBLE
             binding.addToPlaylistHeader.visibility = View.GONE
-            navController.navigate(R.id.audioplayerBottomSheetFragmentPlaylists)
+            val bundle = Bundle().apply {
+                putSerializable(BottomSheetPlaylistsFragment.SELECTED_TRACK_ID_KEY, selectedTrack)
+            }
+            navController.navigate(R.id.fragmentBottomSheetNewPlaylist, bundle)
+
 
 
         }

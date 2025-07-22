@@ -115,6 +115,7 @@ class NewPlaylistFragment : Fragment() {
         
         binding.createPlaylistButton.setOnClickListener {
             val playlist = Playlist(
+                id = 0,
                 name = binding.playlistNameEditText.text.toString(),
                 description = binding.playlistDescriptionEditText.text.toString(),
                 coverUri = coverUri,

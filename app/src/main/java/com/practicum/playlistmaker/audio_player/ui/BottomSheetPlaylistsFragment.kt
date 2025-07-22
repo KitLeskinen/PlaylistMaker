@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.audio_player.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,10 @@ class BottomSheetPlaylistsFragment() : Fragment() {
     companion object {
 
 
-        const val SELCTED_TRACK_ID_KEY = "SELCTED_TRACK_ID_KEY"
+        const val SELECTED_TRACK_ID_KEY = "SELECTED_TRACK_ID_KEY"
 
         fun newInstance(selectedTrackID: Track) = BottomSheetPlaylistsFragment().apply {
-            arguments = bundleOf(SELCTED_TRACK_ID_KEY to selectedTrackID)
+            arguments = bundleOf(SELECTED_TRACK_ID_KEY to selectedTrackID)
         }
     }
 
@@ -30,13 +31,16 @@ class BottomSheetPlaylistsFragment() : Fragment() {
 
     private val viewModel by viewModel<BottomSheetPlaylistViewModel>()
 
-    var selectedTrack: Track? = null
+    private var selectedTrack: Track? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = AudioplayerFragmentPlaylistsBinding.inflate(inflater, container, false)
+        Log.d("TAG", "onCreateView: $selectedTrack")
+
         return binding.root
     }
 
@@ -47,20 +51,21 @@ class BottomSheetPlaylistsFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
 
-//        binding.playlistRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.playlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        selectedTrack = arguments?.getSerializable(SELCTED_TRACK_ID_KEY) as? Track
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is BottomSheetPlaylistState.Loading -> load(state.playlists)
             }
         }
+        Log.d("TAG", "onViewCreated: $selectedTrack")
 
     }
 
     private fun load(playlists: List<Playlist>) {
+        Log.d("TAG", "load: $selectedTrack")
         binding.playlistRecyclerView.adapter = BottomSheetPlaylistAdapter(playlists, { playlist ->
             Toast.makeText(requireContext(), "${playlist.name} ${selectedTrack?.trackName}", Toast.LENGTH_SHORT).show()
             selectedTrack?.let { viewModel.addTrackToPlayList(it, playlist) }
@@ -70,7 +75,14 @@ class BottomSheetPlaylistsFragment() : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.updatePlaylistItems()
-
+        Log.d("TAG", "onResume: $selectedTrack")
 
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        selectedTrack = arguments?.getSerializable(SELECTED_TRACK_ID_KEY) as? Track
+        Log.d("TAG", "onCreate: $selectedTrack")
+    }
+
 }
