@@ -25,25 +25,19 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
         return appDataBase.playlistDao().getPlaylists()
             .map { playlist ->
                 PlaylistDbConvertor().map(playlist)
-
             }
     }
 
     override suspend fun getPlaylistWithTracks(playlistId: Long): Playlist {
         return TrackDbConvertor().map(appDataBase.playlistDao().getPlayListWithTracks(playlistId))
-
-
     }
 
 
-
-
-    override suspend fun getAllPlaylistsWithTracks(): List<Playlist>{
+    override suspend fun getAllPlaylistsWithTracks(): List<Playlist> {
         return appDataBase.playlistDao().getAllPlayListsWithTracks().map { playlistWithTracks ->
             TrackDbConvertor().map(playlistWithTracks)
         }
     }
-
 
 
     override suspend fun savePlaylist(playlist: Playlist) {
@@ -77,7 +71,7 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
 
     override suspend fun addTrack(track: Track, playlist: Playlist) {
         appDataBase.playlistDao().addTrack(
-            crossRef = PlaylistTrackCrossRef(TrackDbConvertor().map(track).trackId, TrackDbConvertor().map(playlist).id)
+            crossRef = PlaylistTrackCrossRef(playlist.id, track.trackId)
         )
     }
 
