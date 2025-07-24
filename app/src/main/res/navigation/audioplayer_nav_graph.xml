@@ -12,10 +12,15 @@
         <argument
             android:name="SELECTED_TRACK_ID_KEY"
             app:argType="com.practicum.playlistmaker.common.data.domain.entity.Track" />
+<!--        <action-->
+<!--            android:id="@+id/action_audioplayerBottomSheetFragmentPlaylists_to_fragmentBottomSheetNewPlaylist"-->
+<!--            app:destination="@id/fragmentBottomSheetNewPlaylist" />-->
     </fragment>
     <fragment
         android:id="@+id/fragmentBottomSheetNewPlaylist"
         android:name="com.practicum.playlistmaker.medialibrary.ui.NewPlaylistFragment"
         android:label="bottomSheetPlaylistsFragment"
-        tools:layout="@layout/fragment_new_playlist" />
+        tools:layout="@layout/fragment_new_playlist" >
+
+    </fragment>
 </navigation>

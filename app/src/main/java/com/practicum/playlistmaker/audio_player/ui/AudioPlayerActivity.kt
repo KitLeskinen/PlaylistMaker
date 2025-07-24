@@ -108,7 +108,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         navController.setGraph(R.navigation.audioplayer_nav_graph, bundle)
-
+        navController.navigate(R.id.audioplayerBottomSheetFragmentPlaylists, bundle)
 
 
 
@@ -123,7 +123,6 @@ class AudioPlayerActivity : AppCompatActivity() {
                 binding.addToPlaylistHeader.visibility = View.VISIBLE
                 BottomSheetBehavior.from(binding.bottomSheet).state =
                     BottomSheetBehavior.STATE_COLLAPSED
-
 
 
             } else {
@@ -185,7 +184,6 @@ class AudioPlayerActivity : AppCompatActivity() {
                 putSerializable(BottomSheetPlaylistsFragment.SELECTED_TRACK_ID_KEY, selectedTrack)
             }
             navController.navigate(R.id.fragmentBottomSheetNewPlaylist, bundle)
-
 
 
         }
