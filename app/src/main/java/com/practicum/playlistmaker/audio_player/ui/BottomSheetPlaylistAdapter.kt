@@ -9,7 +9,10 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 
 
-class BottomSheetPlaylistAdapter(private val playlists: List<Playlist>,     private val onPressAction: OnPressAction) : RecyclerView.Adapter<BottomSheetPlaylistViewHolder>(){
+class BottomSheetPlaylistAdapter(
+    private val playlists: List<Playlist>,
+    private val onPressAction: OnPressAction
+) : RecyclerView.Adapter<BottomSheetPlaylistViewHolder>() {
 
     fun interface OnPressAction {
         fun invoke(playlists: Playlist)
@@ -21,8 +24,12 @@ class BottomSheetPlaylistAdapter(private val playlists: List<Playlist>,     priv
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomSheetPlaylistViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_playlist_view_item, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BottomSheetPlaylistViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.bottomsheet_playlist_view_item, parent, false)
         return BottomSheetPlaylistViewHolder(view)
     }
 
@@ -32,11 +39,11 @@ class BottomSheetPlaylistAdapter(private val playlists: List<Playlist>,     priv
 
     private var isClickAllowed: Boolean = true
 
-    private fun clickDebounce() : Boolean{
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
-        if(isClickAllowed){
+        if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({isClickAllowed = true}, CLICK_DEBOUNCE_DELAY )
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
 
         }
         return current
@@ -45,7 +52,7 @@ class BottomSheetPlaylistAdapter(private val playlists: List<Playlist>,     priv
     override fun onBindViewHolder(holder: BottomSheetPlaylistViewHolder, position: Int) {
         holder.bind(playlists[position])
         holder.itemView.setOnClickListener() {
-            if(clickDebounce()){
+            if (clickDebounce()) {
                 onPressAction.invoke(playlists[position])
             }
         }

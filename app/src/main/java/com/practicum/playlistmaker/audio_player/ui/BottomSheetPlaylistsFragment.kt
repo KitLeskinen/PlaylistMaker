@@ -39,7 +39,6 @@ class BottomSheetPlaylistsFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = AudioplayerFragmentPlaylistsBinding.inflate(inflater, container, false)
-        Log.d("TAG", "onCreateView: $selectedTrack")
 
         return binding.root
     }
@@ -51,7 +50,7 @@ class BottomSheetPlaylistsFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
 
         binding.playlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -60,14 +59,17 @@ class BottomSheetPlaylistsFragment() : Fragment() {
                 is BottomSheetPlaylistState.Loading -> load(state.playlists)
             }
         }
-        Log.d("TAG", "onViewCreated: $selectedTrack")
 
     }
 
     private fun load(playlists: List<Playlist>) {
         Log.d("TAG", "load: $selectedTrack")
         binding.playlistRecyclerView.adapter = BottomSheetPlaylistAdapter(playlists, { playlist ->
-            Toast.makeText(requireContext(), "${playlist.name} ${selectedTrack?.trackName}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "${playlist.name} ${selectedTrack?.trackName}",
+                Toast.LENGTH_SHORT
+            ).show()
             selectedTrack?.let { viewModel.addTrackToPlayList(it, playlist) }
         })
     }

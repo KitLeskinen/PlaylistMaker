@@ -48,7 +48,8 @@ class AudioPlayerViewModel(
             }
         )
         viewModelScope.launch {
-            favoritesState.value = FavoritesState.FavoritesChanged(favoritesInteractor.isFavoriteTrack(track))
+            favoritesState.value =
+                FavoritesState.FavoritesChanged(favoritesInteractor.isFavoriteTrack(track))
         }
     }
 

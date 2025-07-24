@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) :
     TracksRepository {
-    override fun searchTracks(expression: String): Flow<TrackResponse> = flow{
+    override fun searchTracks(expression: String): Flow<TrackResponse> = flow {
 
         val response = networkClient.doRequestSuspend(TracksSearchRequest(expression))
 

@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.data.db.dao
 
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -23,29 +22,14 @@ interface PlaylistDao {
     suspend fun getTrackCountFromPlaylist(playlistId: Long): Int
 
     @Transaction
-    @Query("SELECT * FROM playlist_table where id = :playlistId")
-    suspend fun getPlayListWithTracks(playlistId: Long) : PlaylistWithTracks
+    @Query("SELECT * FROM playlist_table WHERE id = :playlistId")
+    suspend fun getPlayListWithTracks(playlistId: Long): PlaylistWithTracks
 
     @Query("SELECT * FROM playlist_table")
-    suspend fun getAllPlayListsWithTracks() : List<PlaylistWithTracks>
+    suspend fun getAllPlayListsWithTracks(): List<PlaylistWithTracks>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addTrack(crossRef: PlaylistTrackCrossRef){
-        Log.d("TAG", "addTrack: $crossRef")
-    }
-
-
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertTrack(track: List<TrackEntity>)
-//
-//    @Query("SELECT * FROM tracks_table WHERE favoritedAt not NULL ORDER BY favoritedAt ASC")
-//    suspend fun getFavoriteTracks(): List<TrackEntity>
-//
-//    @Query("SELECT * FROM tracks_table WHERE trackId = :trackId")
-//    suspend fun getTrack(trackId: Long): List<TrackEntity>
-//
-//    @Delete
-//    suspend fun delete(track: TrackEntity)
+    suspend fun addTrack(crossRef: PlaylistTrackCrossRef)
 
 }
 

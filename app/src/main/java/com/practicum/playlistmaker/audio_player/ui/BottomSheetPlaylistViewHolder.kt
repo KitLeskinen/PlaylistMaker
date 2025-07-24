@@ -19,10 +19,14 @@ class BottomSheetPlaylistViewHolder(view: View) : RecyclerView.ViewHolder(view) 
 
     fun bind(playlist: Playlist) {
         name.text = playlist.name
-        tracksCount.text = "${playlist.trackList?.size} ${playlist.trackList?.let {
-            Tools.declensions(context = tracksCount.context,
-                it.size)
-        }}"
+        tracksCount.text = "${playlist.trackList?.size} ${
+            playlist.trackList?.let {
+                Tools.declensions(
+                    context = tracksCount.context,
+                    it.size
+                )
+            }
+        }"
 
         Glide.with(imageView).load(playlist.coverUri)
             .placeholder(R.drawable.placeholder).transform(
