@@ -29,7 +29,7 @@ interface PlaylistDao {
     suspend fun getAllPlayListsWithTracks(): List<PlaylistWithTracks>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addTrack(crossRef: PlaylistTrackCrossRef)
+    suspend fun addTrack(crossRef: PlaylistTrackCrossRef) : Long
 
 }
 

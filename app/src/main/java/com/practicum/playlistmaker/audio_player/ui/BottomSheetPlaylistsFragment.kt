@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.audio_player.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.databinding.AudioplayerFragmentPlaylistsBinding
@@ -53,21 +55,35 @@ class BottomSheetPlaylistsFragment() : Fragment() {
 
         binding.playlistRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.getState().observe(viewLifecycleOwner) { state ->
+        viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is BottomSheetPlaylistState.Loading -> load(state.playlists)
+                is BottomSheetPlaylistState.TrackAdded -> trackAdded(state.result, state.name)
             }
         }
 
     }
 
-    private fun load(playlists: List<Playlist>) {
-        binding.playlistRecyclerView.adapter = BottomSheetPlaylistAdapter(playlists, { playlist ->
+    private fun trackAdded(result: Long, playlistName: String) {
+        Log.d("TAG", "result: $result")
+        if (result == -1L) {
             Toast.makeText(
                 requireContext(),
-                "${playlist.name} ${selectedTrack?.trackName}",
+                "${resources.getString(R.string.already_added_to_playlist)} ${playlistName}",
                 Toast.LENGTH_SHORT
             ).show()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "${resources.getString(R.string.added_to_playlist)} ${playlistName}",
+                Toast.LENGTH_SHORT
+            ).show()
+            (activity as? AudioPlayerActivity)?.collapseBottomSheet()
+        }
+    }
+
+    private fun load(playlists: List<Playlist>) {
+        binding.playlistRecyclerView.adapter = BottomSheetPlaylistAdapter(playlists, { playlist ->
             selectedTrack?.let { viewModel.addTrackToPlayList(it, playlist) }
         })
     }

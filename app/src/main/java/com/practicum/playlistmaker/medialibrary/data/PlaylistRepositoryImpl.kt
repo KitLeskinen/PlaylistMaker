@@ -69,8 +69,8 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
         return file.toUri()
     }
 
-    override suspend fun addTrack(track: Track, playlist: Playlist) {
-        appDataBase.playlistDao().addTrack(
+    override suspend fun addTrack(track: Track, playlist: Playlist) : Long {
+        return appDataBase.playlistDao().addTrack(
             crossRef = PlaylistTrackCrossRef(playlist.id, track.trackId)
         )
     }

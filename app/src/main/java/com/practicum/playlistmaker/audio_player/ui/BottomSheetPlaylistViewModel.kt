@@ -12,11 +12,9 @@ import kotlinx.coroutines.launch
 class BottomSheetPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor) :
     ViewModel() {
 
-    private val state = MutableLiveData<BottomSheetPlaylistState>()
+    private val _state = MutableLiveData<BottomSheetPlaylistState>()
+    val state: LiveData<BottomSheetPlaylistState>  = _state
 
-    fun getState(): LiveData<BottomSheetPlaylistState> {
-        return state
-    }
 
     fun updatePlaylistItems() {
         loadPlaylistItems()
@@ -24,7 +22,8 @@ class BottomSheetPlaylistViewModel(private val playlistsInteractor: PlaylistsInt
 
     fun addTrackToPlayList(selectedTrack: Track, playlist: Playlist) {
         viewModelScope.launch {
-            playlistsInteractor.addTrack(selectedTrack, playlist)
+            val result = playlistsInteractor.addTrack(selectedTrack, playlist)
+            _state.value = BottomSheetPlaylistState.TrackAdded(result, playlist.name)
         }
     }
 
@@ -35,7 +34,7 @@ class BottomSheetPlaylistViewModel(private val playlistsInteractor: PlaylistsInt
     private fun loadPlaylistItems() {
         viewModelScope.launch {
             val playlists = playlistsInteractor.getAllPlaylistWithTracks()
-            state.value = BottomSheetPlaylistState.Loading(playlists)
+            _state.value = BottomSheetPlaylistState.Loading(playlists)
         }
     }
 }

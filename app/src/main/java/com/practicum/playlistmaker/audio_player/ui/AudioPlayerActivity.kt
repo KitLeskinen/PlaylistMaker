@@ -189,5 +189,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
     }
 
+    fun collapseBottomSheet() {
+        BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+    }
 
 }

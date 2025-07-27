@@ -16,6 +16,6 @@ interface PlaylistRepository {
 
     suspend fun getAllPlaylistsWithTracks() : List<Playlist>
 
-    suspend fun addTrack(track: Track, playlist: Playlist)
+    suspend fun addTrack(track: Track, playlist: Playlist) : Long
 
 }
