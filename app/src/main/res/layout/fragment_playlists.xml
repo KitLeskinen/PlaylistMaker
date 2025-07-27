@@ -25,7 +25,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:visibility="invisible"
+        />
 
     <ImageView
         android:id="@+id/errorIcon"

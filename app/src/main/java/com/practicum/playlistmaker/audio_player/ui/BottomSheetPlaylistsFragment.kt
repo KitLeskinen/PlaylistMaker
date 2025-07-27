@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.audio_player.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,7 +62,6 @@ class BottomSheetPlaylistsFragment() : Fragment() {
     }
 
     private fun load(playlists: List<Playlist>) {
-        Log.d("TAG", "load: $selectedTrack")
         binding.playlistRecyclerView.adapter = BottomSheetPlaylistAdapter(playlists, { playlist ->
             Toast.makeText(
                 requireContext(),
@@ -77,14 +75,12 @@ class BottomSheetPlaylistsFragment() : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.updatePlaylistItems()
-        Log.d("TAG", "onResume: $selectedTrack")
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         selectedTrack = arguments?.getSerializable(SELECTED_TRACK_ID_KEY) as? Track
-        Log.d("TAG", "onCreate: $selectedTrack")
     }
 
 }

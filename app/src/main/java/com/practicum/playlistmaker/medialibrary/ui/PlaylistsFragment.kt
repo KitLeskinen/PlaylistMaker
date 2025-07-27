@@ -52,7 +52,15 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun load(playlists: List<Playlist>) {
-        binding.playlistRecyclerView.adapter = PlaylistAdapter(playlists)
+        if(playlists.isEmpty()){
+            binding.playlistRecyclerView.visibility = View.GONE
+            binding.errorIcon.visibility = View.VISIBLE
+            binding.errorMessage.visibility = View.VISIBLE
+        } else{
+            binding.playlistRecyclerView.visibility = View.VISIBLE
+            binding.playlistRecyclerView.adapter = PlaylistAdapter(playlists)
+
+        }
     }
 
     override fun onResume() {
