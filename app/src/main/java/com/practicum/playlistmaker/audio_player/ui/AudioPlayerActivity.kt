@@ -172,6 +172,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
 
+        binding.addToPlaylistHeader.setOnClickListener(){
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
         binding.newPlaylistButton.setOnClickListener() {
             Log.d("TAG", "onCreate:   binding.addToPlaylistButton.setOnClickListener")
 
