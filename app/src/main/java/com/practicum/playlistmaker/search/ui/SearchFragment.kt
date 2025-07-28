@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ class SearchFragment : Fragment() {
             showAudioPlayerActivity(track)
             viewModel.addTrackToHistory(track)
             viewModel.saveTracksHistory()
-            Log.d("DEBUG", "Track added to history: ${track.trackName}")
             Toast.makeText(
                 requireContext(),
                 "${track.trackName} - ${track.artistName} добавлен",
@@ -76,7 +74,6 @@ class SearchFragment : Fragment() {
 
         binding.searchEditText.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                Log.d(TAG, "onCreate: hasFocus")
                 viewModel.searchEditTextClicked((view as EditText).text)
             }
         }
@@ -85,18 +82,14 @@ class SearchFragment : Fragment() {
             when (searchState) {
                 is SearchState.TextFieldClicked -> {
                     if (searchState.fieldIsEmpty) {
-                        Log.d(TAG, "fieldIsEmpty = true")
                         if (searchState.historyIsEmpty) {
-                            Log.d(TAG, "historyIsEmpty = true")
                             showHistory(false)
                         } else {
-                            Log.d(TAG, "historyIsEmpty = false")
                             setAdapter(searchState.history)
                             binding.searchRecyclerView.isVisible = true
                             showHistory(true)
                         }
                     } else {
-                        Log.d(TAG, "fieldIsEmpty = false")
                         binding.clearImageView.isVisible = true
 
                     }
@@ -118,7 +111,6 @@ class SearchFragment : Fragment() {
 
         }
 
-        Log.d("Search", "onCreate searchQuery: $searchQuery")
 
         // clear search field
         binding.clearImageView.setOnClickListener() { view ->
@@ -185,12 +177,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun clearHistory() {
-        Log.d(TAG, "clearHistory: ")
         showHistory(false)
     }
 
     private fun showResult(list: List<Track>) {
-        Log.d(TAG, "showResult: $list")
         binding.progressBar.visibility = View.GONE
         showError(false, null)
         binding.searchRecyclerView.isVisible = true
@@ -204,7 +194,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showError(show: Boolean, message: String?) {
-        Log.d(TAG, "showError: $message")
         binding.progressBar.visibility = View.GONE
         binding.searchRecyclerView.visibility = View.GONE
         if (show) {
@@ -222,13 +211,11 @@ class SearchFragment : Fragment() {
 
     private fun search() {
         showError(false, null)
-        Log.d(TAG, "search: ")
         binding.progressBar.isVisible = true
         showHistory(false)
     }
 
     private fun loading(history: List<Track>) {
-        Log.d(TAG, "loading: $history")
         binding.searchRecyclerView.adapter = SearchAdapter(history) { track ->
             showAudioPlayerActivity(track)
         }

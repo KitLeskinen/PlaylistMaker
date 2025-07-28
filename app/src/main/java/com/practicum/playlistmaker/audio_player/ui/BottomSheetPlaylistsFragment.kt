@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.audio_player.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +64,6 @@ class BottomSheetPlaylistsFragment() : Fragment() {
     }
 
     private fun trackAdded(result: Long, playlistName: String, playlists: List<Playlist>?) {
-        Log.d("TAG", "result: $result")
         if (result == -1L) {
             Toast.makeText(
                 requireContext(),

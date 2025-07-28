@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,8 +80,6 @@ class NewPlaylistFragment : Fragment() {
                     binding.addPlayListCoverButton.scaleType = ImageView.ScaleType.CENTER_CROP
                     isPlaylistCoverChanged = true
                     viewModel.saveCoverImage(uri)
-                } else {
-                    Log.d("TAG", "onViewCreated: no media selected")
                 }
             }
 
@@ -98,7 +95,6 @@ class NewPlaylistFragment : Fragment() {
         }
 
         binding.backImageView.setNavigationOnClickListener() {
-            Log.d("BACK_CLICK", "Нажатие на navigationIcon")
             if (checkIsCoverOrContentFilled()) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Завершить создание плейлиста?")

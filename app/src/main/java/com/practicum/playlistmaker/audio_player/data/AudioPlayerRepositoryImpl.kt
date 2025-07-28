@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.audio_player.data
 
 import android.media.MediaPlayer
-import android.util.Log
 import com.practicum.playlistmaker.audio_player.domain.AudioPlayerRepository
 import com.practicum.playlistmaker.common.data.domain.OnPreparedAudioPlayerListener
 import com.practicum.playlistmaker.common.data.domain.api.OnCompletionListener
@@ -15,7 +14,6 @@ class AudioPlayerRepositoryImpl(private val track: Track) : AudioPlayerRepositor
 
 
     override fun prepare(previewUrl: String, onPreparedAudioPlayerListener: OnPreparedAudioPlayerListener, onCompletionListener: OnCompletionListener){
-        Log.d("AUDIO", "Track previewUrl: '${track.previewUrl}'")
         mediaPlayer.reset()
         mediaPlayer.setDataSource(previewUrl)
 

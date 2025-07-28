@@ -3,11 +3,9 @@ package com.practicum.playlistmaker.audio_player.ui
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -84,7 +82,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             "mm:ss",
             Locale.getDefault()
         ).format(position)
-        Log.d("POSITION", "onCreate: $position")
     }
 
 
@@ -117,7 +114,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             val currentDestinationId = navController.currentDestination?.id
 
             if (currentDestinationId == R.id.audioplayerBottomSheetFragmentPlaylists) {
-                Log.d("BACK", "Находимся в NewPlaylistFragment")
                 navController.popBackStack()
                 binding.newPlaylistButton.visibility = View.VISIBLE
                 binding.addToPlaylistHeader.visibility = View.VISIBLE
@@ -177,7 +173,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         binding.newPlaylistButton.setOnClickListener() {
-            Log.d("TAG", "onCreate:   binding.addToPlaylistButton.setOnClickListener")
 
 
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
