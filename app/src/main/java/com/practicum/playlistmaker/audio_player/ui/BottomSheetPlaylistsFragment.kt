@@ -58,13 +58,13 @@ class BottomSheetPlaylistsFragment() : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is BottomSheetPlaylistState.Loading -> load(state.playlists)
-                is BottomSheetPlaylistState.TrackAdded -> trackAdded(state.result, state.name)
+                is BottomSheetPlaylistState.TrackAdded -> trackAdded(state.result, state.name, state.playlists)
             }
         }
 
     }
 
-    private fun trackAdded(result: Long, playlistName: String) {
+    private fun trackAdded(result: Long, playlistName: String, playlists: List<Playlist>?) {
         Log.d("TAG", "result: $result")
         if (result == -1L) {
             Toast.makeText(
@@ -73,6 +73,9 @@ class BottomSheetPlaylistsFragment() : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
+            if (playlists != null) {
+                load(playlists)
+            }
             Toast.makeText(
                 requireContext(),
                 "${resources.getString(R.string.added_to_playlist)} ${playlistName}",

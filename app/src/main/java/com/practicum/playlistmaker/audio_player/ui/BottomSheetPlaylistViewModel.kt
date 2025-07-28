@@ -23,7 +23,7 @@ class BottomSheetPlaylistViewModel(private val playlistsInteractor: PlaylistsInt
     fun addTrackToPlayList(selectedTrack: Track, playlist: Playlist) {
         viewModelScope.launch {
             val result = playlistsInteractor.addTrack(selectedTrack, playlist)
-            _state.value = BottomSheetPlaylistState.TrackAdded(result, playlist.name)
+            _state.value = BottomSheetPlaylistState.TrackAdded(result, playlist.name, playlistsInteractor.getAllPlaylistWithTracks())
         }
     }
 
