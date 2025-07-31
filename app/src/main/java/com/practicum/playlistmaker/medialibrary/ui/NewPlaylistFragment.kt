@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
@@ -94,7 +96,7 @@ class NewPlaylistFragment : Fragment() {
                     || binding.playlistDescriptionEditText.text.isNotEmpty()
         }
 
-        binding.backImageView.setNavigationOnClickListener() {
+        fun backAction(){
             if (checkIsCoverOrContentFilled()) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Завершить создание плейлиста?")
@@ -105,10 +107,19 @@ class NewPlaylistFragment : Fragment() {
                     .setNegativeButton("Отмена") { _, _ ->
                     }.show()
             } else {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                findNavController().popBackStack()
             }
         }
-        
+
+
+        binding.backImageView.setNavigationOnClickListener() {
+            backAction()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            backAction()
+        }
+
         binding.createPlaylistButton.setOnClickListener {
             val playlist = Playlist(
                 id = 0,
