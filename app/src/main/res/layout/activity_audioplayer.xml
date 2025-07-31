@@ -281,6 +281,7 @@
 
 
         <View
+            android:id="@+id/swipeLine"
             android:layout_width="50dp"
             android:layout_height="4dp"
             android:layout_marginTop="8dp"

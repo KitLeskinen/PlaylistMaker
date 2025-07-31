@@ -23,9 +23,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewPlaylistFragment : Fragment() {
 
-    var isPlaylistCoverChanged = false
+    private var isPlaylistCoverChanged = false
 
-    var coverUri: Uri? = null
+    private var coverUri: Uri? = null
 
     companion object {
         fun newInstance() = NewPlaylistFragment()
@@ -96,13 +96,13 @@ class NewPlaylistFragment : Fragment() {
                     || binding.playlistDescriptionEditText.text.isNotEmpty()
         }
 
-        fun backAction(){
+        fun backAction() {
             if (checkIsCoverOrContentFilled()) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Завершить создание плейлиста?")
                     .setMessage("Все несохраненные данные будут потеряны")
                     .setPositiveButton("Завершить") { _, _ ->
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                        findNavController().popBackStack()
                     }
                     .setNegativeButton("Отмена") { _, _ ->
                     }.show()
@@ -116,7 +116,7 @@ class NewPlaylistFragment : Fragment() {
             backAction()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             backAction()
         }
 
@@ -130,8 +130,12 @@ class NewPlaylistFragment : Fragment() {
             )
 
             viewModel.savePlaylist(playlist)
-            Toast.makeText(requireContext(), "Плейлист ${binding.playlistNameEditText.text} создан", Toast.LENGTH_LONG).show()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            Toast.makeText(
+                requireContext(),
+                "Плейлист ${binding.playlistNameEditText.text} создан",
+                Toast.LENGTH_LONG
+            ).show()
+            findNavController().popBackStack()
         }
 
     }

@@ -110,20 +110,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
 
         onBackPressedDispatcher.addCallback(this) {
-
-            val currentDestinationId = navController.currentDestination?.id
-
-            if (currentDestinationId == R.id.audioplayerBottomSheetFragmentPlaylists) {
-                navController.popBackStack()
-                binding.newPlaylistButton.visibility = View.VISIBLE
-                binding.addToPlaylistHeader.visibility = View.VISIBLE
-                BottomSheetBehavior.from(binding.bottomSheet).state =
-                    BottomSheetBehavior.STATE_COLLAPSED
-
-
-            } else {
-                finish()
-            }
+            finish()
         }
 
         binding.mediaButton.setOnClickListener {
@@ -168,23 +155,36 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
 
-        binding.addToPlaylistButton.setOnClickListener(){
+        binding.addToPlaylistButton.setOnClickListener() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.audioplayerBottomSheetFragmentPlaylists -> {
+                    binding.newPlaylistButton.visibility = View.VISIBLE
+                    binding.addToPlaylistHeader.visibility = View.VISIBLE
+                    binding.swipeLine.visibility = View.VISIBLE
+                    hideBottomSheet()
+                }
+
+                R.id.fragmentBottomSheetNewPlaylist -> {
+                    binding.newPlaylistButton.visibility = View.GONE
+                    binding.addToPlaylistHeader.visibility = View.GONE
+                    binding.swipeLine.visibility = View.GONE
+                }
+
+            }
+
+        }
+
         binding.newPlaylistButton.setOnClickListener() {
-
-
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            binding.newPlaylistButton.visibility = View.GONE
             binding.fragmentBottomSheet.visibility = View.VISIBLE
-            binding.addToPlaylistHeader.visibility = View.GONE
             val bundle = Bundle().apply {
                 putSerializable(BottomSheetPlaylistsFragment.SELECTED_TRACK_ID_KEY, selectedTrack)
             }
             navController.navigate(R.id.fragmentBottomSheetNewPlaylist, bundle)
-
-
         }
     }
 
