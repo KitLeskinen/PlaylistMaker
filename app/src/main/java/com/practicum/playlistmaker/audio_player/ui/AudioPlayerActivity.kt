@@ -103,7 +103,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         val bundle = Bundle().apply {
             putSerializable(BottomSheetPlaylistsFragment.SELECTED_TRACK_ID_KEY, selectedTrack)
         }
-
+        BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_HIDDEN
         navController.setGraph(R.navigation.audioplayer_nav_graph, bundle)
         navController.navigate(R.id.audioplayerBottomSheetFragmentPlaylists, bundle)
 
@@ -168,7 +168,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
 
-        binding.addToPlaylistHeader.setOnClickListener(){
+        binding.addToPlaylistButton.setOnClickListener(){
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
@@ -188,8 +188,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
     }
 
-    fun collapseBottomSheet() {
-        BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+    fun hideBottomSheet() {
+        BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_HIDDEN
     }
 
 }

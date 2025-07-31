@@ -79,7 +79,7 @@ class BottomSheetPlaylistsFragment() : Fragment() {
                 "${resources.getString(R.string.added_to_playlist)} ${playlistName}",
                 Toast.LENGTH_SHORT
             ).show()
-            (activity as? AudioPlayerActivity)?.collapseBottomSheet()
+            (activity as? AudioPlayerActivity)?.hideBottomSheet()
         }
     }
 
