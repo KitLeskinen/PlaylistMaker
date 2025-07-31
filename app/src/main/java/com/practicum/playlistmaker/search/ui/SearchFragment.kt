@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.R
@@ -56,11 +55,6 @@ class SearchFragment : Fragment() {
             showAudioPlayerActivity(track)
             viewModel.addTrackToHistory(track)
             viewModel.saveTracksHistory()
-            Toast.makeText(
-                requireContext(),
-                "${track.trackName} - ${track.artistName} добавлен",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 
