@@ -15,4 +15,5 @@ interface FavoritesInteractor {
 
     suspend fun isFavoriteTrack(track: Track): Boolean
 
+
 }

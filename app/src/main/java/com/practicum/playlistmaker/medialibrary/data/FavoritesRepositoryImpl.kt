@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.medialibrary.data
 
+import android.content.Context
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.medialibrary.data.converters.TrackDbConvertor
 import com.practicum.playlistmaker.medialibrary.data.db.AppDataBase
@@ -9,15 +10,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 
-class FavoritesRepositoryImpl(private val appDataBase: AppDataBase, private val trackDbConvertor: TrackDbConvertor) : FavoritesRepository {
+
+class FavoritesRepositoryImpl(
+    private val appDataBase: AppDataBase,
+    private val trackDbConvertor: TrackDbConvertor,
+    context: Context
+) : FavoritesRepository {
 
     override fun getFavoriteTracks(): Flow<List<Track>> = flow {
-        val tracks = appDataBase.trackDao().getTracks()
+        val tracks = appDataBase.trackDao().getFavoriteTracks()
         emit((convertFromTrackEntity(tracks)))
 
     }
 
-    private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track>{
+    private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
         return tracks.map { track -> trackDbConvertor.map(track) }
     }
 
@@ -41,4 +47,5 @@ class FavoritesRepositoryImpl(private val appDataBase: AppDataBase, private val 
         val tracks: List<TrackEntity> = appDataBase.trackDao().getTrack(track.trackId)
         return tracks.isNotEmpty()
     }
+
 }

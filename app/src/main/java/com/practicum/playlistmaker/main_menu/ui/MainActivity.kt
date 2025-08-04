@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.main_menu.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
 import androidx.navigation.fragment.NavHostFragment
@@ -19,6 +20,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        navController.addOnDestinationChangedListener{ _, destination, _ ->
+            when(destination.id == R.id.fragmentNewPlaylist){
+                true -> bottomNavigationView.visibility = View.GONE
+                false -> bottomNavigationView.visibility = View.VISIBLE
+            }
+
+        }
         bottomNavigationView.setupWithNavController(navController)
     }
 

@@ -3,11 +3,14 @@ package com.practicum.playlistmaker.audio_player.ui
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.util.Log
+import android.view.View
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.Tools
 import com.practicum.playlistmaker.common.data.domain.entity.Track
@@ -30,14 +33,12 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private var previewUrl: String? = null
 
-
     private fun preparePlayer() {
         binding.mediaButton.isEnabled = true
     }
 
     private fun startPlayer() {
         binding.mediaButton.setImageResource(R.drawable.pause_button)
-
     }
 
     private fun pausePlayer() {
@@ -54,7 +55,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onPause()
         pausePlayer()
     }
-
 
     private fun fillInPlayerFields(track: Track) {
         val formatFateFromJSON = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -82,7 +82,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             "mm:ss",
             Locale.getDefault()
         ).format(position)
-        Log.d("POSITION", "onCreate: $position")
     }
 
 
@@ -91,8 +90,26 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioplayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentBottomSheet) as NavHostFragment
+        val navController = navHostFragment.navController
+
         selectedTrack = intent.getSerializableExtra(EXTRA_SELECTED_TRACK) as Track
         binding.backImageView.setNavigationOnClickListener {
+            finish()
+        }
+
+
+        val bundle = Bundle().apply {
+            putSerializable(BottomSheetPlaylistsFragment.SELECTED_TRACK_ID_KEY, selectedTrack)
+        }
+        BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_HIDDEN
+        navController.setGraph(R.navigation.audioplayer_nav_graph, bundle)
+        navController.navigate(R.id.audioplayerBottomSheetFragmentPlaylists, bundle)
+
+
+
+        onBackPressedDispatcher.addCallback(this) {
             finish()
         }
 
@@ -135,7 +152,44 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.favoritesButton.setOnClickListener {
             viewModel.switchFavorites()
         }
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+
+        binding.addToPlaylistButton.setOnClickListener() {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.audioplayerBottomSheetFragmentPlaylists -> {
+                    binding.newPlaylistButton.visibility = View.VISIBLE
+                    binding.addToPlaylistHeader.visibility = View.VISIBLE
+                    binding.swipeLine.visibility = View.VISIBLE
+                    hideBottomSheet()
+                }
+
+                R.id.fragmentBottomSheetNewPlaylist -> {
+                    binding.newPlaylistButton.visibility = View.GONE
+                    binding.addToPlaylistHeader.visibility = View.GONE
+                    binding.swipeLine.visibility = View.GONE
+                }
+
+            }
+
+        }
+
+        binding.newPlaylistButton.setOnClickListener() {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            binding.fragmentBottomSheet.visibility = View.VISIBLE
+            val bundle = Bundle().apply {
+                putSerializable(BottomSheetPlaylistsFragment.SELECTED_TRACK_ID_KEY, selectedTrack)
+            }
+            navController.navigate(R.id.fragmentBottomSheetNewPlaylist, bundle)
+        }
     }
 
+    fun hideBottomSheet() {
+        BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_HIDDEN
+    }
 
 }

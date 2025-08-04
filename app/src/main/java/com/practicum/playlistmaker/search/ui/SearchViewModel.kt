@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.ui
 
 import android.text.Editable
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,19 +45,11 @@ class SearchViewModel(
 
         if (history.size > 10) history.removeAt(0)
 
-        Log.d("addTrackToHistory", "History List")
-        history.forEachIndexed { index, trackItem ->
-            Log.d(
-                TAG,
-                "addTrackToHistory: $index: ${trackItem.trackName} - ${trackItem.artistName}"
-            )
-        }
-    }
+       }
 
 
     fun saveTracksHistory() {
         historyInteractor.saveTracksHistory(history)
-        Log.d(TAG, "onCreate: ${historyInteractor.getTracksHistory()}")
 
     }
 
@@ -95,7 +86,6 @@ class SearchViewModel(
             return
         }
         lastSearch = query
-        Log.d(TAG, "searchDebounce: ")
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
@@ -106,7 +96,6 @@ class SearchViewModel(
 
 
     fun searchEditTextClicked(text: Editable) {
-        Log.d(TAG, "searchEditTextClicked: ")
         if (text.isEmpty()) {
             searchJob?.cancel()
         }
@@ -120,7 +109,6 @@ class SearchViewModel(
     }
 
     fun deleteResponse() {
-        Log.d(TAG, "deleteResponse: ")
         searchJob?.cancel()
         searchState.value = SearchState.TextFieldClicked(true, history.isEmpty(), history)
     }

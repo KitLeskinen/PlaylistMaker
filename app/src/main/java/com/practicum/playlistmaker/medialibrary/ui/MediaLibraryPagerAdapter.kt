@@ -17,7 +17,7 @@ class MediaLibraryPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
         return when (position) {
             0 -> FavoritesFragment.newInstance()
             else -> {
-                FragmentPlaylists.newInstance()
+                PlaylistsFragment.newInstance()
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.data
 
-import android.util.Log
 import com.practicum.playlistmaker.common.data.NetworkClient
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.common.data.domain.entity.TrackResponse
@@ -13,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) :
     TracksRepository {
-    override fun searchTracks(expression: String): Flow<TrackResponse> = flow{
+    override fun searchTracks(expression: String): Flow<TrackResponse> = flow {
 
         val response = networkClient.doRequestSuspend(TracksSearchRequest(expression))
 
@@ -34,11 +33,9 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) :
                     previewUrl = it.previewUrl,
                 )
             }
-            Log.d("NETWORK RESPONSE", "searchTracks: ${response.resultCode}")
             emit(TrackResponse(mappedTracks, false, ""))
 
         } else {
-            Log.d("NETWORK RESPONSE", "searchTracks: ${response.resultCode}")
             emit(TrackResponse(emptyList(), true, response.resultCode.toString()))
         }
     }

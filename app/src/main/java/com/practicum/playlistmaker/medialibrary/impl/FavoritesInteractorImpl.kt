@@ -17,7 +17,7 @@ class FavoritesInteractorImpl(private val repository: FavoritesRepository) : Fav
 
     override suspend fun deleteFavoriteTrack(track: Track) {
         repository.deleteFavoriteTrack(track)
-    }
+}
 
     override fun getFavoriteIds(): Flow<Int> {
         return repository.getFavoriteIds()
@@ -26,5 +26,6 @@ class FavoritesInteractorImpl(private val repository: FavoritesRepository) : Fav
     override suspend fun isFavoriteTrack(track: Track): Boolean {
         return repository.isFavoriteTrack(track)
     }
+
 
 }
