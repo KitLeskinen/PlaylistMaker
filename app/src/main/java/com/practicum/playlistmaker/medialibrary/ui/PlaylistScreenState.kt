@@ -4,5 +4,5 @@ import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 
 
 sealed interface PlaylistScreenState {
-    data class Loading(val playlist: Playlist) : PlaylistScreenState
+    data class Loading(val playlist: Playlist, val minutes: Long) : PlaylistScreenState
 }

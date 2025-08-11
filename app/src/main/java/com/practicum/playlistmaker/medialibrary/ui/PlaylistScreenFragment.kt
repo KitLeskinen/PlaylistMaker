@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.practicum.playlistmaker.Tools
 import com.practicum.playlistmaker.audio_player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.common.data.domain.entity.Track
@@ -43,18 +44,20 @@ class PlaylistScreenFragment : Fragment() {
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
-                is PlaylistScreenState.Loading -> fillPlaylistViews(state.playlist)
+                is PlaylistScreenState.Loading -> fillPlaylistViews(state.playlist, state.minutes)
             }
         }
 
     }
 
-    private fun fillPlaylistViews(playlist: Playlist) {
+    private fun fillPlaylistViews(playlist: Playlist, minutes: Long) {
         binding.playlistNameTextView.text = playlist.name
         binding.playlistDescriptionTextView.text = playlist.description
         binding.coverImage.setImageURI(Uri.parse(playlist.coverUri))
         binding.playlistTracksRecyclerView.adapter =
             playlist.trackList?.let { FavoritesAdapter(it) { track -> showAudioPlayerActivity(track) } }
+        val tracksCount: Int = playlist.trackList?.size ?: 0
+        binding.playlistDurationAndCountTextView.text = "$tracksCount ${Tools.declensions(requireContext(), tracksCount)} • $minutes ${Tools.declensionsMinutes(requireContext(), minutes.toInt())}"
     }
 
     private fun showAudioPlayerActivity(track: Track) {

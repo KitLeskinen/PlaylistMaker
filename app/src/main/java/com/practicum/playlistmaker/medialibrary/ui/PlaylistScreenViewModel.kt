@@ -16,8 +16,17 @@ class PlaylistScreenViewModel(private val playlistsInteractor: PlaylistsInteract
         return state
     }
 
+    fun countMinutes(playlist: Playlist) : Long {
+        var millis: Long = 0
+        playlist.trackList?.forEach { track ->
+            millis += track.trackTime
+
+        }
+        return millis / 60000
+    }
+
     fun loadPlaylist(playlist: Playlist){
-        state.value = PlaylistScreenState.Loading(playlist)
+        state.value = PlaylistScreenState.Loading(playlist, countMinutes(playlist))
     }
 
 //    fun updatePlaylistItems() {
