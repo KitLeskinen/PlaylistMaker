@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.practicum.playlistmaker.R
@@ -52,14 +53,18 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun load(playlists: List<Playlist>) {
-        if(playlists.isEmpty()){
+        if (playlists.isEmpty()) {
             binding.playlistRecyclerView.visibility = View.GONE
             binding.errorIcon.visibility = View.VISIBLE
             binding.errorMessage.visibility = View.VISIBLE
-        } else{
+        } else {
             binding.playlistRecyclerView.visibility = View.VISIBLE
-            binding.playlistRecyclerView.adapter = PlaylistAdapter(playlists){ playlist ->
-                findNavController().navigate(R.id.playlistScreenFragment)
+            binding.playlistRecyclerView.adapter = PlaylistAdapter(playlists) { playlist ->
+                val directions: NavDirections =
+                    MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlaylistScreenFragment(
+                        playlist
+                    )
+                findNavController().navigate(directions)
             }
 
         }

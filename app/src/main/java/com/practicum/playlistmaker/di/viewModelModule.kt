@@ -5,6 +5,7 @@ import com.practicum.playlistmaker.audio_player.ui.BottomSheetPlaylistViewModel
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.medialibrary.ui.FavoritesViewModel
 import com.practicum.playlistmaker.medialibrary.ui.NewPlaylistViewModel
+import com.practicum.playlistmaker.medialibrary.ui.PlaylistScreenViewModel
 import com.practicum.playlistmaker.medialibrary.ui.PlaylistViewModel
 import com.practicum.playlistmaker.search.ui.SearchViewModel
 import com.practicum.playlistmaker.settings.ui.SettingsViewModel
@@ -46,5 +47,11 @@ val viewModelModule = module {
 
     viewModel{
         BottomSheetPlaylistViewModel(playlistsInteractor = get())
+    }
+
+    viewModel{
+        PlaylistScreenViewModel(
+            playlistsInteractor = get()
+        )
     }
 }
