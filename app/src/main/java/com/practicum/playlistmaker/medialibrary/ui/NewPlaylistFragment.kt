@@ -25,7 +25,7 @@ class NewPlaylistFragment : Fragment() {
 
     private var isPlaylistCoverChanged = false
 
-    private var coverUri: Uri? = null
+    private var coverUri: String? = null
 
     companion object {
         fun newInstance() = NewPlaylistFragment()
@@ -53,7 +53,7 @@ class NewPlaylistFragment : Fragment() {
                 NewPlayListState.EmptyFields -> enableButton(false)
                 NewPlayListState.FilledFields -> enableButton(true)
                 NewPlayListState.Loading -> enableButton(false)
-                is NewPlayListState.CoverFilled -> fillCover(state.uri)
+                is NewPlayListState.CoverFilled -> fillCover(state.uriString)
             }
 
         }
@@ -81,7 +81,7 @@ class NewPlaylistFragment : Fragment() {
                     binding.addPlayListCoverButton.setImageURI(uri)
                     binding.addPlayListCoverButton.scaleType = ImageView.ScaleType.CENTER_CROP
                     isPlaylistCoverChanged = true
-                    viewModel.saveCoverImage(uri)
+                    viewModel.saveCoverImage(uri.toString())
                 }
             }
 
@@ -140,9 +140,9 @@ class NewPlaylistFragment : Fragment() {
 
     }
 
-    private fun fillCover(uri: Uri) {
-        coverUri = uri
-        binding.addPlayListCoverButton.setImageURI(uri)
+    private fun fillCover(uriString: String) {
+        coverUri = uriString
+        binding.addPlayListCoverButton.setImageURI(Uri.parse(uriString))
     }
 
 

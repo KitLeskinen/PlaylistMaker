@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.ui
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,8 +35,8 @@ class NewPlaylistViewModel(private val playlistsInteractor: PlaylistsInteractor)
 
     }
 
-    fun saveCoverImage(uri: Uri){
-        val uri = playlistsInteractor.saveCoverImage(uri)
+    fun saveCoverImage(uriString: String){
+        val uri = playlistsInteractor.saveCoverImage(uriString)
         state.value = NewPlayListState.CoverFilled(uri)
     }
 

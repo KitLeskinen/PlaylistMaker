@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.impl
 
-import android.net.Uri
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.medialibrary.domain.PlaylistRepository
@@ -16,8 +15,8 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         playlistRepository.savePlaylist(playlist)
     }
 
-    override fun saveCoverImage(uri: Uri): Uri {
-        return playlistRepository.saveCoverImage(uri)
+    override fun saveCoverImage(uriString: String): String {
+        return playlistRepository.saveCoverImage(uriString)
     }
 
     override suspend fun getAllPlaylistWithTracks(): List<Playlist> {

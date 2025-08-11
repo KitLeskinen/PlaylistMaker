@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.medialibrary.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,7 +52,7 @@ class PlaylistScreenFragment : Fragment() {
     private fun fillPlaylistViews(playlist: Playlist) {
         binding.playlistNameTextView.text = playlist.name
         binding.playlistDescriptionTextView.text = playlist.description
-        binding.coverImage.setImageURI(playlist.coverUri)
+        binding.coverImage.setImageURI(Uri.parse(playlist.coverUri))
         binding.playlistTracksRecyclerView.adapter =
             playlist.trackList?.let { FavoritesAdapter(it) { track -> showAudioPlayerActivity(track) } }
     }
