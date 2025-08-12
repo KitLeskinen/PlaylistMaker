@@ -37,6 +37,12 @@ interface PlaylistDao {
 
     @Query("SELECT COUNT(*) FROM playlists_tracks WHERE trackId = :trackId")
     suspend fun getTrackMentionsFromPlaylists(trackId: Long): Int
+
+    @Query("DELETE FROM playlists_tracks WHERE playlistId = :playlistId")
+    suspend fun deletePlaylistMentionsFromPlaylistsCrossTracks(playlistId: Long): Int
+
+    @Query("DELETE FROM playlist_table WHERE id = :playlistId")
+    suspend fun removePlayList(playlistId: Long)
 }
 
 

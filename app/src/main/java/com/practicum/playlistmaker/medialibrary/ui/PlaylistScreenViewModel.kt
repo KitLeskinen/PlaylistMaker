@@ -52,4 +52,10 @@ class PlaylistScreenViewModel(private val playlistsInteractor: PlaylistsInteract
 
         }
     }
+
+    fun deletePlaylist(playlistId: Long) {
+        viewModelScope.launch {
+            playlistsInteractor.deletePlaylist(playlistId)
+        }
+    }
 }

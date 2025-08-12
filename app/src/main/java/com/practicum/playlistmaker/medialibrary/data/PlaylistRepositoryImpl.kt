@@ -86,6 +86,10 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
         }
     }
 
+    override suspend fun deletePlaylist(playlistId: Long) {
+        appDataBase.playlistDao().removePlayList(playlistId)
+        appDataBase.playlistDao().deletePlaylistMentionsFromPlaylistsCrossTracks(playlistId)
+    }
 
 
 }

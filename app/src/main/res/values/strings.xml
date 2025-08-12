@@ -5,6 +5,8 @@
     <string name="preferences">Настройки</string>
     <string name="dark_mode">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_info">Редактировать информацию</string>
     <string name="write_to_support">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="Settings">Настройки</string>
@@ -44,4 +46,8 @@
     <string name="add_to_playlist">Добавить в плейлист</string>
     <string name="added_to_playlist">Добавлено в плейлист</string>
     <string name="already_added_to_playlist">Трек уже добавлен в плейлист </string>
+    <string name="in_this_playlist_no_tracks_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="do_you_want_to_delete_track">Хотите удалить трек?</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="do_you_want_to_delete_playlist">Хотите удалить плейлист</string>
 </resources>
