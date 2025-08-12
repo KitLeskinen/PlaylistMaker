@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.medialibrary.ui
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.Tools
 import com.practicum.playlistmaker.audio_player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
@@ -50,14 +52,41 @@ class PlaylistScreenFragment : Fragment() {
 
     }
 
+    private fun dialogToDeleteTrack(track: Track){
+        MaterialAlertDialogBuilder(requireContext()).setMessage("Хотите удалить трек?").setPositiveButton("Да", object: DialogInterface.OnClickListener{
+            override fun onClick(p0: DialogInterface?, p1: Int) {
+                viewModel.deleteTrack(track)
+
+            }
+        }).setNeutralButton("Нет", object : DialogInterface.OnClickListener{
+            override fun onClick(p0: DialogInterface?, p1: Int) {
+
+            }
+        }).show()
+    }
+
     private fun fillPlaylistViews(playlist: Playlist, minutes: Long) {
         binding.playlistNameTextView.text = playlist.name
         binding.playlistDescriptionTextView.text = playlist.description
         binding.coverImage.setImageURI(Uri.parse(playlist.coverUri))
         binding.playlistTracksRecyclerView.adapter =
-            playlist.trackList?.let { FavoritesAdapter(it) { track -> showAudioPlayerActivity(track) } }
+            playlist.trackList?.let {
+                PlaylistScreenAdapter(
+                    it,
+                    onLongClick = { track ->
+                        dialogToDeleteTrack(track)
+                    },
+                    onClick = { track -> showAudioPlayerActivity(track) }
+
+                )
+            }
         val tracksCount: Int = playlist.trackList?.size ?: 0
-        binding.playlistDurationAndCountTextView.text = "$tracksCount ${Tools.declensions(requireContext(), tracksCount)} • $minutes ${Tools.declensionsMinutes(requireContext(), minutes.toInt())}"
+        binding.playlistDurationAndCountTextView.text = "$tracksCount ${
+            Tools.declensions(
+                requireContext(),
+                tracksCount
+            )
+        } • $minutes ${Tools.declensionsMinutes(requireContext(), minutes.toInt())}"
     }
 
     private fun showAudioPlayerActivity(track: Track) {

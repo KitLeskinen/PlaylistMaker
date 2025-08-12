@@ -11,10 +11,12 @@ interface PlaylistRepository {
 
     fun saveCoverImage(uriString: String): String
 
-    suspend fun getPlaylistWithTracks(playlistId: Long) : Playlist
+    suspend fun getPlaylistWithTracks(playlistId: Long): Playlist
 
-    suspend fun getAllPlaylistsWithTracks() : List<Playlist>
+    suspend fun getAllPlaylistsWithTracks(): List<Playlist>
 
-    suspend fun addTrack(track: Track, playlist: Playlist) : Long
+    suspend fun addTrack(track: Track, playlist: Playlist): Long
+
+    suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist)
 
 }

@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.medialibrary.data.db.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -30,6 +31,9 @@ interface PlaylistDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addTrack(crossRef: PlaylistTrackCrossRef) : Long
+
+    @Delete(entity = PlaylistTrackCrossRef::class)
+    suspend fun removeTrackFromPlaylist(crossRef: PlaylistTrackCrossRef)
 
 }
 
