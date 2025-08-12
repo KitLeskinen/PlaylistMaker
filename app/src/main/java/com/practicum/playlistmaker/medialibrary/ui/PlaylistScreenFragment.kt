@@ -4,11 +4,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,13 +34,13 @@ class PlaylistScreenFragment : Fragment() {
         binding.backImageView.setOnClickListener() {
             findNavController().popBackStack()
         }
-        Toast.makeText(requireContext(), "${args.playlist.trackList?.size}", Toast.LENGTH_SHORT)
-            .show()
-        viewModel.loadPlaylist(args.playlist)
+//        Toast.makeText(requireContext(), "${args.playlist.trackList?.size}", Toast.LENGTH_SHORT)
+//            .show()
+        viewModel.loadPlaylist(args.playlistId)
 
-        args.playlist.trackList?.forEach { track: Track ->
-            Log.d("TAG", "onViewCreated: $track")
-        }
+//        args.playlist.trackList?.forEach { track: Track ->
+//            Log.d("TAG", "onViewCreated: $track")
+//        }
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -52,13 +50,14 @@ class PlaylistScreenFragment : Fragment() {
 
     }
 
-    private fun dialogToDeleteTrack(track: Track){
-        MaterialAlertDialogBuilder(requireContext()).setMessage("Хотите удалить трек?").setPositiveButton("Да", object: DialogInterface.OnClickListener{
-            override fun onClick(p0: DialogInterface?, p1: Int) {
-                viewModel.deleteTrack(track)
+    private fun dialogToDeleteTrack(track: Track) {
+        MaterialAlertDialogBuilder(requireContext()).setMessage("Хотите удалить трек?")
+            .setPositiveButton("Да", object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    viewModel.deleteTrack(track)
 
-            }
-        }).setNeutralButton("Нет", object : DialogInterface.OnClickListener{
+                }
+            }).setNeutralButton("Нет", object : DialogInterface.OnClickListener {
             override fun onClick(p0: DialogInterface?, p1: Int) {
 
             }

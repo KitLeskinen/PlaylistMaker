@@ -62,7 +62,7 @@ class PlaylistsFragment : Fragment() {
             binding.playlistRecyclerView.adapter = PlaylistAdapter(playlists) { playlist ->
                 val directions: NavDirections =
                     MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlaylistScreenFragment(
-                        playlist
+                        playlist.id
                     )
                 findNavController().navigate(directions)
             }

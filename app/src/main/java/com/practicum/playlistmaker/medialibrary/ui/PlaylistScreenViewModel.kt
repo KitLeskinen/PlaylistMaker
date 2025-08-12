@@ -28,9 +28,11 @@ class PlaylistScreenViewModel(private val playlistsInteractor: PlaylistsInteract
         return millis / 60000
     }
 
-    fun loadPlaylist(playlist: Playlist) {
-        loadedPlaylist = playlist
-        state.value = PlaylistScreenState.Loading(playlist, countMinutes(playlist))
+    fun loadPlaylist(playlistId: Long) {
+        viewModelScope.launch {
+            loadedPlaylist = playlistsInteractor.getPlaylistWithTracks(playlistId)
+            state.value = PlaylistScreenState.Loading(loadedPlaylist, countMinutes(loadedPlaylist))
+        }
     }
 
 //    fun updatePlaylistItems() {
@@ -41,17 +43,11 @@ class PlaylistScreenViewModel(private val playlistsInteractor: PlaylistsInteract
 //        loadPlaylistItems()
 //    }
 
-    private fun loadPlaylistItems() {
-        viewModelScope.launch {
-//            val playlists = playlistsInteractor.getAllPlaylistWithTracks()
-//            state.value = PlaylistState.Loading(playlists)
-        }
-    }
 
     fun deleteTrack(track: Track) {
         viewModelScope.launch {
             playlistsInteractor.removeTrackFromPlaylist(track, loadedPlaylist)
-            loadedPlaylist =  playlistsInteractor.getPlaylistWithTracks(loadedPlaylist.id)
+            loadedPlaylist = playlistsInteractor.getPlaylistWithTracks(loadedPlaylist.id)
             state.value = PlaylistScreenState.Loading(loadedPlaylist, countMinutes(loadedPlaylist))
 
         }

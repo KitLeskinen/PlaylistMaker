@@ -36,8 +36,8 @@
         android:label="fragment_playlist_screen"
         tools:layout="@layout/fragment_playlist_screen" >
         <argument
-            android:name="playlist"
-            app:argType="com.practicum.playlistmaker.common.data.domain.entity.Playlist" />
+            android:name="playlistId"
+            app:argType="long" />
     </fragment>
 
 
