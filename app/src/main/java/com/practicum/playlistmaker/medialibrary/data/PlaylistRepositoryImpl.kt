@@ -81,6 +81,11 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
 
     override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
         appDataBase.playlistDao().removeTrackFromPlaylist(PlaylistTrackCrossRef(playlist.id, track.trackId))
+        if(appDataBase.playlistDao().getTrackMentionsFromPlaylists(track.trackId) == 0){
+            appDataBase.trackDao().delete(TrackDbConvertor().map(track))
+        }
     }
+
+
 
 }

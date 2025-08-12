@@ -35,6 +35,8 @@ interface PlaylistDao {
     @Delete(entity = PlaylistTrackCrossRef::class)
     suspend fun removeTrackFromPlaylist(crossRef: PlaylistTrackCrossRef)
 
+    @Query("SELECT COUNT(*) FROM playlists_tracks WHERE trackId = :trackId")
+    suspend fun getTrackMentionsFromPlaylists(trackId: Long): Int
 }
 
 
