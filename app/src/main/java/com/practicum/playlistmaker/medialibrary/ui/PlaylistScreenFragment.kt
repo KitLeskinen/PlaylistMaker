@@ -46,7 +46,8 @@ class PlaylistScreenFragment : Fragment() {
 
         viewModel.loadPlaylist(args.playlistId)
 
-        BottomSheetBehavior.from(binding.bottomSheetMeatballs).state = BottomSheetBehavior.STATE_HIDDEN
+        BottomSheetBehavior.from(binding.bottomSheetMeatballs).state =
+            BottomSheetBehavior.STATE_HIDDEN
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -61,7 +62,8 @@ class PlaylistScreenFragment : Fragment() {
 
 
         binding.meatballsMenu.setOnClickListener {
-            BottomSheetBehavior.from(binding.bottomSheetMeatballs).state = BottomSheetBehavior.STATE_COLLAPSED
+            BottomSheetBehavior.from(binding.bottomSheetMeatballs).state =
+                BottomSheetBehavior.STATE_COLLAPSED
         }
 
         binding.shareTextView
@@ -105,14 +107,13 @@ class PlaylistScreenFragment : Fragment() {
             share()
         }
 
-        binding.editInfoTextView.setOnClickListener{
+        binding.editInfoTextView.setOnClickListener {
 
             val directions: NavDirections =
                 MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlaylistScreenFragment(
                     playlist.id
                 )
             findNavController().navigate(directions)
-
 
 
         }
