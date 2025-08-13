@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.practicum.playlistmaker.medialibrary.data.db.entity.PlaylistEntity
 import com.practicum.playlistmaker.medialibrary.data.db.entity.PlaylistTrackCrossRef
 
@@ -43,6 +44,9 @@ interface PlaylistDao {
 
     @Query("DELETE FROM playlist_table WHERE id = :playlistId")
     suspend fun removePlayList(playlistId: Long)
+
+    @Update
+    suspend fun updatePlaylist(playlistEntity: PlaylistEntity)
 }
 
 

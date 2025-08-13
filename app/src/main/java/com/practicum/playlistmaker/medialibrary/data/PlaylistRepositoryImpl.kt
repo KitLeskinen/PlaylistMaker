@@ -43,7 +43,11 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
 
 
     override suspend fun savePlaylist(playlist: Playlist) {
-        appDataBase.playlistDao().savePlaylist(PlaylistDbConvertor().map(playlist))
+        appDataBase.playlistDao().savePlaylist(PlaylistDbConvertor().map(playlist, false))
+    }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        appDataBase.playlistDao().updatePlaylist(PlaylistDbConvertor().map(playlist, true))
     }
 
     override fun saveCoverImage(uriString: String): String {

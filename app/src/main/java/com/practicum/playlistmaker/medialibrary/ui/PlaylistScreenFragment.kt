@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -42,13 +43,10 @@ class PlaylistScreenFragment : Fragment() {
         binding.backImageView.setOnClickListener() {
             findNavController().popBackStack()
         }
-//        Toast.makeText(requireContext(), "${args.playlist.trackList?.size}", Toast.LENGTH_SHORT)
-//            .show()
+
         viewModel.loadPlaylist(args.playlistId)
 
-//        args.playlist.trackList?.forEach { track: Track ->
-//            Log.d("TAG", "onViewCreated: $track")
-//        }
+
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -105,6 +103,18 @@ class PlaylistScreenFragment : Fragment() {
         }
         binding.shareTextView.setOnClickListener {
             share()
+        }
+
+        binding.editInfoTextView.setOnClickListener{
+
+            val directions: NavDirections =
+                MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlaylistScreenFragment(
+                    playlist.id
+                )
+            findNavController().navigate(directions)
+
+
+
         }
 
         binding.deletePlaylistTextView.setOnClickListener {

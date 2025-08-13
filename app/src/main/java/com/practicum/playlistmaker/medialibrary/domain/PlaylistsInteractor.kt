@@ -9,6 +9,8 @@ interface PlaylistsInteractor {
 
     suspend fun savePlaylist(playlist: Playlist)
 
+    suspend fun updatePlaylist(playlist: Playlist)
+
     fun saveCoverImage(uri: String): String
 
     suspend fun getAllPlaylistWithTracks() : List<Playlist>

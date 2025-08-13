@@ -21,7 +21,7 @@ import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
     private var isPlaylistCoverChanged = false
 
@@ -31,10 +31,10 @@ class NewPlaylistFragment : Fragment() {
         fun newInstance() = NewPlaylistFragment()
     }
 
-    private val viewModel by viewModel<NewPlaylistViewModel>()
+    protected open val viewModel by viewModel<NewPlaylistViewModel>()
 
-    private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding
+    protected var _binding: FragmentNewPlaylistBinding? = null
+    protected val binding
         get() = _binding!!
 
     override fun onCreateView(
@@ -45,6 +45,31 @@ class NewPlaylistFragment : Fragment() {
         return binding.root
     }
 
+    open fun load(){
+        enableButton(false)
+    }
+
+    private fun checkIsCoverOrContentFilled(): Boolean {
+        return isPlaylistCoverChanged
+                || binding.playlistNameEditText.text.isNotEmpty()
+                || binding.playlistDescriptionEditText.text.isNotEmpty()
+    }
+
+    protected open fun backAction() {
+        if (checkIsCoverOrContentFilled()) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Завершить создание плейлиста?")
+                .setMessage("Все несохраненные данные будут потеряны")
+                .setPositiveButton("Завершить") { _, _ ->
+                    findNavController().popBackStack()
+                }
+                .setNegativeButton("Отмена") { _, _ ->
+                }.show()
+        } else {
+            findNavController().popBackStack()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,8 +77,9 @@ class NewPlaylistFragment : Fragment() {
             when (state) {
                 NewPlayListState.EmptyFields -> enableButton(false)
                 NewPlayListState.FilledFields -> enableButton(true)
-                NewPlayListState.Loading -> enableButton(false)
+                is NewPlayListState.Loading -> load()
                 is NewPlayListState.CoverFilled -> fillCover(state.uriString)
+                is NewPlayListState.FillingViews -> fillViews(state.coverUri, state.name, state.description)
             }
 
         }
@@ -90,26 +116,7 @@ class NewPlaylistFragment : Fragment() {
             playlistArt.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
-        fun checkIsCoverOrContentFilled(): Boolean {
-            return isPlaylistCoverChanged
-                    || binding.playlistNameEditText.text.isNotEmpty()
-                    || binding.playlistDescriptionEditText.text.isNotEmpty()
-        }
 
-        fun backAction() {
-            if (checkIsCoverOrContentFilled()) {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Завершить создание плейлиста?")
-                    .setMessage("Все несохраненные данные будут потеряны")
-                    .setPositiveButton("Завершить") { _, _ ->
-                        findNavController().popBackStack()
-                    }
-                    .setNegativeButton("Отмена") { _, _ ->
-                    }.show()
-            } else {
-                findNavController().popBackStack()
-            }
-        }
 
 
         binding.backImageView.setNavigationOnClickListener() {
@@ -121,15 +128,8 @@ class NewPlaylistFragment : Fragment() {
         }
 
         binding.createPlaylistButton.setOnClickListener {
-            val playlist = Playlist(
-                id = 0,
-                name = binding.playlistNameEditText.text.toString(),
-                description = binding.playlistDescriptionEditText.text.toString(),
-                coverUri = coverUri,
-                trackList = null
-            )
 
-            viewModel.savePlaylist(playlist)
+            viewModel.savePlaylist(createPlaylist())
             Toast.makeText(
                 requireContext(),
                 "Плейлист ${binding.playlistNameEditText.text} создан",
@@ -137,6 +137,21 @@ class NewPlaylistFragment : Fragment() {
             ).show()
             findNavController().popBackStack()
         }
+
+    }
+
+    open fun createPlaylist() : Playlist{
+        val playlist = Playlist(
+            id = 0,
+            name = binding.playlistNameEditText.text.toString(),
+            description = binding.playlistDescriptionEditText.text.toString(),
+            coverUri = coverUri,
+            trackList = null
+        )
+        return playlist
+    }
+
+    open fun fillViews(coverUri: String?, name: String, description: String) {
 
     }
 

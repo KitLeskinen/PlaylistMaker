@@ -15,6 +15,10 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         playlistRepository.savePlaylist(playlist)
     }
 
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        playlistRepository.updatePlaylist(playlist)
+    }
+
     override fun saveCoverImage(uriString: String): String {
         return playlistRepository.saveCoverImage(uriString)
     }

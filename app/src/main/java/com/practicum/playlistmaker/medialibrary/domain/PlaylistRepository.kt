@@ -9,6 +9,8 @@ interface PlaylistRepository {
 
     suspend fun savePlaylist(playlist: Playlist)
 
+    suspend fun updatePlaylist(playlist: Playlist)
+
     fun saveCoverImage(uriString: String): String
 
     suspend fun getPlaylistWithTracks(playlistId: Long): Playlist
