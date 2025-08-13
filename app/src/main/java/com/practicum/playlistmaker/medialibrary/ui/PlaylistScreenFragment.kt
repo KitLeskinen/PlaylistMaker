@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
@@ -156,9 +158,16 @@ class PlaylistScreenFragment : Fragment() {
     private fun fillPlaylistViews(playlist: Playlist, minutes: Long) {
         binding.playlistNameTextView.text = playlist.name
         binding.playlistDescriptionTextView.text = playlist.description
-        binding.coverImage.setImageURI(Uri.parse(playlist.coverUri))
+//        binding.coverImage.setImageURI(Uri.parse(playlist.coverUri))
         binding.bottomSheetPlaylistName.text = playlist.name
-        binding.bottomSheetTrackCover.setImageURI(Uri.parse(playlist.coverUri))
+        Glide.with(binding.coverImage).load(Uri.parse(playlist.coverUri))
+            .placeholder(R.drawable.placeholder).transform(
+                CenterCrop()
+            ).into(binding.coverImage)
+        Glide.with(binding.bottomSheetTrackCover).load(Uri.parse(playlist.coverUri))
+            .placeholder(R.drawable.placeholder).transform(
+                CenterCrop()
+            ).into(binding.bottomSheetTrackCover)
         binding.bottomSheetTracksCount.text = "${playlist.trackList?.size} ${
             playlist.trackList?.let {
                 Tools.declensions(
