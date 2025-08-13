@@ -46,7 +46,7 @@ class PlaylistScreenFragment : Fragment() {
 
         viewModel.loadPlaylist(args.playlistId)
 
-
+        BottomSheetBehavior.from(binding.bottomSheetMeatballs).state = BottomSheetBehavior.STATE_HIDDEN
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -61,7 +61,7 @@ class PlaylistScreenFragment : Fragment() {
 
 
         binding.meatballsMenu.setOnClickListener {
-            BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_HIDDEN
+            BottomSheetBehavior.from(binding.bottomSheetMeatballs).state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         binding.shareTextView
