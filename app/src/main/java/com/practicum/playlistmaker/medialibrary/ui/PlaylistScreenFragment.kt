@@ -62,13 +62,13 @@ class PlaylistScreenFragment : Fragment() {
 
 
 
-        binding.meatballsMenu.setOnClickListener{
+        binding.meatballsMenu.setOnClickListener {
             BottomSheetBehavior.from(binding.bottomSheet).state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         binding.shareTextView
 
-        fun share(){
+        fun share() {
             if (playlist.trackList?.size ?: 0 == 0) {
                 Toast.makeText(
                     requireContext(),
@@ -84,7 +84,7 @@ class PlaylistScreenFragment : Fragment() {
                         )
                     }"
                 playlist.trackList?.forEachIndexed { index, track ->
-                    message += "\n${index+1}. ${track.trackName} - ${track.artistName} (${
+                    message += "\n${index + 1}. ${track.trackName} - ${track.artistName} (${
                         SimpleDateFormat(
                             "mm:ss",
                             Locale.getDefault()
@@ -99,18 +99,31 @@ class PlaylistScreenFragment : Fragment() {
 
             }
         }
-        
+
         binding.shareImageButton.setOnClickListener {
             share()
         }
-        binding.shareTextView.setOnClickListener{
+        binding.shareTextView.setOnClickListener {
             share()
         }
 
-        binding.deletePlaylistTextView.setOnClickListener{
-            viewModel.deletePlaylist(playlist.id)
-        }
+        binding.deletePlaylistTextView.setOnClickListener {
 
+            MaterialAlertDialogBuilder(requireContext()).setMessage(getString(R.string.do_you_want_to_delete_playlist))
+                .setPositiveButton("Да", object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        viewModel.deletePlaylist(playlist.id)
+                        findNavController().popBackStack()
+
+                    }
+                }).setNeutralButton("Нет", object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+
+                    }
+                }).show()
+
+
+        }
 
 
     }
@@ -135,7 +148,14 @@ class PlaylistScreenFragment : Fragment() {
         binding.coverImage.setImageURI(Uri.parse(playlist.coverUri))
         binding.bottomSheetPlaylistName.text = playlist.name
         binding.bottomSheetTrackCover.setImageURI(Uri.parse(playlist.coverUri))
-        binding.bottomSheetTracksCount.text = "${playlist.trackList?.size} ${playlist.trackList?.let { Tools.declensions(requireContext(), it.size) }}"
+        binding.bottomSheetTracksCount.text = "${playlist.trackList?.size} ${
+            playlist.trackList?.let {
+                Tools.declensions(
+                    requireContext(),
+                    it.size
+                )
+            }
+        }"
         binding.playlistTracksRecyclerView.adapter =
             playlist.trackList?.let {
                 PlaylistScreenAdapter(
