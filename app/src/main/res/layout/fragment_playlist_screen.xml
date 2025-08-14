@@ -118,7 +118,7 @@
         android:background="@drawable/bottom_sheet_background"
         android:minHeight="100dp"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="0dp"
         app:behavior_hideable="false"
         app:behavior_peekHeight="150dp"
 
