@@ -263,7 +263,13 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#801A1B22"
+        />
     <LinearLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"

@@ -155,6 +155,29 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
 
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+
         binding.addToPlaylistButton.setOnClickListener() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
