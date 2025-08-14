@@ -158,7 +158,6 @@ class PlaylistScreenFragment : Fragment() {
     private fun fillPlaylistViews(playlist: Playlist, minutes: Long) {
         binding.playlistNameTextView.text = playlist.name
         binding.playlistDescriptionTextView.text = playlist.description
-//        binding.coverImage.setImageURI(Uri.parse(playlist.coverUri))
         binding.bottomSheetPlaylistName.text = playlist.name
         Glide.with(binding.coverImage).load(Uri.parse(playlist.coverUri))
             .placeholder(R.drawable.placeholder).transform(
@@ -188,12 +187,16 @@ class PlaylistScreenFragment : Fragment() {
                 )
             }
         val tracksCount: Int = playlist.trackList?.size ?: 0
-        binding.playlistDurationAndCountTextView.text = "$tracksCount ${
-            Tools.declensions(
-                requireContext(),
-                tracksCount
-            )
-        } • $minutes ${Tools.declensionsMinutes(requireContext(), minutes.toInt())}"
+        if (tracksCount == 0) {
+            binding.playlistDurationAndCountTextView.text = getString(R.string.no_tracks_in_the_playlist)
+        } else {
+            binding.playlistDurationAndCountTextView.text = "$tracksCount ${
+                Tools.declensions(
+                    requireContext(),
+                    tracksCount
+                )
+            } • $minutes ${Tools.declensionsMinutes(requireContext(), minutes.toInt())}"
+        }
     }
 
     private fun showAudioPlayerActivity(track: Track) {

@@ -76,7 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="300 минут • 98 треков"
+            android:text=""
             android:textColor="#1A1B22"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@id/startGuideline"
