@@ -29,13 +29,15 @@
             android:id="@+id/playlistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="0"
+            android:textColor="@color/background_night"
+
             android:ellipsize="end"
             android:fontFamily="@font/ys_display_medium"
             android:maxLines="2"
             android:textFontWeight="400"
-            android:textSize="14sp"
+            android:textSize="12sp"
 
             tools:text="Название плейлиста" />
 
@@ -43,11 +45,11 @@
             android:id="@+id/tracksCounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="0"
             android:ellipsize="end"
-            android:textColor="@color/black"
+            android:textColor="@color/background_night"
             android:textFontWeight="400"
             android:textSize="12sp"
             android:textStyle="normal"

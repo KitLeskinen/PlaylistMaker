@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,7 +44,9 @@ class EditPlaylistFragment : NewPlaylistFragment() {
 
     override fun fillViews(coverUri: String?, name: String, description: String) {
         super.fillViews(coverUri, name, description)
-        binding.addPlayListCoverButton.setImageURI(Uri.parse(coverUri))
+        Glide.with(binding.addPlayListCoverButton).load(coverUri).centerCrop().placeholder(R.drawable.placeholder).into(binding.addPlayListCoverButton)
+
+
         binding.playlistNameEditText.setText(name)
         binding.playlistDescriptionEditText.setText(description)
 

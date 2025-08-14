@@ -35,14 +35,6 @@ class PlaylistScreenViewModel(private val playlistsInteractor: PlaylistsInteract
         }
     }
 
-//    fun updatePlaylistItems() {
-//        loadPlaylistItems()
-//    }
-
-//    init {
-//        loadPlaylistItems()
-//    }
-
 
     fun deleteTrack(track: Track) {
         viewModelScope.launch {

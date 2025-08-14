@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.medialibrary.ui
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +14,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -104,7 +105,7 @@ open class NewPlaylistFragment : Fragment() {
         val playlistArt =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    binding.addPlayListCoverButton.setImageURI(uri)
+                    Glide.with(binding.addPlayListCoverButton).load(uri).centerCrop().placeholder(R.drawable.placeholder).into(binding.addPlayListCoverButton)
                     binding.addPlayListCoverButton.scaleType = ImageView.ScaleType.CENTER_CROP
                     isPlaylistCoverChanged = true
                     viewModel.saveCoverImage(uri.toString())
@@ -152,12 +153,19 @@ open class NewPlaylistFragment : Fragment() {
     }
 
     open fun fillViews(coverUri: String?, name: String, description: String) {
+        this.coverUri = coverUri
 
+        if (!coverUri.isNullOrEmpty()) {
+            Glide.with(binding.addPlayListCoverButton).load(coverUri).centerCrop().placeholder(R.drawable.placeholder).into(binding.addPlayListCoverButton)
+            binding.playlistNameEditText.setText(name)
+            binding.playlistDescriptionEditText.setText(description)
+        }
     }
 
     private fun fillCover(uriString: String) {
         coverUri = uriString
-        binding.addPlayListCoverButton.setImageURI(Uri.parse(uriString))
+        Glide.with(binding.addPlayListCoverButton).load(uriString).centerCrop().placeholder(R.drawable.placeholder).into(binding.addPlayListCoverButton)
+
     }
 
 
