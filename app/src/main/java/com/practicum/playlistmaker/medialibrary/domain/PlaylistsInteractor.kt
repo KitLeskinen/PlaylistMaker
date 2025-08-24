@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.domain
 
-import android.net.Uri
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 
@@ -10,9 +9,17 @@ interface PlaylistsInteractor {
 
     suspend fun savePlaylist(playlist: Playlist)
 
-    fun saveCoverImage(uri: Uri): Uri
+    suspend fun updatePlaylist(playlist: Playlist)
+
+    fun saveCoverImage(uri: String): String
 
     suspend fun getAllPlaylistWithTracks() : List<Playlist>
 
     suspend fun addTrack(track: Track, playlist: Playlist) : Long
+
+    suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist)
+
+    suspend fun getPlaylistWithTracks(playlistId: Long) : Playlist
+
+    suspend fun deletePlaylist(playlistId: Long)
 }

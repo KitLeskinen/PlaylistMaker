@@ -1,10 +1,12 @@
 package com.practicum.playlistmaker.medialibrary.data.db.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.practicum.playlistmaker.medialibrary.data.db.entity.PlaylistEntity
 import com.practicum.playlistmaker.medialibrary.data.db.entity.PlaylistTrackCrossRef
 
@@ -31,6 +33,20 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addTrack(crossRef: PlaylistTrackCrossRef) : Long
 
+    @Delete(entity = PlaylistTrackCrossRef::class)
+    suspend fun removeTrackFromPlaylist(crossRef: PlaylistTrackCrossRef)
+
+    @Query("SELECT COUNT(*) FROM playlists_tracks WHERE trackId = :trackId")
+    suspend fun getTrackMentionsFromPlaylists(trackId: Long): Int
+
+    @Query("DELETE FROM playlists_tracks WHERE playlistId = :playlistId")
+    suspend fun deletePlaylistMentionsFromPlaylistsCrossTracks(playlistId: Long): Int
+
+    @Query("DELETE FROM playlist_table WHERE id = :playlistId")
+    suspend fun removePlayList(playlistId: Long)
+
+    @Update
+    suspend fun updatePlaylist(playlistEntity: PlaylistEntity)
 }
 
 

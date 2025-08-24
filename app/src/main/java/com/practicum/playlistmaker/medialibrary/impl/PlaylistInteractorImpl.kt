@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.medialibrary.impl
 
-import android.net.Uri
 import com.practicum.playlistmaker.common.data.domain.entity.Playlist
 import com.practicum.playlistmaker.common.data.domain.entity.Track
 import com.practicum.playlistmaker.medialibrary.domain.PlaylistRepository
@@ -16,8 +15,12 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         playlistRepository.savePlaylist(playlist)
     }
 
-    override fun saveCoverImage(uri: Uri): Uri {
-        return playlistRepository.saveCoverImage(uri)
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        playlistRepository.updatePlaylist(playlist)
+    }
+
+    override fun saveCoverImage(uriString: String): String {
+        return playlistRepository.saveCoverImage(uriString)
     }
 
     override suspend fun getAllPlaylistWithTracks(): List<Playlist> {
@@ -26,5 +29,17 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
 
     override suspend fun addTrack(track: Track, playlist: Playlist) : Long {
         return playlistRepository.addTrack(track, playlist)
+    }
+
+    override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
+        playlistRepository.removeTrackFromPlaylist(track, playlist)
+    }
+
+    override suspend fun getPlaylistWithTracks(playlistId: Long) : Playlist {
+       return playlistRepository.getPlaylistWithTracks(playlistId)
+    }
+
+    override suspend fun deletePlaylist(playlistId: Long) {
+        playlistRepository.deletePlaylist(playlistId)
     }
 }

@@ -43,10 +43,14 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
 
 
     override suspend fun savePlaylist(playlist: Playlist) {
-        appDataBase.playlistDao().savePlaylist(PlaylistDbConvertor().map(playlist))
+        appDataBase.playlistDao().savePlaylist(PlaylistDbConvertor().map(playlist, false))
     }
 
-    override fun saveCoverImage(uri: Uri): Uri {
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        appDataBase.playlistDao().updatePlaylist(PlaylistDbConvertor().map(playlist, true))
+    }
+
+    override fun saveCoverImage(uriString: String): String {
         val directoryPath =
             File(
                 context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -59,16 +63,16 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
 
         val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
 
-        contentResolver.takePersistableUriPermission(uri, takeFlags)
+        contentResolver.takePersistableUriPermission(Uri.parse(uriString), takeFlags)
         val file = File(directoryPath, "cover_${System.currentTimeMillis()}.jpg")
 
-        val inputStream = contentResolver.openInputStream(uri)
+        val inputStream = contentResolver.openInputStream(Uri.parse(uriString))
 
         val outputStream = FileOutputStream(file)
         BitmapFactory.decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
 
-        return file.toUri()
+        return file.toUri().toString()
     }
 
     override suspend fun addTrack(track: Track, playlist: Playlist) : Long {
@@ -78,5 +82,18 @@ class PlaylistRepositoryImpl(private val appDataBase: AppDataBase, private val c
             crossRef = PlaylistTrackCrossRef(playlist.id, track.trackId)
         )
     }
+
+    override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
+        appDataBase.playlistDao().removeTrackFromPlaylist(PlaylistTrackCrossRef(playlist.id, track.trackId))
+        if(appDataBase.playlistDao().getTrackMentionsFromPlaylists(track.trackId) == 0){
+            appDataBase.trackDao().delete(TrackDbConvertor().map(track))
+        }
+    }
+
+    override suspend fun deletePlaylist(playlistId: Long) {
+        appDataBase.playlistDao().removePlayList(playlistId)
+        appDataBase.playlistDao().deletePlaylistMentionsFromPlaylistsCrossTracks(playlistId)
+    }
+
 
 }
